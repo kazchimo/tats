@@ -2,7 +2,7 @@ from abc import abstractmethod, ABC
 from types import new_class
 from typing import TypeVar, Generic, Any, Dict, Type
 
-from .BiOp import EndoBiOp
+from tats.Op import EndoBiOp
 
 _T = TypeVar("_T")
 
