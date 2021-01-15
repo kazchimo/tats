@@ -8,6 +8,7 @@ pytest = "*"
 pytest-parallel = "*"
 
 [packages]
+pampy = "*"
 
 [requires]
 python_version = "3.9"
