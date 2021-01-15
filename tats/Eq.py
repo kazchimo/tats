@@ -1,17 +1,22 @@
 from dataclasses import dataclass
 from typing import Generic, TypeVar
 
-from .Op import BiOp
+from .Op import BiOp, UnOp
 
-T = TypeVar("T")
+_T = TypeVar("_T")
+_S = TypeVar("_S")
 
 @dataclass(frozen=True)
-class Eq(Generic[T]):
-  _eqv: BiOp[T, bool]
+class Eq(Generic[_T]):
+  _eqv: BiOp[_T, bool]
 
-  def eqv(self, l: T, r: T) -> bool:
+  def eqv(self, l: _T, r: _T) -> bool:
     return self._eqv(l, r)
 
-  def neqv(self, l: T, r: T) -> bool:
+  def neqv(self, l: _T, r: _T) -> bool:
     return not self.eqv(l, r)
+
+  def contramap(self, f: UnOp[_S, _T]) -> "Eq[_S]":
+    return Eq(lambda a, b: self.eqv(f(a), f(b)))
+
 
