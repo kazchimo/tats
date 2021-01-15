@@ -15,3 +15,10 @@ class TestEq:
     assert StrEq.eqv("ab", "ab")
     assert StrEq.neqv("ab", "a")
 
+  def test_and(self):
+    HeadEq: Eq[str] = Eq(lambda a, b: a[0] == b[0])
+    TailEq: Eq[str] = Eq(lambda a, b: a[-1] == b[-1])
+    HeadTailEq = HeadEq.and_(TailEq)
+    assert HeadTailEq.eqv("abc", "aac")
+    assert HeadTailEq.neqv("abc", "abb")
+

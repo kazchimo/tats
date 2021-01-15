@@ -19,4 +19,7 @@ class Eq(Generic[_T]):
   def contramap(self, f: UnOp[_S, _T]) -> "Eq[_S]":
     return Eq(lambda a, b: self.eqv(f(a), f(b)))
 
+  def and_(self, other: "Eq[_T]") -> "Eq[_T]":
+    return Eq(lambda a, b: self.eqv(a, b) and other.eqv(a,b))
+
 
