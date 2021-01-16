@@ -23,10 +23,10 @@ def monad_syntax(instance: Type[Monad[URI]]):
   def _add_syntax(c):
 
     def _flat_map(self, f):
-      instance.flat_map(self, f)
+      return instance.flat_map(self, f)
 
     def _flatten(self):
-      instance.flatten(self)
+      return instance.flatten(self)
 
     setattr(c, "flat_map", _flat_map)
     setattr(c, "flatten", _flatten)

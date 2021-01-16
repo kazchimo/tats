@@ -47,3 +47,11 @@ class TestOption:
     assert Nothing().product_l(Some(2)) == Nothing()
     assert Some(1).product_l(Nothing()) == Nothing()
     assert Nothing().product_l(Nothing()) == Nothing()
+
+    assert Some(Some(1)).flatten() == Some(1)
+    assert Some(Nothing()).flatten() == Nothing()
+
+    assert Some(1).flat_map(lambda x: Some(x * 2)) == Some(2)
+    assert Some(1).flat_map(lambda x: Nothing()) == Nothing()
+    assert Nothing().flat_map(lambda x: Some(x * 2)) == Nothing()
+    assert Nothing().flat_map(lambda x: Nothing()) == Nothing()

@@ -18,10 +18,7 @@ class OptionInstance(Monad[URI]):
 
   @staticmethod
   def flat_map(fa: Kind1[URI, A], f: UnOp[A, Kind1[URI, B]]) -> Kind1[URI, B]:
-    if fa.is_empty():
-      return Nothing()
-    else:
-      return f(fa.a)
+    return Nothing() if fa.is_empty() else f(fa.a)
 
   @staticmethod
   def pure(a: A) -> Kind1[URI, A]:
