@@ -39,6 +39,9 @@ class Option(SupportsKind1[URI, A]):
   def non_empty(self) -> bool:
     return not self.is_empty()
 
+  def or_else(self, alt: "Option[A]") -> "Option[A]":
+    return self if self.non_empty() else alt
+
 
 @dataclass(frozen=True)
 class Some(Option[A]):

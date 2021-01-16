@@ -11,6 +11,12 @@ class TestOption:
     assert Some("").non_empty()
     assert not Nothing().non_empty()
 
+  def test_or_else(self):
+    assert Some(1).or_else(Some(2)) == Some(1)
+    assert Nothing().or_else(Some(2)) == Some(2)
+    assert Some(1).or_else(Nothing()) == Some(1)
+    assert Nothing().or_else(Nothing()) == Nothing()
+
   def test_functor(self):
     OptionInstance.map(Some(1), lambda x: x * 2) == Some(2)
     OptionInstance.map(Nothing(), lambda x: x * 2) == Nothing()
