@@ -3,7 +3,7 @@ from dataclasses import dataclass
 from typing import TypeVar, Optional, Any, Literal
 
 from pampy import match, _
-from returns.primitives.hkt import SupportsKind1
+from returns.primitives.hkt import SupportsKind1, Kind1
 
 from .Functor import Functor
 from .Op import UnOp
@@ -42,7 +42,7 @@ class Nothing(Option[Any]):
 class OptionFunctor(Functor[URI]):
 
   @staticmethod
-  def map(fa: SupportsKind1[URI, A], f: UnOp[A, B]) -> SupportsKind1[URI, B]:
+  def map(fa: Kind1[URI, A], f: UnOp[A, B]) -> Kind1[URI, B]:
     return match(\
       fa,
       Some(_), lambda x: Some(f(x)),
