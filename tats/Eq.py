@@ -6,6 +6,7 @@ from .Op import BiOp, UnOp
 _T = TypeVar("_T")
 _S = TypeVar("_S")
 
+
 @dataclass(frozen=True)
 class Eq(Generic[_T]):
   _eqv: BiOp[_T, bool]
@@ -20,6 +21,18 @@ class Eq(Generic[_T]):
     return Eq(lambda a, b: self.eqv(f(a), f(b)))
 
   def and_(self, other: "Eq[_T]") -> "Eq[_T]":
-    return Eq(lambda a, b: self.eqv(a, b) and other.eqv(a,b))
+    return Eq(lambda a, b: self.eqv(a, b) and other.eqv(a, b))
 
 
+def derive_eq(c):
+
+  def _eqv(self, r):
+    return self == r
+
+  def _neqv(self, r):
+    return not _eqv(self, r)
+
+  setattr(c, "eqv", _eqv)
+  setattr(c, "neqv", _neqv)
+
+  return c

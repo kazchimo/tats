@@ -4,6 +4,7 @@ from typing import TypeVar, Any, Literal
 
 from returns.primitives.hkt import SupportsKind1, Kind1
 
+from .Eq import derive_eq
 from .Applicative import Applicative, applicative_syntax
 from .Op import UnOp
 
@@ -29,6 +30,7 @@ class OptionInstance(Applicative[URI]):
         return Some(ff.a(fa.a))
 
 
+@derive_eq
 @applicative_syntax(OptionInstance)
 class Option(SupportsKind1[URI, A]):
 
