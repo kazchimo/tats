@@ -1,4 +1,4 @@
-from tats.Option import Some, Nothing, Option, OptionInstance
+from tats.Option import Some, Nothing, OptionInstance
 
 
 class TestOption:
@@ -25,3 +25,8 @@ class TestOption:
     assert Nothing().product_r(Some(2)) == Nothing()
     assert Some(1).product_r(Nothing()) == Nothing()
     assert Nothing().product_r(Nothing()) == Nothing()
+
+    assert Some(1).product_l(Some(2)) == Some(1)
+    assert Nothing().product_l(Some(2)) == Nothing()
+    assert Some(1).product_l(Nothing()) == Nothing()
+    assert Nothing().product_l(Nothing()) == Nothing()

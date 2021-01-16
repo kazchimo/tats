@@ -27,7 +27,11 @@ def apply_syntax(instance: Type[Apply[URI]]):
 
       return instance.ap(instance.map(self, lambda _: lambda b: b), fb)
 
+    def _product_l(self, fb):
+      return instance.ap(instance.map(self, lambda a: lambda _: a), fb)
+
     setattr(c, "product_r", _product_r)
+    setattr(c, "product_l", _product_l)
     functor_syntax(instance)(c)
     return c
 
