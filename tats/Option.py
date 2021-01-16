@@ -4,8 +4,9 @@ from typing import TypeVar, Any, Literal
 
 from returns.primitives.hkt import SupportsKind1, Kind1
 
+from .Applicative import Applicative
 from .Eq import derive_eq
-from .Applicative import Applicative, applicative_syntax
+from .Monad import monad_syntax, Monad
 from .Op import UnOp
 
 A = TypeVar("A")
@@ -13,25 +14,22 @@ B = TypeVar("B")
 URI = Literal["Option"]
 
 
-class OptionInstance(Applicative[URI]):
+class OptionInstance(Monad[URI]):
+
+  @staticmethod
+  def flat_map(fa: Kind1[URI, A], f: UnOp[A, Kind1[URI, B]]) -> Kind1[URI, B]:
+    if fa.is_empty():
+      return Nothing()
+    else:
+      return f(fa.a)
 
   @staticmethod
   def pure(a: A) -> Kind1[URI, A]:
     return Some(a)
 
-  @staticmethod
-  def ap(ff: Kind1[URI, UnOp[A, B]], fa: Kind1[URI, A]) -> Kind1[URI, B]:
-    if ff.is_empty():
-      return Nothing()
-    else:
-      if fa.is_empty():
-        return Nothing()
-      else:
-        return Some(ff.a(fa.a))
-
 
 @derive_eq
-@applicative_syntax(OptionInstance)
+@monad_syntax(OptionInstance)
 class Option(SupportsKind1[URI, A]):
 
   @abstractmethod

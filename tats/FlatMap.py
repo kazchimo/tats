@@ -21,3 +21,7 @@ class FlatMap(Generic[URI], Apply[URI]):
   @classmethod
   def flatten(cls, ffa: Kind1[URI, Kind1[URI, A]]) -> Kind1[URI, A]:
     return cls.flat_map(ffa, lambda x: x)
+
+  @classmethod
+  def ap(cls, ff: Kind1[URI, UnOp[A, B]], fa: Kind1[URI, A]) -> Kind1[URI, B]:
+    return cls.flat_map(ff, lambda f: cls.map(fa, f))
