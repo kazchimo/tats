@@ -1,7 +1,7 @@
 from abc import abstractmethod
 from typing import Generic, TypeVar
 
-from returns.primitives.hkt import Kind1
+from returns.primitives.hkt import Kind1, kinded
 
 from .Op import UnOp
 

@@ -20,3 +20,7 @@ class TestOption:
     assert OptionInstance.ap(Nothing(), Some(1)) == Nothing()
     assert OptionInstance.ap(Some(lambda x: x * 2), Nothing()) == Nothing()
     assert OptionInstance.ap(Nothing(), Nothing()) == Nothing()
+
+  def test_syntax(self):
+    assert Some(1).map(lambda x: x * 2) == Some(2)
+    assert Nothing().map(lambda x: x * 2) == Nothing()
