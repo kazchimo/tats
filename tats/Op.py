@@ -1,17 +1,23 @@
 from typing import TypeVar, Protocol
 
-_T = TypeVar("_T")
-_S = TypeVar("_S")
+Arg = TypeVar("Arg", contravariant=True)
+Res = TypeVar("Res", covariant=True)
+T = TypeVar("T")
 
-class UnOp(Protocol[_T, _S]):
-  def __call__(self, a: _T) -> _S:
+
+class UnOp(Protocol[Arg, Res]):
+
+  def __call__(self, a: Arg) -> Res:
     ...
 
-class BiOp(Protocol[_T, _S]):
-  def __call__(self, a: _T, b: _T) -> _S:
+
+class BiOp(Protocol[Arg, Res]):
+
+  def __call__(self, a: Arg, b: Arg) -> Res:
     ...
 
-class EndoBiOp(Protocol[_T]):
-  def __call__(self, a: _T, b: _T) -> _T:
-    ...
 
+class EndoBiOp(Protocol[T]):
+
+  def __call__(self, a: T, b: T) -> T:
+    ...
