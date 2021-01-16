@@ -4,8 +4,7 @@ from typing import TypeVar, Optional, Any, Literal
 
 from returns.primitives.hkt import SupportsKind1, Kind1
 
-from .Apply import Apply
-from .Functor import Functor, functor_syntax
+from .Apply import Apply, apply_syntax
 from .Op import UnOp
 
 A = TypeVar("A")
@@ -13,7 +12,7 @@ B = TypeVar("B")
 URI = Literal["Option"]
 
 
-class OptionInstance(Functor[URI], Apply[URI]):
+class OptionInstance(Apply[URI]):
 
   @staticmethod
   def map(fa: Kind1[URI, A], f: UnOp[A, B]) -> Kind1[URI, B]:
@@ -30,7 +29,7 @@ class OptionInstance(Functor[URI], Apply[URI]):
         return Some(ff.a(fa.a))
 
 
-@functor_syntax(OptionInstance)
+@apply_syntax(OptionInstance)
 class Option(SupportsKind1[URI, A]):
 
   @abstractmethod

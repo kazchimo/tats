@@ -24,3 +24,8 @@ class TestOption:
   def test_syntax(self):
     assert Some(1).map(lambda x: x * 2) == Some(2)
     assert Nothing().map(lambda x: x * 2) == Nothing()
+
+    assert Some(1).product_r(Some(2)) == Some(2)
+    assert Nothing().product_r(Some(2)) == Nothing()
+    assert Some(1).product_r(Nothing()) == Nothing()
+    assert Nothing().product_r(Nothing()) == Nothing()
