@@ -5,15 +5,15 @@ from returns.primitives.hkt import SupportsKind1
 
 from .Op import UnOp
 
-I = TypeVar("I", bound=str)
+URI = TypeVar("URI", bound=str)
 A = TypeVar("A")
 B = TypeVar("B")
 F = TypeVar("F", bound=SupportsKind1)
 
 
-class Functor(Generic[I]):
+class Functor(Generic[URI]):
 
   @staticmethod
   @abstractmethod
-  def map(fa: SupportsKind1[I, A], f: UnOp[A, B]) -> SupportsKind1[I, B]:
+  def map(fa: SupportsKind1[URI, A], f: UnOp[A, B]) -> SupportsKind1[URI, B]:
     ...
