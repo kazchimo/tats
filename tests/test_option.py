@@ -7,6 +7,10 @@ class TestOption:
     assert not Some("").is_empty()
     assert Nothing().is_empty()
 
+  def test_non_empty(self):
+    assert Some("").non_empty()
+    assert not Nothing().non_empty()
+
   def test_functor(self):
     OptionInstance.map(Some(1), lambda x: x * 2) == Some(2)
     OptionInstance.map(Nothing(), lambda x: x * 2) == Nothing()

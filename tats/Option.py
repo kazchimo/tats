@@ -36,9 +36,8 @@ class Option(SupportsKind1[URI, A]):
   def is_empty(self) -> bool:
     ...
 
-  @abstractmethod
   def non_empty(self) -> bool:
-    ...
+    return not self.is_empty()
 
 
 @dataclass(frozen=True)
@@ -48,15 +47,9 @@ class Some(Option[A]):
   def is_empty(self) -> bool:
     return False
 
-  def non_empty(self) -> bool:
-    return True
-
 
 @dataclass()
 class Nothing(Option[Any]):
 
   def is_empty(self) -> bool:
     return True
-
-  def non_empty(self) -> bool:
-    return False
