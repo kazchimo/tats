@@ -4,10 +4,9 @@ from typing import TypeVar, Any, Literal
 
 from returns.primitives.hkt import SupportsKind1, Kind1
 
-from .Applicative import Applicative
-from .Eq import derive_eq
-from .Monad import monad_syntax, Monad
-from .Op import UnOp
+from tats.Eq import derive_eq
+from tats.Monad import monad_syntax, Monad
+from tats.Op import UnOp
 
 A = TypeVar("A")
 B = TypeVar("B")

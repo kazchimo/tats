@@ -1,4 +1,4 @@
-from tats.Option import Some, Nothing, OptionInstance
+from tats.data.Option import Some, Nothing, OptionInstance
 
 
 class TestOption:
