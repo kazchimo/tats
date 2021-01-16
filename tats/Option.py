@@ -1,10 +1,10 @@
 from abc import abstractmethod
 from dataclasses import dataclass
-from typing import TypeVar, Optional, Any, Literal
+from typing import TypeVar, Any, Literal
 
 from returns.primitives.hkt import SupportsKind1, Kind1
 
-from .Apply import Apply, apply_syntax
+from .Applicative import Applicative, applicative_syntax
 from .Op import UnOp
 
 A = TypeVar("A")
@@ -12,11 +12,11 @@ B = TypeVar("B")
 URI = Literal["Option"]
 
 
-class OptionInstance(Apply[URI]):
+class OptionInstance(Applicative[URI]):
 
   @staticmethod
-  def map(fa: Kind1[URI, A], f: UnOp[A, B]) -> Kind1[URI, B]:
-    return OptionInstance.ap(Some(f), fa)
+  def pure(a: A) -> Kind1[URI, A]:
+    return Some(a)
 
   @staticmethod
   def ap(ff: Kind1[URI, UnOp[A, B]], fa: Kind1[URI, A]) -> Kind1[URI, B]:
@@ -29,7 +29,7 @@ class OptionInstance(Apply[URI]):
         return Some(ff.a(fa.a))
 
 
-@apply_syntax(OptionInstance)
+@applicative_syntax(OptionInstance)
 class Option(SupportsKind1[URI, A]):
 
   @abstractmethod
@@ -39,10 +39,6 @@ class Option(SupportsKind1[URI, A]):
   @abstractmethod
   def non_empty(self) -> bool:
     ...
-
-  @staticmethod
-  def pure(a: Optional[A]) -> "Option[A]":
-    return Some(a) if a is not None else Nothing()
 
 
 @dataclass(frozen=True)
