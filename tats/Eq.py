@@ -26,7 +26,7 @@ class Eq(Generic[_T]):
 
 def derive_eq(c):
 
-  def _eqv(self, r):
+  def _eqv(self: _T, r: _T) -> bool:
     return self == r
 
   def _neqv(self, r):
