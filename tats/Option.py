@@ -5,6 +5,7 @@ from typing import TypeVar, Optional, Any, Literal
 from pampy import match, _
 from returns.primitives.hkt import SupportsKind1, Kind1
 
+from .Apply import Apply
 from .Functor import Functor
 from .Op import UnOp
 
@@ -39,7 +40,10 @@ class Nothing(Option[Any]):
     return True
 
 
-class OptionFunctor(Functor[URI]):
+#### --- Instances ---
+
+
+class OptionInstance(Functor[URI], Apply[URI]):
 
   @staticmethod
   def map(fa: Kind1[URI, A], f: UnOp[A, B]) -> Kind1[URI, B]:
@@ -47,3 +51,11 @@ class OptionFunctor(Functor[URI]):
       fa,
       Some(_), lambda x: Some(f(x)),
       Nothing, lambda x: Nothing())
+
+  @staticmethod
+  def ap(ff: Kind1[URI, UnOp[A, B]], fa: Kind1[URI, A]) -> Kind1[URI, B]:
+    return match(\
+      ff,
+      Nothing, lambda _: Nothing(),
+      Some(_), lambda f: OptionInstance.map(fa, f)
+    )

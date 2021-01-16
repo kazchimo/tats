@@ -1,4 +1,4 @@
-from tats.Option import Some, Nothing, Option, OptionFunctor
+from tats.Option import Some, Nothing, Option, OptionInstance
 
 
 class TestOption:
@@ -12,5 +12,11 @@ class TestOption:
     assert Nothing().is_empty()
 
   def test_functor(self):
-    OptionFunctor.map(Some(1), lambda x: x * 2) == Some(2)
-    OptionFunctor.map(Nothing(), lambda x: x * 2) == Nothing()
+    OptionInstance.map(Some(1), lambda x: x * 2) == Some(2)
+    OptionInstance.map(Nothing(), lambda x: x * 2) == Nothing()
+
+  def test_apply(self):
+    assert OptionInstance.ap(Some(lambda x: x * 2), Some(1)) == Some(2)
+    assert OptionInstance.ap(Nothing(), Some(1)) == Nothing()
+    assert OptionInstance.ap(Some(lambda x: x * 2), Nothing()) == Nothing()
+    assert OptionInstance.ap(Nothing(), Nothing()) == Nothing()
