@@ -1,3 +1,4 @@
+from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from typing import Generic, TypeVar
 
@@ -24,15 +25,22 @@ class Eq(Generic[T]):
     return Eq(lambda a, b: self.eqv(a, b) and other.eqv(a, b))
 
 
-def derive_eq(c):
+class EqSyntax(Generic[T], ABC):
 
-  def _eqv(self: T, r: T) -> bool:
-    return self == r
+  @property
+  @abstractmethod
+  def _eq_instance(self) -> Eq[T]:
+    ...
 
-  def _neqv(self, r):
-    return not _eqv(self, r)
+  def eqv(self, r: T) -> bool:
+    return self._eq_instance.eqv(self, r)
 
-  setattr(c, "eqv", _eqv)
-  setattr(c, "neqv", _neqv)
+  def neqv(self, r: T) -> bool:
+    return self._eq_instance.neqv(self, r)
 
-  return c
+
+class DeriveEq(EqSyntax[T], ABC):
+
+  @property
+  def _eq_instance(self) -> Eq[T]:
+    return Eq(lambda a, b: a == b)

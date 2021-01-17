@@ -4,7 +4,7 @@ from typing import TypeVar, Literal, cast, Generic, Any
 
 from returns.primitives.hkt import SupportsKind1, Kind1
 
-from tats.Eq import derive_eq
+from tats.Eq import DeriveEq
 from tats.Monad import monad_syntax, Monad
 from tats.Op import Func1
 from .Either import Either, Left, Right
@@ -43,9 +43,8 @@ class WithFilter(Generic[A]):
     return WithFilter(self.o, lambda a: self.p(a) and p(a))
 
 
-@derive_eq
 @monad_syntax(OptionInstance)
-class Option(SupportsKind1[URI, A]):
+class Option(SupportsKind1[URI, A], DeriveEq):
 
   @abstractmethod
   def is_empty(self) -> bool:

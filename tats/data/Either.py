@@ -4,7 +4,7 @@ from typing import TypeVar, Literal, cast, Generic, Any
 
 from returns.primitives.hkt import SupportsKind2, Kind1
 
-from tats.Eq import derive_eq
+from tats.Eq import DeriveEq
 from tats.Monad import Monad, monad_syntax
 from tats.Op import Func1
 
@@ -30,9 +30,8 @@ class EitherInstance(Monad[URI], Generic[L]):
     return Right(a)
 
 
-@derive_eq
 @monad_syntax(EitherInstance)
-class Either(SupportsKind2[URI, R, L]):
+class Either(SupportsKind2[URI, R, L], DeriveEq):
 
   @abstractmethod
   def is_left(self) -> bool:
