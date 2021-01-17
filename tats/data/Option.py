@@ -1,6 +1,6 @@
 from abc import abstractmethod
 from dataclasses import dataclass
-from typing import TypeVar, Literal, NoReturn, cast
+from typing import TypeVar, Literal, NoReturn, cast, Generic
 
 from returns.primitives.hkt import SupportsKind1, Kind1
 
@@ -22,6 +22,24 @@ class OptionInstance(Monad[URI]):
   @staticmethod
   def pure(a: A) -> Kind1[URI, A]:
     return Some(a)
+
+
+@dataclass(frozen=True)
+class WithFilter(Generic[A]):
+  o: "Option[A]"
+  p: UnOp[A, bool]
+
+  def map(self, f: UnOp[A, B]) -> "Option[B]":
+    return self.o.filter(self.p).map(f)
+
+  def flat_map(self, f: UnOp[A, "Option[B]"]) -> "Option[B]":
+    return self.o.filter(self.p).flat_map(f)
+
+  def foreach(self, f: UnOp[A, B]) -> None:
+    self.o.filter(self.p).foreach(f)
+
+  def with_filter(self, p: UnOp[A, bool]) -> "WithFilter[A]":
+    return WithFilter(self.o, lambda a: self.p(a) and p(a))
 
 
 @derive_eq
@@ -52,15 +70,18 @@ class Option(SupportsKind1[URI, A]):
     return f(self.get) if self.non_empty() else if_empty
 
   def filter(self, p: UnOp[A, bool]) -> "Option[A]":
-    return self if self.is_empty() or p(self.get) else Nothing()
+    return self if (self.is_empty() or p(self.get)) else Nothing()
 
   def filter_not(self, p: UnOp[A, bool]) -> "Option[A]":
     return self if self.is_empty() or not p(self.get) else Nothing()
 
+  def with_filter(self, p: UnOp[A, bool]) -> "WithFilter":
+    return WithFilter(self, p)
 
   def foreach(self, f: UnOp[A, B]) -> None:
     if self.non_empty():
       f(self.get)
+
 
 @dataclass(frozen=True)
 class Some(Option[A]):

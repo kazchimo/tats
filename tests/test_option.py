@@ -52,6 +52,52 @@ class TestOption:
 
     Nothing().foreach(_raise)
 
+  def test_with_filter(self):
+    assert Some(1).with_filter(lambda x: x == 1).map(lambda x: x * 2) == Some(2)
+    assert Nothing()\
+             .with_filter(lambda x: x == 1)\
+             .map(lambda x: x * 2) == Nothing()
+    assert Some(1)\
+             .with_filter(lambda x: x == 2)\
+             .map(lambda x: x * 2) == Nothing()
+
+    assert Some(1)\
+             .with_filter(lambda x: x == 1)\
+             .flat_map(lambda x: Some(x * 2)) == Some(2)
+    assert Nothing()\
+             .with_filter(lambda x: x == 1)\
+             .flat_map(lambda x: Some(x * 2)) == Nothing()
+    assert Some(1) \
+             .with_filter(lambda x: x == 2) \
+             .flat_map(lambda x: Some(x * 2)) == Nothing()
+
+    def _raise():
+      raise Exception
+
+    with raises(Exception):
+      assert Some(1) \
+               .with_filter(lambda x: x == 1) \
+               .foreach(_raise)
+    Nothing() \
+             .with_filter(lambda x: x == 1) \
+             .foreach(_raise)
+    Some(1) \
+             .with_filter(lambda x: x == 2) \
+             .foreach(_raise)
+
+    assert Some(1)\
+             .with_filter(lambda x: x == 1)\
+             .with_filter(lambda x: x % 2 == 1)\
+             .map(lambda x: x * 2) == Some(2)
+    assert Nothing() \
+             .with_filter(lambda x: x == 1) \
+             .with_filter(lambda x: x % 2 == 1) \
+             .map(lambda x: x * 2) == Nothing()
+    assert Some(1) \
+             .with_filter(lambda x: x == 2) \
+             .with_filter(lambda x: x % 2 == 1) \
+             .map(lambda x: x * 2) == Nothing()
+
   def test_eq(self):
     assert Some(1).eqv(Some(1))
     assert not Some(1).eqv(Some(2))
