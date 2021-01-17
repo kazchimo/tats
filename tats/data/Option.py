@@ -12,14 +12,14 @@ from tats.Op import Func1
 
 A = TypeVar("A")
 B = TypeVar("B")
-URI = Literal["Option"]
 
 
-class OptionInstance(Monad[URI]):
+class OptionInstance(Monad["Option"]):
 
   @staticmethod
-  def flat_map(fa: Kind1[URI, A], f: Func1[A, Kind1[URI, B]]) -> Kind1[URI, B]:
-    return Nothing() if fa.is_empty() else f(fa.a)
+  def flat_map(fa: Kind1["Option", A],
+               f: Func1[A, Kind1["Option", B]]) -> Kind1["Option", B]:
+    return Nothing() if fa.is_empty() else f(cast(Some[A], fa).a)
 
   @staticmethod
   def pure(a: A) -> "Option[A]":
@@ -36,10 +36,10 @@ class WithFilter(Generic[A]):
   o: "Option[A]"
   p: Func1[A, bool]
 
-  def map(self, f: Func1[A, B]) -> Kind1[URI, B]:
+  def map(self, f: Func1[A, B]) -> Kind1["Option", B]:
     return self.o.filter(self.p).map(f)
 
-  def flat_map(self, f: Func1[A, "Option[B]"]) -> Kind1[URI, B]:
+  def flat_map(self, f: Func1[A, "Option[B]"]) -> Kind1["Option", B]:
     return self.o.filter(self.p).flat_map(f)
 
   def foreach(self, f: Func1[A, B]) -> None:
@@ -49,7 +49,7 @@ class WithFilter(Generic[A]):
     return WithFilter(self.o, lambda a: self.p(a) and p(a))
 
 
-class Option(SupportsKind1[URI, A], DeriveEq, MonadSyntax[URI, A],
+class Option(SupportsKind1["Option", A], DeriveEq, MonadSyntax["Option", A],
              Kind1SemigroupSyntax["Option[A]", A]):
 
   @staticmethod
@@ -122,7 +122,7 @@ class Option(SupportsKind1[URI, A], DeriveEq, MonadSyntax[URI, A],
     return self
 
   @property
-  def _monad_instance(self) -> Type[Monad[URI]]:
+  def _monad_instance(self) -> Type[Monad["Option"]]:
     return OptionInstance
 
   def _semigroup_instance(self, tsemi: Semigroup[A]) -> Kind1OptionInstance:

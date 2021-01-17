@@ -6,37 +6,37 @@ from returns.primitives.hkt import Kind1
 from .Op import Func1
 from .Apply import Apply, ApplySyntax
 
-URI = TypeVar("URI")
+F = TypeVar("F", bound=Kind1)
 A = TypeVar("A")
 B = TypeVar("B")
 
 
-class FlatMap(Generic[URI], Apply[URI]):
+class FlatMap(Generic[F], Apply[F]):
 
   @staticmethod
   @abstractmethod
-  def flat_map(fa: Kind1[URI, A], f: Func1[A, Kind1[URI, B]]) -> Kind1[URI, B]:
+  def flat_map(fa: Kind1[F, A], f: Func1[A, Kind1[F, B]]) -> Kind1[F, B]:
     ...
 
   @classmethod
-  def flatten(cls, ffa: Kind1[URI, Kind1[URI, A]]) -> Kind1[URI, A]:
+  def flatten(cls, ffa: Kind1[F, Kind1[F, A]]) -> Kind1[F, A]:
     return cls.flat_map(ffa, lambda x: x)
 
   @classmethod
-  def ap(cls, ff: Kind1[URI, Func1[A, B]], fa: Kind1[URI, A]) -> Kind1[URI, B]:
+  def ap(cls, ff: Kind1[F, Func1[A, B]], fa: Kind1[F, A]) -> Kind1[F, B]:
     return cls.flat_map(ff, lambda f: cls.map(fa, f))
 
 
-class FlatMapSyntax(Generic[URI, A], ApplySyntax[URI, A], ABC):
+class FlatMapSyntax(Generic[F, A], ApplySyntax[F, A], ABC):
 
-  def flat_map(self, f: Func1[A, Kind1[URI, B]]) -> Kind1[URI, B]:
+  def flat_map(self, f: Func1[A, Kind1[F, B]]) -> Kind1[F, B]:
     return self._flat_map_instance.flat_map(self._self, f)
 
   @property
   @abstractmethod
-  def _flat_map_instance(self) -> Type[FlatMap[URI]]:
+  def _flat_map_instance(self) -> Type[FlatMap[F]]:
     ...
 
   @property
-  def _apply_instance(self) -> Type[Apply[URI]]:
+  def _apply_instance(self) -> Type[Apply[F]]:
     return self._flat_map_instance

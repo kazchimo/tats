@@ -6,30 +6,30 @@ from returns.primitives.hkt import Kind1
 from .Apply import Apply, ApplySyntax
 from .Op import Func1
 
-URI = TypeVar("URI")
+F = TypeVar("F", bound=Kind1)
 A = TypeVar("A")
 B = TypeVar("B")
 
 
-class Applicative(Generic[URI], Apply[URI]):
+class Applicative(Generic[F], Apply[F]):
 
   @classmethod
-  def map(cls, fa: Kind1[URI, A], f: Func1[A, B]) -> Kind1[URI, B]:
+  def map(cls, fa: Kind1[F, A], f: Func1[A, B]) -> Kind1[F, B]:
     return cls.ap(cls.pure(f), fa)
 
   @staticmethod
   @abstractmethod
-  def pure(a: A) -> Kind1[URI, A]:
+  def pure(a: A) -> Kind1[F, A]:
     ...
 
 
-class ApplicativeSyntax(Generic[URI, A], ApplySyntax[URI, A]):
+class ApplicativeSyntax(Generic[F, A], ApplySyntax[F, A]):
 
   @property
   @abstractmethod
-  def _applicative_syntax(self) -> Type[Applicative[URI]]:
+  def _applicative_syntax(self) -> Type[Applicative[F]]:
     ...
 
   @property
-  def _apply_instance(self) -> Type[Apply[URI]]:
+  def _apply_instance(self) -> Type[Apply[F]]:
     return self._applicative_syntax

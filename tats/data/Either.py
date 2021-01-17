@@ -15,24 +15,23 @@ R = TypeVar("R")
 A = TypeVar("A")
 B = TypeVar("B")
 
-URI = Literal["Either"]
 
-
-class EitherInstance(Monad[URI], Generic[L]):
+class EitherInstance(Monad["Either"], Generic[L]):
 
   @staticmethod
-  def flat_map(fa: Kind1[URI, A], f: Func1[A, Kind1[URI, B]]) -> Kind1[URI, B]:
+  def flat_map(fa: Kind1["Either", A],
+               f: Func1[A, Kind1["Either", B]]) -> Kind1["Either", B]:
     if fa.is_left():
       return cast(Left[L], fa)
     else:
-      return f(fa.value)
+      return f(cast(Right[A], fa).value)
 
   @staticmethod
   def pure(a: R) -> "Either[R, L]":
     return Right(a)
 
 
-class Either(SupportsKind2[URI, R, L], DeriveEq, MonadSyntax[URI, R]):
+class Either(SupportsKind2["Either", R, L], DeriveEq, MonadSyntax["Either", R]):
 
   @staticmethod
   def cond(test: bool, right: R, left: L) -> "Either[R, L]":
@@ -80,7 +79,7 @@ class Either(SupportsKind2[URI, R, L], DeriveEq, MonadSyntax[URI, R]):
     return self
 
   @property
-  def _monad_instance(self) -> Type[Monad[URI]]:
+  def _monad_instance(self) -> Type[Monad["Either"]]:
     return EitherInstance
 
 
