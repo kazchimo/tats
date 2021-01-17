@@ -6,7 +6,7 @@ from returns.primitives.hkt import SupportsKind2, Kind1
 
 from tats.Eq import DeriveEq
 from tats.Monad import Monad, MonadSyntax
-from tats.Op import Func1
+from tats.Op import Func1, Func1F
 from tats.data import Option
 
 L = TypeVar("L")
@@ -53,25 +53,23 @@ class Either(SupportsKind2["Either", R, L], DeriveEq, MonadSyntax["Either", R]):
     return self.fold(Right, Left)
 
   def foreach(self, f: Func1[R, A]) -> None:
-    self.fold(lambda x: x, lambda x: f(x))
+    self.fold(Func1F.id(), f)
 
   def get_or_else(self, _or: R) -> R:
-    get: Func1[R, R] = lambda x: x
-    return self.fold(lambda _: _or, get)
+    return self.fold(Func1F.const(_or), Func1F.id())
 
   def contains(self, e: R) -> bool:
-    eq: Func1[R, bool] = lambda x: x == e
-    return self.fold(lambda _: False, eq)
+    return self.fold(Func1F.false(), Func1F.eq(e))
 
   def forall(self, p: Func1[R, bool]) -> bool:
-    return self.fold(lambda _: True, p)
+    return self.fold(Func1F.true(), p)
 
   def exists(self, p: Func1[R, bool]) -> bool:
-    return self.fold(lambda _: False, p)
+    return self.fold(Func1F.false(), p)
 
   def to_option(self) -> "Option.Option[R]":
     from tats.data.Option import Nothing, Some
-    return self.fold(lambda _: Nothing(), Some)
+    return self.fold(Func1F.const(Nothing()), Some)
 
   @property
   def _self(self) -> "Either[R, L]":
