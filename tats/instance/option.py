@@ -28,7 +28,7 @@ class OptionInstance(Monad["Option"]):
 class Kind1OptionInstance(Generic[A], Kind1Semigroup["Option", A]):
 
   @staticmethod
-  def _cmb(tsemi: Semigroup[A], a: "Option[A]", b: "Option[A]"):
+  def _cmb(tsemi: Semigroup[A], a: "Option[A]", b: "Option[A]") -> "Option[A]":
     if a.non_empty() and b.non_empty():
       return Some(tsemi.combine(a.get, b.get))
     else:

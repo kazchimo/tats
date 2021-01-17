@@ -19,8 +19,7 @@ class Monad(Generic[F], FlatMap[F], Applicative[F]):
     return cls.flat_map(fa, lambda x: cls.pure(f(x)))
 
 
-class MonadSyntax(\
-  Generic[F, A], FlatMapSyntax[F, A], ApplicativeSyntax[F, A]):
+class MonadSyntax(Generic[F, A], FlatMapSyntax[F, A], ApplicativeSyntax[F, A]):
 
   @property
   @abstractmethod

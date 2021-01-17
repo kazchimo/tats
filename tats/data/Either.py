@@ -18,7 +18,7 @@ B = TypeVar("B")
 
 
 class Either(SupportsKind2["Either", R, L], DeriveEq, MonadSyntax["Either", R],
-             Kind1SemigroupSyntax["Either[R,L]", R]):
+             Kind1SemigroupSyntax["Either", R]):
 
   @staticmethod
   def cond(test: bool, right: R, left: L) -> "Either[R, L]":
