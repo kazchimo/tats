@@ -48,6 +48,9 @@ class Option(SupportsKind1[URI, A]):
   def get_or_else(self, default: A) -> A:
     return self.get if self.non_empty() else default
 
+  def fold(self, if_empty: B, f: UnOp[A, B]) -> B:
+    return f(self.get) if self.non_empty() else if_empty
+
 
 @dataclass(frozen=True)
 class Some(Option[A]):

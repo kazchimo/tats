@@ -28,6 +28,10 @@ class TestOption:
     assert Some(1).get_or_else(2) == 1
     assert Nothing().get_or_else(2) == 2
 
+  def test_fold(self):
+    assert Some(1).fold("a", str) == "1"
+    assert Nothing().fold("a", str) == "a"
+
   def test_eq(self):
     assert Some(1).eqv(Some(1))
     assert not Some(1).eqv(Some(2))
