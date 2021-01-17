@@ -45,6 +45,9 @@ class Option(SupportsKind1[URI, A]):
     else:
       raise ValueError("No elements inside Nothing")
 
+  def get_or_else(self, default: A) -> A:
+    return self.get if self.non_empty() else default
+
 
 @dataclass(frozen=True)
 class Some(Option[A]):

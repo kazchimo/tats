@@ -24,6 +24,10 @@ class TestOption:
     with raises(ValueError):
       Nothing().get
 
+  def test_get_or_else(self):
+    assert Some(1).get_or_else(2) == 1
+    assert Nothing().get_or_else(2) == 2
+
   def test_eq(self):
     assert Some(1).eqv(Some(1))
     assert not Some(1).eqv(Some(2))
