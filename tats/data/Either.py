@@ -1,14 +1,13 @@
-from __future__ import annotations
 from abc import abstractmethod
 from dataclasses import dataclass
-from typing import TypeVar, Literal, cast, Generic, Any, Type
+from typing import TypeVar, cast, Generic, Any, Type
 
 from returns.primitives.hkt import SupportsKind2, Kind1
 
-from tats.data import Option
 from tats.Eq import DeriveEq
 from tats.Monad import Monad, MonadSyntax
 from tats.Op import Func1
+from tats.data import Option
 
 L = TypeVar("L")
 R = TypeVar("R")
