@@ -1,11 +1,13 @@
-from typing import Literal, TypeVar, List, Type, Generic
+from collections import UserList
+from dataclasses import dataclass, InitVar
+from typing import TypeVar, List, Type, Tuple
 
 from returns.primitives.hkt import SupportsKind1, Kind1, dekind
 
-from tats.Monad import Monad
-from tats.Op import Func1
-from tats.Monad import MonadSyntax
 from tats.Eq import DeriveEq
+from tats.Monad import Monad
+from tats.Monad import MonadSyntax
+from tats.Op import Func1
 
 A = TypeVar("A")
 B = TypeVar("B")
@@ -23,7 +25,13 @@ class TListInstance(Monad["TList"]):
     return TList([a])
 
 
-class TList(SupportsKind1["TList", A], List[A], DeriveEq, MonadSyntax):
+@dataclass(frozen=True)
+class TList(UserList[A], SupportsKind1["TList", A], DeriveEq, MonadSyntax):
+  data: List[A]
+
+  @staticmethod
+  def var(*a: A) -> "TList[A]":
+    return TList(list(a))
 
   @property
   def _self(self) -> "TList[A]":
