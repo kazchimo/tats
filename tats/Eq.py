@@ -25,18 +25,23 @@ class Eq(Generic[T]):
     return Eq(lambda a, b: self.eqv(a, b) and other.eqv(a, b))
 
 
-class EqSyntax(Generic[T], ABC):
+class EqSyntax(Generic[T]):
 
   @property
   @abstractmethod
   def _eq_instance(self) -> Eq[T]:
     ...
 
+  @property
+  @abstractmethod
+  def _self(self) -> T:
+    ...
+
   def eqv(self, r: T) -> bool:
-    return self._eq_instance.eqv(self, r)
+    return self._eq_instance.eqv(self._self, r)
 
   def neqv(self, r: T) -> bool:
-    return self._eq_instance.neqv(self, r)
+    return self._eq_instance.neqv(self._self, r)
 
 
 class DeriveEq(EqSyntax[T], ABC):

@@ -45,6 +45,10 @@ class Either(SupportsKind2[URI, R, L], DeriveEq):
       if self.is_left() \
       else fr(cast(Right[R], self).value)
 
+  @property
+  def _self(self) -> "Either[R, L]":
+    return self
+
 
 @dataclass(frozen=True)
 class Left(Either[Any, L]):
