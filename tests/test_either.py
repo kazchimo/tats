@@ -1,10 +1,14 @@
 from pytest import raises
 
 from tats.data.Option import Some, Nothing
-from tats.data.Either import Left, Right
+from tats.data.Either import Left, Right, Either
 
 
 class TestEither:
+
+  def test_cond(self):
+    assert Either.cond(True, 1, 2) == Right(1)
+    assert Either.cond(False, 1, 2) == Left(2)
 
   def test_is_left(self):
     assert Left(1).is_left()

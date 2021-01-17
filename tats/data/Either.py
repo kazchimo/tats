@@ -34,6 +34,10 @@ class EitherInstance(Monad[URI], Generic[L]):
 
 class Either(SupportsKind2[URI, R, L], DeriveEq, MonadSyntax[URI, R]):
 
+  @staticmethod
+  def cond(test: bool, right: R, left: L) -> "Either[R, L]":
+    return Right(right) if test else Left(left)
+
   @abstractmethod
   def is_left(self) -> bool:
     ...
