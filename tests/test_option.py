@@ -14,6 +14,10 @@ class TestOption:
     assert Option.when(True, 1) == Some(1)
     assert Option.when(False, 1) == Nothing()
 
+  def test_unless(self):
+    assert Option.unless(True, 1) == Nothing()
+    assert Option.unless(False, 1) == Some(1)
+
   def test_is_empty(self):
     assert not Some("").is_empty()
     assert Nothing().is_empty()

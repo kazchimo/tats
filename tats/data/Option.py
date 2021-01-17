@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 from abc import abstractmethod
 from dataclasses import dataclass
 from typing import TypeVar, Literal, cast, Generic, Any, Type, Optional
@@ -54,6 +52,10 @@ class Option(SupportsKind1[URI, A], DeriveEq, MonadSyntax[URI, A]):
   @staticmethod
   def when(cond: bool, a: A) -> "Option[A]":
     return Some(a) if cond else Nothing()
+
+  @staticmethod
+  def unless(cond: bool, a: A) -> "Option[A]":
+    return Nothing() if cond else Some(a)
 
   @abstractmethod
   def is_empty(self) -> bool:
