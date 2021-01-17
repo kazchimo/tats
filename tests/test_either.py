@@ -31,6 +31,10 @@ class TestEither:
 
     Left(1).foreach(_raise)
 
+  def test_get_or_else(self):
+    assert Right(1).get_or_else(2) == 1
+    assert Left(1).get_or_else(2) == 2
+
   def test_syntax(self):
     assert Left(1).map(lambda l: l * 2) == Left(1)
     assert Right(1).map(lambda l: l * 2) == Right(2)
