@@ -51,6 +51,9 @@ class Option(SupportsKind1[URI, A]):
   def fold(self, if_empty: B, f: UnOp[A, B]) -> B:
     return f(self.get) if self.non_empty() else if_empty
 
+  def filter(self, p: UnOp[A, bool]) -> "Option[A]":
+    return self if self.is_empty() or p(self.get) else Nothing()
+
 
 @dataclass(frozen=True)
 class Some(Option[A]):

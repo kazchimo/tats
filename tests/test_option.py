@@ -32,6 +32,11 @@ class TestOption:
     assert Some(1).fold("a", str) == "1"
     assert Nothing().fold("a", str) == "a"
 
+  def test_filter(self):
+    assert Some(1).filter(lambda x: x == 1) == Some(1)
+    assert Some(1).filter(lambda x: x == 2) == Nothing()
+    assert Nothing().filter(lambda x: x == 2) == Nothing()
+
   def test_eq(self):
     assert Some(1).eqv(Some(1))
     assert not Some(1).eqv(Some(2))
