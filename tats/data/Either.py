@@ -1,12 +1,12 @@
 from abc import abstractmethod
 from dataclasses import dataclass
-from typing import TypeVar, NoReturn, Literal, cast, Generic, Any
+from typing import TypeVar, Literal, cast, Generic, Any
 
 from returns.primitives.hkt import SupportsKind2, Kind1
 
+from tats.Eq import derive_eq
+from tats.Monad import Monad, monad_syntax
 from tats.Op import UnOp
-
-from tats.Monad import Monad
 
 L = TypeVar("L")
 R = TypeVar("R")
@@ -30,6 +30,8 @@ class EitherInstance(Monad[URI], Generic[L]):
     return Right(a)
 
 
+@derive_eq
+@monad_syntax(EitherInstance)
 class Either(SupportsKind2[URI, R, L]):
 
   @abstractmethod
