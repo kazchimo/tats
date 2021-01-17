@@ -170,7 +170,7 @@ class TestOption:
     assert Nothing().flat_map(lambda x: Some(x * 2)) == Nothing()
     assert Nothing().flat_map(lambda x: Nothing()) == Nothing()
 
-    assert Some(1).combine(IntSemigroup, Some(1)) == Some(2)
-    assert Nothing().combine(IntSemigroup, Some(1)) == Nothing()
-    assert Some(1).combine(IntSemigroup, Nothing()) == Nothing()
-    assert Nothing().combine(IntSemigroup, Nothing()) == Nothing()
+    assert Some(1).combine(IntSemigroup(), Some(1)) == Some(2)
+    assert Nothing().combine(IntSemigroup(), Some(1)) == Nothing()
+    assert Some(1).combine(IntSemigroup(), Nothing()) == Nothing()
+    assert Nothing().combine(IntSemigroup(), Nothing()) == Nothing()

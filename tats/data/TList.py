@@ -1,12 +1,13 @@
 from collections import UserList
-from dataclasses import dataclass, InitVar
-from typing import TypeVar, List, Type, Tuple
+from dataclasses import dataclass
+from typing import TypeVar, List, Type, Generic
 
 from returns.primitives.hkt import SupportsKind1, Kind1, dekind
 
 from tats.Eq import DeriveEq
 from tats.Monad import Monad
 from tats.Monad import MonadSyntax
+from tats.Semigroup import Semigroup, SemigroupSyntax
 from .Function import Func1
 
 A = TypeVar("A")
@@ -26,7 +27,8 @@ class TListInstance(Monad["TList"]):
 
 
 @dataclass(frozen=True)
-class TList(UserList[A], SupportsKind1["TList", A], DeriveEq, MonadSyntax):
+class TList(UserList[A], SupportsKind1["TList", A], DeriveEq, MonadSyntax,
+            SemigroupSyntax["TList[A]"]):
   data: List[A]
 
   @staticmethod
@@ -40,3 +42,14 @@ class TList(UserList[A], SupportsKind1["TList", A], DeriveEq, MonadSyntax):
   @property
   def _monad_instance(self) -> Type[Monad["TList"]]:
     return TListInstance
+
+  @property
+  def _semigroup_instance(self) -> Semigroup["TList[A]"]:
+    return TListInstance1()
+
+
+class TListInstance1(Generic[A], Semigroup[TList[A]]):
+
+  @staticmethod
+  def _cmb(a: "TList[A]", b: "TList[A]") -> "TList[A]":
+    return a + b

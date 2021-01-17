@@ -1,19 +1,20 @@
 from abc import abstractmethod
-from dataclasses import dataclass
 from typing import TypeVar, Generic
 
 from returns.primitives.hkt import Kind1
 
 from .SelfIs import SelfIs
-from .data.Function import EndoBiOp
 
 T = TypeVar("T")
 S = TypeVar("S", bound=Kind1)
 
 
-@dataclass(frozen=True)
 class Semigroup(Generic[T]):
-  _cmb: EndoBiOp[T]
+
+  @staticmethod
+  @abstractmethod
+  def _cmb(a: T, b: T) -> T:
+    ...
 
   def combine(self, a: T, b: T) -> T:
     return self._cmb(a, b)

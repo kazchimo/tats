@@ -90,7 +90,7 @@ class TestEither:
     assert Right(1).neqv(Left(1))
     assert Left(1).eqv(Left(1))
 
-    assert Right(1).combine(IntSemigroup, Right(2)) == Right(3)
-    assert Left(1).combine(IntSemigroup, Right(2)) == Left(1)
-    assert Right(1).combine(IntSemigroup, Left(2)) == Left(2)
-    assert Left(1).combine(IntSemigroup, Left(2)) == Left(1)
+    assert Right(1).combine(IntSemigroup(), Right(2)) == Right(3)
+    assert Left(1).combine(IntSemigroup(), Right(2)) == Left(1)
+    assert Right(1).combine(IntSemigroup(), Left(2)) == Left(2)
+    assert Left(1).combine(IntSemigroup(), Left(2)) == Left(1)
