@@ -1,50 +1,20 @@
 from abc import abstractmethod
 from dataclasses import dataclass
-from typing import TypeVar, cast, Generic, Any, Type
+from typing import TypeVar, cast, Any, Type
 
-from returns.primitives.hkt import SupportsKind2, Kind1
+from returns.primitives.hkt import SupportsKind2
 
-from tats.Semigroup import Semigroup, Kind1SemigroupSyntax
-from tats.Semigroup import Kind1Semigroup
 from tats.Eq import DeriveEq
 from tats.Monad import Monad, MonadSyntax
-from tats.data.Function import Func1, Func1F
+from tats.Semigroup import Kind1Semigroup
+from tats.Semigroup import Kind1SemigroupSyntax
 from tats.data import Option
+from tats.data.Function import Func1, Func1F
 
 L = TypeVar("L")
 R = TypeVar("R")
 A = TypeVar("A")
 B = TypeVar("B")
-
-
-class EitherInstance(Monad["Either"], Generic[L]):
-
-  @staticmethod
-  def flat_map(fa: Kind1["Either", A],
-               f: Func1[A, Kind1["Either", B]]) -> Kind1["Either", B]:
-    if fa.is_left():
-      return cast(Left[L], fa)
-    else:
-      return f(cast(Right[A], fa).value)
-
-  @staticmethod
-  def pure(a: R) -> "Either[R, L]":
-    return Right(a)
-
-
-class Kind1EitherInstance(Generic[R], Kind1Semigroup["Either", R]):
-
-  @staticmethod
-  def _cmb(
-      tsemi: Semigroup[R], a: "Either[R, L]",
-      b: "Either[R, L]") -> "Either[R, L]":
-    if a.is_left():
-      return a
-    else:
-      if b.is_left():
-        return b
-      else:
-        return Right(tsemi.combine(a.get, b.get))
 
 
 class Either(SupportsKind2["Either", R, L], DeriveEq, MonadSyntax["Either", R],
@@ -102,9 +72,11 @@ class Either(SupportsKind2["Either", R, L], DeriveEq, MonadSyntax["Either", R],
 
   @property
   def _monad_instance(self) -> Type[Monad["Either"]]:
+    from tats.instance.either import EitherInstance
     return EitherInstance
 
   def _semigroup_instance(self) -> Kind1Semigroup["Either", R]:
+    from tats.instance.either import Kind1EitherInstance
     return Kind1EitherInstance()
 
 
