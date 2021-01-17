@@ -1,5 +1,4 @@
-from abc import abstractmethod
-from typing import Generic, TypeVar
+from typing import Generic, TypeVar, cast
 
 T = TypeVar("T")
 
@@ -7,6 +6,5 @@ T = TypeVar("T")
 class SelfIs(Generic[T]):
 
   @property
-  @abstractmethod
   def _self(self) -> T:
-    ...
+    return cast(T, self)

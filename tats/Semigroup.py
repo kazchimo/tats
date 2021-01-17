@@ -1,21 +1,43 @@
-from abc import abstractmethod, ABC
-from types import new_class
-from typing import TypeVar, Generic, Any, Dict, Type
+from abc import abstractmethod
+from dataclasses import dataclass
+from typing import TypeVar, Generic
 
-from tats.Op import EndoBiOp
+from returns.primitives.hkt import Kind1
 
-_T = TypeVar("_T")
+from .Op import EndoBiOp
+from .SelfIs import SelfIs
 
-class Semigroup(Generic[_T], ABC):
-  @staticmethod
+T = TypeVar("T")
+S = TypeVar("S", bound=Kind1)
+
+
+@dataclass(frozen=True)
+class Semigroup(Generic[T]):
+  _cmb: EndoBiOp[T]
+
+  def combine(self, a: T, b: T) -> T:
+    return self._cmb(a, b)
+
+
+class SemigroupSyntax(Generic[T], SelfIs[T]):
+
+  def __add__(self, other: T):
+    return self.combine(other)
+
+  def combine(self, other: T) -> T:
+    return self._semigroup_instance.combine(self._self, other)
+
+  @property
   @abstractmethod
-  def combine(l: _T, r: _T) -> _T:
+  def _semigroup_instance(self) -> Semigroup[T]:
     ...
 
-  @staticmethod
-  def instance(name: str, combine: EndoBiOp[_T]) -> "Type[Semigroup[_T]]":
-    def upd(d: Dict[str, Any]):
-      d.update({"combine": combine})
-    return new_class(name, (Semigroup[_T], ), exec_body=upd)
 
+class Kind1SemigroupSyntax(Generic[S, T], SelfIs[S]):
 
+  def combine(self, tsemi: Semigroup[T], other: S) -> S:
+    return self._semigroup_instance(tsemi).combine(self._self, other)
+
+  @abstractmethod
+  def _semigroup_instance(self, tsemi: Semigroup[T]) -> Semigroup[S]:
+    ...

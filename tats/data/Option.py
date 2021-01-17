@@ -4,6 +4,7 @@ from typing import TypeVar, Literal, cast, Generic, Any, Type, Optional
 
 from returns.primitives.hkt import SupportsKind1, Kind1
 
+from tats.Semigroup import Semigroup, Kind1SemigroupSyntax
 from tats.data import Either
 from tats.Eq import DeriveEq
 from tats.Monad import Monad, MonadSyntax
@@ -26,6 +27,11 @@ class OptionInstance(Monad[URI]):
 
 
 @dataclass(frozen=True)
+class Kind1OptionInstance(Generic[A], Semigroup["Option[A]"]):
+  ...
+
+
+@dataclass(frozen=True)
 class WithFilter(Generic[A]):
   o: "Option[A]"
   p: Func1[A, bool]
@@ -43,7 +49,8 @@ class WithFilter(Generic[A]):
     return WithFilter(self.o, lambda a: self.p(a) and p(a))
 
 
-class Option(SupportsKind1[URI, A], DeriveEq, MonadSyntax[URI, A]):
+class Option(SupportsKind1[URI, A], DeriveEq, MonadSyntax[URI, A],
+             Kind1SemigroupSyntax["Option[A]", A]):
 
   @staticmethod
   def from_nullable(a: Optional[A]) -> "Option[A]":
@@ -117,6 +124,16 @@ class Option(SupportsKind1[URI, A], DeriveEq, MonadSyntax[URI, A]):
   @property
   def _monad_instance(self) -> Type[Monad[URI]]:
     return OptionInstance
+
+  def _semigroup_instance(self, tsemi: Semigroup[A]) -> Kind1OptionInstance:
+
+    def combine(a: "Option[A]", b: "Option[A]") -> "Option[A]":
+      if a.non_empty() and b.non_empty():
+        return Some(tsemi.combine(a.get, b.get))
+      else:
+        return Nothing()
+
+    return Kind1OptionInstance(combine)
 
 
 @dataclass(frozen=True)
