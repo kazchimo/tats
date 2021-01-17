@@ -1,11 +1,10 @@
-from abc import abstractmethod, ABC
-from typing import Generic, TypeVar, Type
+from abc import abstractmethod
+from typing import Generic, TypeVar
 
 from returns.primitives.hkt import Kind1
 
-from tats.syntax.apply import ApplySyntax
-from .data.Function import Func1
 from .Apply import Apply
+from .data.Function import Func1
 
 F = TypeVar("F", bound=Kind1)
 A = TypeVar("A")
