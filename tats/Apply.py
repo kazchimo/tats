@@ -3,7 +3,8 @@ from typing import Generic, TypeVar, Type
 
 from returns.primitives.hkt import Kind1
 
-from .Functor import Functor, FunctorSyntax
+from tats.syntax.functor import FunctorSyntax
+from .Functor import Functor
 from .data.Function import Func1
 
 F = TypeVar("F", bound=Kind1)
