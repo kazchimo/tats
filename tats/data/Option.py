@@ -1,6 +1,6 @@
 from abc import abstractmethod
 from dataclasses import dataclass
-from typing import TypeVar, Literal, NoReturn, cast, Generic
+from typing import TypeVar, Literal, NoReturn, cast, Generic, Any
 
 from returns.primitives.hkt import SupportsKind1, Kind1
 
@@ -92,7 +92,7 @@ class Some(Option[A]):
 
 
 @dataclass()
-class Nothing(Option[NoReturn]):
+class Nothing(Option[Any]):
 
   def is_empty(self) -> bool:
     return True
