@@ -1,9 +1,8 @@
 from abc import abstractmethod
-from typing import Generic, TypeVar, Type
+from typing import Generic, TypeVar
 
 from returns.primitives.hkt import Kind1
 
-from tats.syntax.apply import ApplySyntax
 from .Apply import Apply
 from .data.Function import Func1
 
@@ -22,15 +21,3 @@ class Applicative(Generic[F], Apply[F]):
   @abstractmethod
   def pure(a: A) -> Kind1[F, A]:
     ...
-
-
-class ApplicativeSyntax(Generic[F, A], ApplySyntax[F, A]):
-
-  @property
-  @abstractmethod
-  def _applicative_syntax(self) -> Type[Applicative[F]]:
-    ...
-
-  @property
-  def _apply_instance(self) -> Type[Apply[F]]:
-    return self._applicative_syntax
