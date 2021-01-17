@@ -4,11 +4,11 @@ from typing import Generic, TypeVar, Type
 from returns.primitives.hkt import Kind1
 
 from .Apply import Apply, apply_syntax
-from .Functor import B, functor_syntax
 from .Op import Func1
 
 URI = TypeVar("URI", bound=str)
 A = TypeVar("A")
+B = TypeVar("B")
 
 
 class Applicative(Generic[URI], Apply[URI]):

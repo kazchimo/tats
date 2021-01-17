@@ -1,9 +1,10 @@
 from abc import abstractmethod
 from dataclasses import dataclass
-from typing import TypeVar, Literal, cast, Generic, Any
+from typing import TypeVar, Literal, cast, Generic, Any, Type
 
 from returns.primitives.hkt import SupportsKind1, Kind1
 
+from tats.Functor import FunctorSyntax, Functor
 from tats.Eq import DeriveEq
 from tats.Monad import monad_syntax, Monad
 from tats.Op import Func1
@@ -21,7 +22,7 @@ class OptionInstance(Monad[URI]):
     return Nothing() if fa.is_empty() else f(fa.a)
 
   @staticmethod
-  def pure(a: A) -> Kind1[URI, A]:
+  def pure(a: A) -> "Option[A]":
     return Some(a)
 
 
@@ -30,7 +31,7 @@ class WithFilter(Generic[A]):
   o: "Option[A]"
   p: Func1[A, bool]
 
-  def map(self, f: Func1[A, B]) -> "Option[B]":
+  def map(self, f: Func1[A, B]) -> Kind1[URI, B]:
     return self.o.filter(self.p).map(f)
 
   def flat_map(self, f: Func1[A, "Option[B]"]) -> "Option[B]":
@@ -44,7 +45,7 @@ class WithFilter(Generic[A]):
 
 
 @monad_syntax(OptionInstance)
-class Option(SupportsKind1[URI, A], DeriveEq):
+class Option(SupportsKind1[URI, A], DeriveEq, FunctorSyntax[URI, A]):
 
   @abstractmethod
   def is_empty(self) -> bool:
@@ -100,6 +101,10 @@ class Option(SupportsKind1[URI, A], DeriveEq):
   @property
   def _self(self) -> "Option[A]":
     return self
+
+  @property
+  def _functor_instance(self) -> Type[Functor[URI]]:
+    return OptionInstance
 
 
 @dataclass(frozen=True)

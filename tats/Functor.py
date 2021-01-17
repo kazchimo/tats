@@ -1,4 +1,4 @@
-from abc import abstractmethod
+from abc import abstractmethod, ABC
 from typing import TypeVar, Generic, Type
 
 from returns.primitives.hkt import Kind1
@@ -19,14 +19,17 @@ class Functor(Generic[URI]):
     ...
 
 
-def functor_syntax(instance: Type[Functor[URI]]):
+class FunctorSyntax(Generic[URI, A], ABC):
 
-  def _add_syntax(c: C):
+  @property
+  @abstractmethod
+  def _functor_instance(self) -> Type[Functor[URI]]:
+    ...
 
-    def _map(self, f: Func1[A, B]):
-      return instance.map(self, f)
+  @property
+  @abstractmethod
+  def _self(self) -> Kind1[URI, A]:
+    ...
 
-    setattr(c, "map", _map)
-    return c
-
-  return _add_syntax
+  def map(self, f: Func1[A, B]) -> Kind1[URI, B]:
+    return self._functor_instance.map(self._self, f)

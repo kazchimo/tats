@@ -3,7 +3,7 @@ from typing import Generic, TypeVar, Type
 
 from returns.primitives.hkt import Kind1
 
-from .Functor import Functor, functor_syntax
+from .Functor import Functor
 from .Op import Func1
 
 URI = TypeVar("URI", bound=str)
@@ -39,7 +39,6 @@ def apply_syntax(instance: Type[Apply[URI]]):
 
     setattr(c, "product_r", _product_r)
     setattr(c, "product_l", _product_l)
-    functor_syntax(instance)(c)
     return c
 
   return _add_syntax

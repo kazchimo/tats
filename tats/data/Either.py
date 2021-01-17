@@ -1,9 +1,10 @@
 from abc import abstractmethod
 from dataclasses import dataclass
-from typing import TypeVar, Literal, cast, Generic, Any
+from typing import TypeVar, Literal, cast, Generic, Any, Type
 
 from returns.primitives.hkt import SupportsKind2, Kind1
 
+from tats.Functor import FunctorSyntax, Functor
 from tats.Eq import DeriveEq
 from tats.Monad import Monad, monad_syntax
 from tats.Op import Func1
@@ -31,7 +32,7 @@ class EitherInstance(Monad[URI], Generic[L]):
 
 
 @monad_syntax(EitherInstance)
-class Either(SupportsKind2[URI, R, L], DeriveEq):
+class Either(SupportsKind2[URI, R, L], DeriveEq, FunctorSyntax[URI, R]):
 
   @abstractmethod
   def is_left(self) -> bool:
@@ -48,6 +49,10 @@ class Either(SupportsKind2[URI, R, L], DeriveEq):
   @property
   def _self(self) -> "Either[R, L]":
     return self
+
+  @property
+  def _functor_instance(self) -> Type[Functor[URI]]:
+    return EitherInstance
 
 
 @dataclass(frozen=True)
