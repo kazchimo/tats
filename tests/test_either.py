@@ -45,6 +45,11 @@ class TestEither:
     assert not Right(1).forall(lambda x: x == 2)
     assert Left(1).forall(lambda x: x == 1)
 
+  def test_exists(self):
+    assert Right(1).exists(lambda x: x == 1)
+    assert not Right(1).exists(lambda x: x == 2)
+    assert not Left(1).exists(lambda x: x == 1)
+
   def test_syntax(self):
     assert Left(1).map(lambda l: l * 2) == Left(1)
     assert Right(1).map(lambda l: l * 2) == Right(2)

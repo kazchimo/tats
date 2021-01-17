@@ -60,7 +60,10 @@ class Either(SupportsKind2[URI, R, L], DeriveEq, MonadSyntax[URI, R]):
     return self.fold(lambda _: False, eq)
 
   def forall(self, p: Func1[R, bool]) -> bool:
-    return self.fold(lambda _: True, lambda x: p(x))
+    return self.fold(lambda _: True, p)
+
+  def exists(self, p: Func1[R, bool]) -> bool:
+    return self.fold(lambda _: False, p)
 
   @property
   def _self(self) -> "Either[R, L]":
