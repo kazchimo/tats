@@ -3,8 +3,9 @@ from typing import Generic, TypeVar, Type
 
 from returns.primitives.hkt import Kind1
 
+from tats.syntax.apply import ApplySyntax
 from .data.Function import Func1
-from .Apply import Apply, ApplySyntax
+from .Apply import Apply
 
 F = TypeVar("F", bound=Kind1)
 A = TypeVar("A")
