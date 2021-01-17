@@ -82,6 +82,9 @@ class Option(SupportsKind1[URI, A]):
     if self.non_empty():
       f(self.get)
 
+  def contains(self, e: A) -> bool:
+    return self.non_empty() and self.get == e
+
 
 @dataclass(frozen=True)
 class Some(Option[A]):

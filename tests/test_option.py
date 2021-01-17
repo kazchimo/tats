@@ -98,6 +98,10 @@ class TestOption:
              .with_filter(lambda x: x % 2 == 1) \
              .map(lambda x: x * 2) == Nothing()
 
+  def test_contains(self):
+    assert Some(1).contains(1)
+    assert not Nothing().contains(1)
+
   def test_eq(self):
     assert Some(1).eqv(Some(1))
     assert not Some(1).eqv(Some(2))
