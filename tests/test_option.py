@@ -1,8 +1,9 @@
 from pytest import raises
 
+from tats.instance.option import OptionInstance
 from tats.instance.int_instances import IntSemigroup
 from tats.data.Either import Right, Left
-from tats.data.Option import Some, Nothing, OptionInstance, Option
+from tats.data.Option import Some, Nothing, Option
 
 
 class TestOption:

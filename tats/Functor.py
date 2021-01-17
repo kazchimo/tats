@@ -8,7 +8,6 @@ from .data.Function import Func1
 F = TypeVar("F", bound=Kind1)
 A = TypeVar("A")
 B = TypeVar("B")
-C = TypeVar("C")
 
 
 class Functor(Generic[F]):

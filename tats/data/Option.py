@@ -6,35 +6,12 @@ from returns.primitives.hkt import SupportsKind1, Kind1
 
 from tats.Eq import DeriveEq
 from tats.Monad import Monad, MonadSyntax
-from tats.Semigroup import Semigroup, Kind1SemigroupSyntax, Kind1Semigroup
+from tats.Semigroup import Kind1SemigroupSyntax, Kind1Semigroup
 from tats.data import Either
 from tats.data.Function import Func1
 
 A = TypeVar("A")
 B = TypeVar("B")
-
-
-class OptionInstance(Monad["Option"]):
-
-  @staticmethod
-  def flat_map(fa: Kind1["Option", A],
-               f: Func1[A, Kind1["Option", B]]) -> Kind1["Option", B]:
-    return Nothing() if fa.is_empty() else f(cast(Some[A], fa).a)
-
-  @staticmethod
-  def pure(a: A) -> "Option[A]":
-    return Some(a)
-
-
-@dataclass(frozen=True)
-class Kind1OptionInstance(Generic[A], Kind1Semigroup["Option", A]):
-
-  @staticmethod
-  def _cmb(tsemi: Semigroup[A], a: "Option[A]", b: "Option[A]"):
-    if a.non_empty() and b.non_empty():
-      return Some(tsemi.combine(a.get, b.get))
-    else:
-      return Nothing()
 
 
 @dataclass(frozen=True)
@@ -56,7 +33,7 @@ class WithFilter(Generic[A]):
 
 
 class Option(SupportsKind1["Option", A], DeriveEq, MonadSyntax["Option", A],
-             Kind1SemigroupSyntax["Option[A]", A]):
+             Kind1SemigroupSyntax["Option", A]):
 
   @staticmethod
   def from_nullable(a: Optional[A]) -> "Option[A]":
@@ -129,9 +106,11 @@ class Option(SupportsKind1["Option", A], DeriveEq, MonadSyntax["Option", A],
 
   @property
   def _monad_instance(self) -> Type[Monad["Option"]]:
+    from tats.instance.option import OptionInstance
     return OptionInstance
 
-  def _semigroup_instance(self) -> Kind1OptionInstance:
+  def _semigroup_instance(self) -> Kind1Semigroup["Option", A]:
+    from tats.instance.option import Kind1OptionInstance
     return Kind1OptionInstance()
 
 
