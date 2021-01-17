@@ -8,7 +8,7 @@ from tats.Semigroup import Semigroup, Kind1SemigroupSyntax
 from tats.data import Either
 from tats.Eq import DeriveEq
 from tats.Monad import Monad, MonadSyntax
-from tats.Op import Func1
+from tats.data.Function import Func1
 
 A = TypeVar("A")
 B = TypeVar("B")

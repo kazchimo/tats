@@ -3,7 +3,7 @@ from typing import Generic, TypeVar, Type
 
 from returns.primitives.hkt import Kind1
 
-from .Op import Func1
+from .data.Function import Func1
 from .Apply import Apply, ApplySyntax
 
 F = TypeVar("F", bound=Kind1)

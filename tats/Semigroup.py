@@ -4,7 +4,7 @@ from typing import TypeVar, Generic
 
 from returns.primitives.hkt import Kind1
 
-from .Op import EndoBiOp
+from .data.Function import EndoBiOp
 from .SelfIs import SelfIs
 
 T = TypeVar("T")

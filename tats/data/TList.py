@@ -7,7 +7,7 @@ from returns.primitives.hkt import SupportsKind1, Kind1, dekind
 from tats.Eq import DeriveEq
 from tats.Monad import Monad
 from tats.Monad import MonadSyntax
-from tats.Op import Func1
+from .Function import Func1
 
 A = TypeVar("A")
 B = TypeVar("B")

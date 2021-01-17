@@ -6,7 +6,7 @@ from returns.primitives.hkt import SupportsKind2, Kind1
 
 from tats.Eq import DeriveEq
 from tats.Monad import Monad, MonadSyntax
-from tats.Op import Func1, Func1F
+from tats.data.Function import Func1, Func1F
 from tats.data import Option
 
 L = TypeVar("L")

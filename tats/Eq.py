@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from typing import Generic, TypeVar
 
-from .Op import BiOp, Func1
+from .data.Function import BiOp, Func1
 
 T = TypeVar("T")
 S = TypeVar("S")
