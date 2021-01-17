@@ -1,4 +1,4 @@
-from typing import TypeVar, Protocol, Callable
+from typing import TypeVar, Protocol
 
 Arg = TypeVar("Arg", contravariant=True)
 Res = TypeVar("Res", covariant=True)

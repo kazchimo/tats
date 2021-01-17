@@ -1,12 +1,13 @@
 from abc import abstractmethod
 from dataclasses import dataclass
-from typing import TypeVar, Literal, NoReturn, cast, Generic, Any
+from typing import TypeVar, Literal, cast, Generic, Any
 
 from returns.primitives.hkt import SupportsKind1, Kind1
 
 from tats.Eq import derive_eq
 from tats.Monad import monad_syntax, Monad
 from tats.Op import Func1
+from .Either import Either, Left, Right
 
 A = TypeVar("A")
 B = TypeVar("B")
@@ -90,6 +91,9 @@ class Option(SupportsKind1[URI, A]):
 
   def forall(self, p: Func1[A, bool]) -> bool:
     return self.is_empty() or p(self.get)
+
+  def to_right(self, left: B) -> Either[A, B]:
+    return Left(left) if self.is_empty() else Right(self.get)
 
 
 @dataclass(frozen=True)

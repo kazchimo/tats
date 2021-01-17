@@ -1,5 +1,6 @@
 from pytest import raises
 
+from tats.data.Either import Right, Left
 from tats.data.Option import Some, Nothing, OptionInstance
 
 
@@ -111,6 +112,10 @@ class TestOption:
     assert Some(1).forall(lambda x: x == 1)
     assert not Some(1).forall(lambda x: x == 2)
     assert Nothing().forall(lambda x: x == 1)
+
+  def test_to_right(self):
+    assert Some(1).to_right("a") == Right(1)
+    assert Nothing().to_right("a") == Left("a")
 
   def test_eq(self):
     assert Some(1).eqv(Some(1))
