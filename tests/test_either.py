@@ -36,6 +36,12 @@ class TestEither:
 
     Left(1).foreach(_raise)
 
+  def test_get(self):
+    with raises(Exception):
+      Left(1).get
+
+    assert Right(1).get == 1
+
   def test_get_or_else(self):
     assert Right(1).get_or_else(2) == 1
     assert Left(1).get_or_else(2) == 2

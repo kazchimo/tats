@@ -55,6 +55,13 @@ class Either(SupportsKind2["Either", R, L], DeriveEq, MonadSyntax["Either", R]):
   def foreach(self, f: Func1[R, A]) -> None:
     self.fold(Func1F.id(), f)
 
+  @property
+  def get(self) -> R:
+    if self.is_left():
+      raise ValueError("cannot get from Left")
+    else:
+      return cast(Right[R], self).value
+
   def get_or_else(self, _or: R) -> R:
     return self.fold(Func1F.const(_or), Func1F.id())
 
