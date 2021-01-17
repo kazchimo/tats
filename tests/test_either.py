@@ -1,3 +1,5 @@
+from pytest import raises
+
 from tats.data.Either import Left, Right
 
 
@@ -18,6 +20,16 @@ class TestEither:
   def test_swap(self):
     assert Right(1).swap == Left(1)
     assert Left(1).swap == Right(1)
+
+  def test_foreach(self):
+
+    def _raise():
+      raise Exception
+
+    with raises(Exception):
+      Right(1).foreach(_raise)
+
+    Left(1).foreach(_raise)
 
   def test_syntax(self):
     assert Left(1).map(lambda l: l * 2) == Left(1)

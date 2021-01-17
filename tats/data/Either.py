@@ -50,6 +50,9 @@ class Either(SupportsKind2[URI, R, L], DeriveEq, MonadSyntax[URI, R]):
       if self.is_left() \
       else Left(cast(Right[R], self).value)
 
+  def foreach(self, f: Func1[R, A]) -> None:
+    self.fold(lambda x: x, lambda x: f(x))
+
   @property
   def _self(self) -> "Either[R, L]":
     return self
