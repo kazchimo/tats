@@ -1,7 +1,6 @@
 from tats.Eq import Eq
 
 
-
 class TestEq:
 
   def test_init(self):
@@ -11,7 +10,7 @@ class TestEq:
 
   def test_contramap(self):
     IntEq: Eq[int] = Eq(lambda a, b: a == b)
-    StrEq = IntEq.contramap(len)
+    StrEq: Eq[str] = IntEq.contramap(lambda x: len(x))
     assert StrEq.eqv("ab", "ab")
     assert StrEq.neqv("ab", "a")
 
@@ -21,4 +20,3 @@ class TestEq:
     HeadTailEq = HeadEq.and_(TailEq)
     assert HeadTailEq.eqv("abc", "aac")
     assert HeadTailEq.neqv("abc", "abb")
-

@@ -58,7 +58,7 @@ class TestOption:
 
   def test_foreach(self):
 
-    def _raise():
+    def _raise(_):
       raise Exception
 
     with raises(Exception):
@@ -85,11 +85,11 @@ class TestOption:
              .with_filter(lambda x: x == 2) \
              .flat_map(lambda x: Some(x * 2)) == Nothing()
 
-    def _raise():
+    def _raise(_):
       raise Exception
 
     with raises(Exception):
-      assert Some(1) \
+      Some(1) \
                .with_filter(lambda x: x == 1) \
                .foreach(_raise)
     Nothing() \

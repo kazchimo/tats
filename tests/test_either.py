@@ -29,7 +29,7 @@ class TestEither:
 
   def test_foreach(self):
 
-    def _raise():
+    def _raise(_):
       raise Exception
 
     with raises(Exception):
