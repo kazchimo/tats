@@ -1,4 +1,4 @@
-from typing import TypeVar, Protocol, Type
+from typing import TypeVar, Protocol, Callable
 
 Arg = TypeVar("Arg", contravariant=True)
 Res = TypeVar("Res", covariant=True)
@@ -8,14 +8,10 @@ A = TypeVar("A")
 B = TypeVar("B")
 
 
-class UnOp(Protocol[Arg, Res]):
+class Func1(Protocol[Arg, Res]):
 
   def __call__(self, a: Arg) -> Res:
     ...
-
-
-def unop_typed(f: "UnOp[A, B]", a: Type[A], r: Type[B]) -> "UnOp[A, B]":
-  return f
 
 
 class BiOp(Protocol[Arg, Res]):

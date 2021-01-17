@@ -6,7 +6,7 @@ from returns.primitives.hkt import SupportsKind1, Kind1
 
 from tats.Eq import derive_eq
 from tats.Monad import monad_syntax, Monad
-from tats.Op import UnOp
+from tats.Op import Func1
 
 A = TypeVar("A")
 B = TypeVar("B")
@@ -16,7 +16,7 @@ URI = Literal["Option"]
 class OptionInstance(Monad[URI]):
 
   @staticmethod
-  def flat_map(fa: Kind1[URI, A], f: UnOp[A, Kind1[URI, B]]) -> Kind1[URI, B]:
+  def flat_map(fa: Kind1[URI, A], f: Func1[A, Kind1[URI, B]]) -> Kind1[URI, B]:
     return Nothing() if fa.is_empty() else f(fa.a)
 
   @staticmethod
@@ -27,18 +27,18 @@ class OptionInstance(Monad[URI]):
 @dataclass(frozen=True)
 class WithFilter(Generic[A]):
   o: "Option[A]"
-  p: UnOp[A, bool]
+  p: Func1[A, bool]
 
-  def map(self, f: UnOp[A, B]) -> "Option[B]":
+  def map(self, f: Func1[A, B]) -> "Option[B]":
     return self.o.filter(self.p).map(f)
 
-  def flat_map(self, f: UnOp[A, "Option[B]"]) -> "Option[B]":
+  def flat_map(self, f: Func1[A, "Option[B]"]) -> "Option[B]":
     return self.o.filter(self.p).flat_map(f)
 
-  def foreach(self, f: UnOp[A, B]) -> None:
+  def foreach(self, f: Func1[A, B]) -> None:
     self.o.filter(self.p).foreach(f)
 
-  def with_filter(self, p: UnOp[A, bool]) -> "WithFilter[A]":
+  def with_filter(self, p: Func1[A, bool]) -> "WithFilter[A]":
     return WithFilter(self.o, lambda a: self.p(a) and p(a))
 
 
@@ -66,29 +66,29 @@ class Option(SupportsKind1[URI, A]):
   def get_or_else(self, default: A) -> A:
     return self.get if self.non_empty() else default
 
-  def fold(self, if_empty: B, f: UnOp[A, B]) -> B:
+  def fold(self, if_empty: B, f: Func1[A, B]) -> B:
     return f(self.get) if self.non_empty() else if_empty
 
-  def filter(self, p: UnOp[A, bool]) -> "Option[A]":
+  def filter(self, p: Func1[A, bool]) -> "Option[A]":
     return self if (self.is_empty() or p(self.get)) else Nothing()
 
-  def filter_not(self, p: UnOp[A, bool]) -> "Option[A]":
+  def filter_not(self, p: Func1[A, bool]) -> "Option[A]":
     return self if self.is_empty() or not p(self.get) else Nothing()
 
-  def with_filter(self, p: UnOp[A, bool]) -> "WithFilter":
+  def with_filter(self, p: Func1[A, bool]) -> "WithFilter":
     return WithFilter(self, p)
 
-  def foreach(self, f: UnOp[A, B]) -> None:
+  def foreach(self, f: Func1[A, B]) -> None:
     if self.non_empty():
       f(self.get)
 
   def contains(self, e: A) -> bool:
     return self.non_empty() and self.get == e
 
-  def exists(self, p: UnOp[A, bool]) -> bool:
+  def exists(self, p: Func1[A, bool]) -> bool:
     return self.non_empty() and p(self.get)
 
-  def forall(self, p: UnOp[A, bool]) -> bool:
+  def forall(self, p: Func1[A, bool]) -> bool:
     return self.is_empty() or p(self.get)
 
 

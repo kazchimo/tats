@@ -4,7 +4,7 @@ from typing import Generic, TypeVar, Type
 from returns.primitives.hkt import Kind1
 
 from .Functor import Functor, functor_syntax
-from .Op import UnOp
+from .Op import Func1
 
 URI = TypeVar("URI", bound=str)
 A = TypeVar("A")
@@ -15,7 +15,7 @@ class Apply(Generic[URI], Functor[URI]):
 
   @staticmethod
   @abstractmethod
-  def ap(ff: Kind1[URI, UnOp[A, B]], fa: Kind1[URI, A]) -> Kind1[URI, B]:
+  def ap(ff: Kind1[URI, Func1[A, B]], fa: Kind1[URI, A]) -> Kind1[URI, B]:
     ...
 
   @classmethod

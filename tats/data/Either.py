@@ -6,7 +6,7 @@ from returns.primitives.hkt import SupportsKind2, Kind1
 
 from tats.Eq import derive_eq
 from tats.Monad import Monad, monad_syntax
-from tats.Op import UnOp
+from tats.Op import Func1
 
 L = TypeVar("L")
 R = TypeVar("R")
@@ -19,7 +19,7 @@ URI = Literal["Either"]
 class EitherInstance(Monad[URI], Generic[L]):
 
   @staticmethod
-  def flat_map(fa: Kind1[URI, A], f: UnOp[A, Kind1[URI, B]]) -> Kind1[URI, B]:
+  def flat_map(fa: Kind1[URI, A], f: Func1[A, Kind1[URI, B]]) -> Kind1[URI, B]:
     if fa.is_left():
       return cast(Left[L], fa)
     else:
@@ -41,7 +41,7 @@ class Either(SupportsKind2[URI, R, L]):
   def is_right(self) -> bool:
     return not self.is_left()
 
-  def fold(self, fl: UnOp[L, A], fr: UnOp[R, A]) -> A:
+  def fold(self, fl: Func1[L, A], fr: Func1[R, A]) -> A:
     return fl(cast(Left[L], self).value) \
       if self.is_left() \
       else fr(cast(Right[R], self).value)

@@ -5,7 +5,7 @@ from returns.primitives.hkt import Kind1
 
 from .Apply import Apply, apply_syntax
 from .Functor import B, functor_syntax
-from .Op import UnOp
+from .Op import Func1
 
 URI = TypeVar("URI", bound=str)
 A = TypeVar("A")
@@ -14,7 +14,7 @@ A = TypeVar("A")
 class Applicative(Generic[URI], Apply[URI]):
 
   @classmethod
-  def map(cls, fa: Kind1[URI, A], f: UnOp[A, B]) -> Kind1[URI, B]:
+  def map(cls, fa: Kind1[URI, A], f: Func1[A, B]) -> Kind1[URI, B]:
     return cls.ap(cls.pure(f), fa)
 
   @staticmethod

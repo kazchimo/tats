@@ -3,7 +3,7 @@ from typing import TypeVar, Generic, Type
 
 from returns.primitives.hkt import Kind1
 
-from .Op import UnOp
+from .Op import Func1
 
 URI = TypeVar("URI", bound=str)
 A = TypeVar("A")
@@ -15,7 +15,7 @@ class Functor(Generic[URI]):
 
   @staticmethod
   @abstractmethod
-  def map(fa: Kind1[URI, A], f: UnOp[A, B]) -> Kind1[URI, B]:
+  def map(fa: Kind1[URI, A], f: Func1[A, B]) -> Kind1[URI, B]:
     ...
 
 
@@ -23,7 +23,7 @@ def functor_syntax(instance: Type[Functor[URI]]):
 
   def _add_syntax(c: C):
 
-    def _map(self, f: UnOp[A, B]):
+    def _map(self, f: Func1[A, B]):
       return instance.map(self, f)
 
     setattr(c, "map", _map)

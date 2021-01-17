@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from typing import Generic, TypeVar
 
-from .Op import BiOp, UnOp
+from .Op import BiOp, Func1
 
 T = TypeVar("T")
 S = TypeVar("S")
@@ -17,7 +17,7 @@ class Eq(Generic[T]):
   def neqv(self, l: T, r: T) -> bool:
     return not self.eqv(l, r)
 
-  def contramap(self, f: UnOp[S, T]) -> "Eq[S]":
+  def contramap(self, f: Func1[S, T]) -> "Eq[S]":
     return Eq(lambda a, b: self.eqv(f(a), f(b)))
 
   def and_(self, other: "Eq[T]") -> "Eq[T]":

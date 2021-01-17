@@ -2,7 +2,7 @@ from typing import Generic, TypeVar, Type
 
 from returns.primitives.hkt import Kind1
 
-from .Op import UnOp
+from .Op import Func1
 from .Applicative import Applicative, applicative_syntax
 from .FlatMap import FlatMap
 
@@ -14,7 +14,7 @@ B = TypeVar("B")
 class Monad(Generic[URI], FlatMap[URI], Applicative[URI]):
 
   @classmethod
-  def map(cls, fa: Kind1[URI, A], f: UnOp[A, B]) -> Kind1[URI, B]:
+  def map(cls, fa: Kind1[URI, A], f: Func1[A, B]) -> Kind1[URI, B]:
     return cls.flat_map(fa, lambda x: cls.pure(f(x)))
 
 

@@ -3,7 +3,7 @@ from typing import Generic, TypeVar
 
 from returns.primitives.hkt import Kind1
 
-from .Op import UnOp
+from .Op import Func1
 from .Apply import Apply
 
 URI = TypeVar("URI", bound=str)
@@ -15,7 +15,7 @@ class FlatMap(Generic[URI], Apply[URI]):
 
   @staticmethod
   @abstractmethod
-  def flat_map(fa: Kind1[URI, A], f: UnOp[A, Kind1[URI, B]]) -> Kind1[URI, B]:
+  def flat_map(fa: Kind1[URI, A], f: Func1[A, Kind1[URI, B]]) -> Kind1[URI, B]:
     ...
 
   @classmethod
@@ -23,5 +23,5 @@ class FlatMap(Generic[URI], Apply[URI]):
     return cls.flat_map(ffa, lambda x: x)
 
   @classmethod
-  def ap(cls, ff: Kind1[URI, UnOp[A, B]], fa: Kind1[URI, A]) -> Kind1[URI, B]:
+  def ap(cls, ff: Kind1[URI, Func1[A, B]], fa: Kind1[URI, A]) -> Kind1[URI, B]:
     return cls.flat_map(ff, lambda f: cls.map(fa, f))
