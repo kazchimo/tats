@@ -1,6 +1,6 @@
 from abc import abstractmethod
 from dataclasses import dataclass
-from typing import TypeVar, Any, Literal, NoReturn
+from typing import TypeVar, Literal, NoReturn, cast
 
 from returns.primitives.hkt import SupportsKind1, Kind1
 
@@ -37,6 +37,13 @@ class Option(SupportsKind1[URI, A]):
 
   def or_else(self, alt: "Option[A]") -> "Option[A]":
     return self if self.non_empty() else alt
+
+  @property
+  def get(self) -> A:
+    if self.non_empty():
+      return cast(Some[A], self).a
+    else:
+      raise ValueError("No elements inside Nothing")
 
 
 @dataclass(frozen=True)

@@ -1,3 +1,5 @@
+from pytest import raises
+
 from tats.data.Option import Some, Nothing, OptionInstance
 
 
@@ -16,6 +18,11 @@ class TestOption:
     assert Nothing().or_else(Some(2)) == Some(2)
     assert Some(1).or_else(Nothing()) == Some(1)
     assert Nothing().or_else(Nothing()) == Nothing()
+
+  def test_get(self):
+    assert Some(1).get == 1
+    with raises(ValueError):
+      Nothing().get
 
   def test_eq(self):
     assert Some(1).eqv(Some(1))
