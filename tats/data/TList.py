@@ -4,10 +4,11 @@ from typing import TypeVar, List, Type
 
 from returns.primitives.hkt import SupportsKind1
 
-from tats.syntax.monad import MonadSyntax
 from tats.Eq import DeriveEq
 from tats.Monad import Monad
-from tats.Semigroup import Semigroup, SemigroupSyntax
+from tats.Semigroup import Semigroup
+from tats.syntax.monad import MonadSyntax
+from tats.syntax.semigroup import SemigroupSyntax
 
 A = TypeVar("A")
 B = TypeVar("B")

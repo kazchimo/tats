@@ -4,10 +4,10 @@ from typing import TypeVar, cast, Any, Type
 
 from returns.primitives.hkt import SupportsKind2
 
+from tats.syntax.semigroup import Kind1SemigroupSyntax
 from tats.Eq import DeriveEq
 from tats.Monad import Monad
 from tats.Semigroup import Kind1Semigroup
-from tats.Semigroup import Kind1SemigroupSyntax
 from tats.data import Option
 from tats.data.Function import Func1, Func1F
 from tats.syntax.monad import MonadSyntax
