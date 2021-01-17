@@ -37,3 +37,8 @@ class TestEither:
     assert Left(1).flat_map(lambda x: Right(x + 1)) == Left(1)
     assert Right(1).flat_map(lambda x: Left("a")) == Left("a")
     assert Left(1).flat_map(lambda x: Left("a")) == Left(1)
+
+    assert Right(1).eqv(Right(1))
+    assert Right(1).neqv(Right(2))
+    assert Right(1).neqv(Left(1))
+    assert Left(1).eqv(Left(1))
