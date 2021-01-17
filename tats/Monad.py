@@ -3,10 +3,11 @@ from typing import Generic, TypeVar, Type
 
 from returns.primitives.hkt import Kind1
 
+from tats.syntax.flat_map import FlatMapSyntax
 from tats.syntax.applicative import ApplicativeSyntax
 from .data.Function import Func1
 from .Applicative import Applicative
-from .FlatMap import FlatMap, FlatMapSyntax
+from .FlatMap import FlatMap
 
 F = TypeVar("F", bound=Kind1)
 A = TypeVar("A")
