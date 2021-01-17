@@ -3,11 +3,12 @@ from typing import TypeVar
 
 from .Semigroup import Semigroup
 
-_T = TypeVar("_T")
+T = TypeVar("T")
 
-class Monoid(Semigroup[_T], ABC):
-  @staticmethod
+
+class Monoid(Semigroup[T], ABC):
+
+  @property
   @abstractmethod
-  def empty() -> _T:
+  def empty(self) -> T:
     ...
-
