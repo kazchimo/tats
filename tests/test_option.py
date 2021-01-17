@@ -37,6 +37,11 @@ class TestOption:
     assert Some(1).filter(lambda x: x == 2) == Nothing()
     assert Nothing().filter(lambda x: x == 2) == Nothing()
 
+  def test_filter_not(self):
+    assert Some(1).filter_not(lambda x: x == 1) == Nothing()
+    assert Some(1).filter_not(lambda x: x == 2) == Some(1)
+    assert Nothing().filter_not(lambda x: x == 2) == Nothing()
+
   def test_eq(self):
     assert Some(1).eqv(Some(1))
     assert not Some(1).eqv(Some(2))

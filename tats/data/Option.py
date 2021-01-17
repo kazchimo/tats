@@ -54,6 +54,9 @@ class Option(SupportsKind1[URI, A]):
   def filter(self, p: UnOp[A, bool]) -> "Option[A]":
     return self if self.is_empty() or p(self.get) else Nothing()
 
+  def filter_not(self, p: UnOp[A, bool]) -> "Option[A]":
+    return self if self.is_empty() or not p(self.get) else Nothing()
+
 
 @dataclass(frozen=True)
 class Some(Option[A]):
