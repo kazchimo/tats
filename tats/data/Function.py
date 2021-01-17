@@ -1,6 +1,8 @@
 from typing import TypeVar, Protocol, Generic
 
 Arg1 = TypeVar("Arg1", contravariant=True)
+Arg2 = TypeVar("Arg2", contravariant=True)
+Arg3 = TypeVar("Arg3", contravariant=True)
 Res = TypeVar("Res", covariant=True)
 T = TypeVar("T")
 
@@ -35,6 +37,12 @@ class Func1F(Generic[Arg1, Res]):
   @staticmethod
   def const(a: A) -> Func1[Arg1, A]:
     return lambda _: a
+
+
+class Func3(Protocol[Arg1, Arg2, Arg3, Res]):
+
+  def __call__(self, a: Arg1, b: Arg2, c: Arg3) -> Res:
+    ...
 
 
 class BiOp(Protocol[Arg1, Res]):

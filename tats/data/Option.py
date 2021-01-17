@@ -1,13 +1,13 @@
 from abc import abstractmethod
 from dataclasses import dataclass
-from typing import TypeVar, Literal, cast, Generic, Any, Type, Optional
+from typing import TypeVar, cast, Generic, Any, Type, Optional
 
 from returns.primitives.hkt import SupportsKind1, Kind1
 
-from tats.Semigroup import Semigroup, Kind1SemigroupSyntax
-from tats.data import Either
 from tats.Eq import DeriveEq
 from tats.Monad import Monad, MonadSyntax
+from tats.Semigroup import Semigroup, Kind1SemigroupSyntax, Kind1Semigroup
+from tats.data import Either
 from tats.data.Function import Func1
 
 A = TypeVar("A")
@@ -27,8 +27,14 @@ class OptionInstance(Monad["Option"]):
 
 
 @dataclass(frozen=True)
-class Kind1OptionInstance(Generic[A], Semigroup["Option[A]"]):
-  ...
+class Kind1OptionInstance(Generic[A], Kind1Semigroup["Option", A]):
+
+  @staticmethod
+  def _cmb(tsemi: Semigroup[A], a: "Option[A]", b: "Option[A]"):
+    if a.non_empty() and b.non_empty():
+      return Some(tsemi.combine(a.get, b.get))
+    else:
+      return Nothing()
 
 
 @dataclass(frozen=True)
@@ -125,15 +131,8 @@ class Option(SupportsKind1["Option", A], DeriveEq, MonadSyntax["Option", A],
   def _monad_instance(self) -> Type[Monad["Option"]]:
     return OptionInstance
 
-  def _semigroup_instance(self, tsemi: Semigroup[A]) -> Kind1OptionInstance:
-
-    def combine(a: "Option[A]", b: "Option[A]") -> "Option[A]":
-      if a.non_empty() and b.non_empty():
-        return Some(tsemi.combine(a.get, b.get))
-      else:
-        return Nothing()
-
-    return Kind1OptionInstance(combine)
+  def _semigroup_instance(self) -> Kind1OptionInstance:
+    return Kind1OptionInstance()
 
 
 @dataclass(frozen=True)

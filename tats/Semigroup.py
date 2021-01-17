@@ -4,8 +4,8 @@ from typing import TypeVar, Generic
 
 from returns.primitives.hkt import Kind1
 
-from .data.Function import EndoBiOp
 from .SelfIs import SelfIs
+from .data.Function import EndoBiOp
 
 T = TypeVar("T")
 S = TypeVar("S", bound=Kind1)
@@ -33,11 +33,22 @@ class SemigroupSyntax(Generic[T], SelfIs[T]):
     ...
 
 
+class Kind1Semigroup(Generic[S, T]):
+
+  @staticmethod
+  @abstractmethod
+  def _cmb(tsemi: Semigroup[T], a: S, b: S) -> S:
+    ...
+
+  def combine(self, tsemi: Semigroup[T], a: S, b: S) -> S:
+    return self._cmb(tsemi, a, b)
+
+
 class Kind1SemigroupSyntax(Generic[S, T], SelfIs[S]):
 
   def combine(self, tsemi: Semigroup[T], other: S) -> S:
-    return self._semigroup_instance(tsemi).combine(self._self, other)
+    return self._semigroup_instance().combine(tsemi, self._self, other)
 
   @abstractmethod
-  def _semigroup_instance(self, tsemi: Semigroup[T]) -> Semigroup[S]:
+  def _semigroup_instance(self) -> Kind1Semigroup[S, T]:
     ...
