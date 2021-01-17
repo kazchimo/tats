@@ -42,6 +42,16 @@ class TestOption:
     assert Some(1).filter_not(lambda x: x == 2) == Some(1)
     assert Nothing().filter_not(lambda x: x == 2) == Nothing()
 
+  def test_foreach(self):
+
+    def _raise():
+      raise Exception
+
+    with raises(Exception):
+      Some(1).foreach(_raise)
+
+    Nothing().foreach(_raise)
+
   def test_eq(self):
     assert Some(1).eqv(Some(1))
     assert not Some(1).eqv(Some(2))

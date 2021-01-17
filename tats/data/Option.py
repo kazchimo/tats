@@ -58,6 +58,10 @@ class Option(SupportsKind1[URI, A]):
     return self if self.is_empty() or not p(self.get) else Nothing()
 
 
+  def foreach(self, f: UnOp[A, B]) -> None:
+    if self.non_empty():
+      f(self.get)
+
 @dataclass(frozen=True)
 class Some(Option[A]):
   a: A
