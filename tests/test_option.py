@@ -102,6 +102,11 @@ class TestOption:
     assert Some(1).contains(1)
     assert not Nothing().contains(1)
 
+  def test_exists(self):
+    assert Some(1).exists(lambda x: x == 1)
+    assert not Some(1).exists(lambda x: x == 2)
+    assert not Nothing().exists(lambda x: x == 1)
+
   def test_eq(self):
     assert Some(1).eqv(Some(1))
     assert not Some(1).eqv(Some(2))
