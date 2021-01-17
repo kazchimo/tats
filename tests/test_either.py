@@ -15,6 +15,10 @@ class TestEither:
     assert Left(1).fold(lambda l: l * 2, lambda r: r * 3) == 2
     assert Right(1).fold(lambda l: l * 2, lambda r: r * 3) == 3
 
+  def test_swap(self):
+    assert Right(1).swap == Left(1)
+    assert Left(1).swap == Right(1)
+
   def test_syntax(self):
     assert Left(1).map(lambda l: l * 2) == Left(1)
     assert Right(1).map(lambda l: l * 2) == Right(2)

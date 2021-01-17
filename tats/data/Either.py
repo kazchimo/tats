@@ -45,6 +45,12 @@ class Either(SupportsKind2[URI, R, L], DeriveEq, MonadSyntax[URI, R]):
       else fr(cast(Right[R], self).value)
 
   @property
+  def swap(self) -> "Either[L, R]":
+    return Right(cast(Left[L], self).value)\
+      if self.is_left() \
+      else Left(cast(Right[R], self).value)
+
+  @property
   def _self(self) -> "Either[R, L]":
     return self
 
