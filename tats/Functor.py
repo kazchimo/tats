@@ -5,7 +5,7 @@ from returns.primitives.hkt import Kind1
 
 from .Op import Func1
 
-URI = TypeVar("URI", bound=str)
+URI = TypeVar("URI")
 A = TypeVar("A")
 B = TypeVar("B")
 C = TypeVar("C")

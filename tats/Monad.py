@@ -7,7 +7,7 @@ from .Op import Func1
 from .Applicative import Applicative, ApplicativeSyntax
 from .FlatMap import FlatMap, FlatMapSyntax
 
-URI = TypeVar("URI", bound=str)
+URI = TypeVar("URI")
 A = TypeVar("A")
 B = TypeVar("B")
 
