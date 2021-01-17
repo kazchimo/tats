@@ -4,7 +4,7 @@ from typing import TypeVar, Literal, cast, Generic, Any, Type
 
 from returns.primitives.hkt import SupportsKind1, Kind1
 
-from tats.Apply import ApplySyntax, Apply
+from tats.Applicative import ApplicativeSyntax, Applicative
 from tats.Eq import DeriveEq
 from tats.Monad import monad_syntax, Monad
 from tats.Op import Func1
@@ -45,7 +45,7 @@ class WithFilter(Generic[A]):
 
 
 @monad_syntax(OptionInstance)
-class Option(SupportsKind1[URI, A], DeriveEq, ApplySyntax[URI, A]):
+class Option(SupportsKind1[URI, A], DeriveEq, ApplicativeSyntax[URI, A]):
 
   @abstractmethod
   def is_empty(self) -> bool:
@@ -103,7 +103,7 @@ class Option(SupportsKind1[URI, A], DeriveEq, ApplySyntax[URI, A]):
     return self
 
   @property
-  def _apply_instance(self) -> Type[Apply[URI]]:
+  def _applicative_syntax(self) -> Type[Applicative[URI]]:
     return OptionInstance
 
 

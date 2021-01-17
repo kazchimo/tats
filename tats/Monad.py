@@ -3,7 +3,7 @@ from typing import Generic, TypeVar, Type
 from returns.primitives.hkt import Kind1
 
 from .Op import Func1
-from .Applicative import Applicative, applicative_syntax
+from .Applicative import Applicative
 from .FlatMap import FlatMap
 
 URI = TypeVar("URI", bound=str)
@@ -31,7 +31,6 @@ def monad_syntax(instance: Type[Monad[URI]]):
     setattr(c, "flat_map", _flat_map)
     setattr(c, "flatten", _flatten)
 
-    applicative_syntax(instance)(c)
     return c
 
   return _add_syntax
