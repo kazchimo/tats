@@ -107,6 +107,11 @@ class TestOption:
     assert not Some(1).exists(lambda x: x == 2)
     assert not Nothing().exists(lambda x: x == 1)
 
+  def test_forall(self):
+    assert Some(1).forall(lambda x: x == 1)
+    assert not Some(1).forall(lambda x: x == 2)
+    assert Nothing().forall(lambda x: x == 1)
+
   def test_eq(self):
     assert Some(1).eqv(Some(1))
     assert not Some(1).eqv(Some(2))

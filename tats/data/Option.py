@@ -88,6 +88,9 @@ class Option(SupportsKind1[URI, A]):
   def exists(self, p: UnOp[A, bool]) -> bool:
     return self.non_empty() and p(self.get)
 
+  def forall(self, p: UnOp[A, bool]) -> bool:
+    return self.is_empty() or p(self.get)
+
 
 @dataclass(frozen=True)
 class Some(Option[A]):
