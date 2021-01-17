@@ -59,6 +59,9 @@ class Either(SupportsKind2[URI, R, L], DeriveEq, MonadSyntax[URI, R]):
     eq: Func1[R, bool] = lambda x: x == e
     return self.fold(lambda _: False, eq)
 
+  def forall(self, p: Func1[R, bool]) -> bool:
+    return self.fold(lambda _: True, lambda x: p(x))
+
   @property
   def _self(self) -> "Either[R, L]":
     return self
