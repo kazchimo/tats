@@ -3,7 +3,7 @@ from typing import Generic, TypeVar, Type
 
 from returns.primitives.hkt import Kind1
 
-from .Apply import Apply, apply_syntax
+from .Apply import Apply
 from .Op import Func1
 
 URI = TypeVar("URI", bound=str)
@@ -26,7 +26,6 @@ class Applicative(Generic[URI], Apply[URI]):
 def applicative_syntax(instance: Type[Applicative[URI]]):
 
   def _add_syntax(c):
-    apply_syntax(instance)(c)
     return c
 
   return _add_syntax

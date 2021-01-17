@@ -3,7 +3,7 @@ from typing import Generic, TypeVar, Type
 
 from returns.primitives.hkt import Kind1
 
-from .Functor import Functor
+from .Functor import Functor, FunctorSyntax
 from .Op import Func1
 
 URI = TypeVar("URI", bound=str)
@@ -27,18 +27,19 @@ class Apply(Generic[URI], Functor[URI]):
     return cls.ap(cls.map(fa, lambda a: lambda _: a), fb)
 
 
-def apply_syntax(instance: Type[Apply[URI]]):
+class ApplySyntax(Generic[URI, A], FunctorSyntax[URI, A]):
 
-  def _add_syntax(c):
+  def product_r(self, fb: Kind1[URI, B]) -> Kind1[URI, B]:
+    return self._apply_instance.product_r(self._self, fb)
 
-    def _product_r(self, fb):
-      return instance.product_r(self, fb)
+  def product_l(self, fb: Kind1[URI, B]) -> Kind1[URI, A]:
+    return self._apply_instance.product_l(self._self, fb)
 
-    def _product_l(self, fb):
-      return instance.product_l(self, fb)
+  @property
+  @abstractmethod
+  def _apply_instance(self) -> Type[Apply[URI]]:
+    ...
 
-    setattr(c, "product_r", _product_r)
-    setattr(c, "product_l", _product_l)
-    return c
-
-  return _add_syntax
+  @property
+  def _functor_instance(self) -> Type[Functor[URI]]:
+    return self._apply_instance
