@@ -1,6 +1,6 @@
-from abc import abstractmethod
+from abc import abstractmethod, ABC
 from dataclasses import dataclass
-from typing import TypeVar, Literal, cast, Generic, Any, Type
+from typing import TypeVar, Literal, cast, Generic, Any, Type, Optional
 
 from returns.primitives.hkt import SupportsKind1, Kind1
 
@@ -44,6 +44,10 @@ class WithFilter(Generic[A]):
 
 
 class Option(SupportsKind1[URI, A], DeriveEq, MonadSyntax[URI, A]):
+
+  @staticmethod
+  def from_nullable(a: Optional[A]) -> "Option[A]":
+    return Nothing() if a is None else Some(a)
 
   @abstractmethod
   def is_empty(self) -> bool:

@@ -1,10 +1,14 @@
 from pytest import raises
 
 from tats.data.Either import Right, Left
-from tats.data.Option import Some, Nothing, OptionInstance
+from tats.data.Option import Some, Nothing, OptionInstance, Option
 
 
 class TestOption:
+
+  def test_from_nullable(self):
+    assert Option.from_nullable(1) == Some(1)
+    assert Option.from_nullable(None) == Nothing()
 
   def test_is_empty(self):
     assert not Some("").is_empty()
