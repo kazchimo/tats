@@ -117,6 +117,10 @@ class TestOption:
     assert Some(1).to_right("a") == Right(1)
     assert Nothing().to_right("a") == Left("a")
 
+  def test_to_left(self):
+    assert Some(1).to_left("a") == Left(1)
+    assert Nothing().to_left("a") == Right("a")
+
   def test_eq(self):
     assert Some(1).eqv(Some(1))
     assert not Some(1).eqv(Some(2))

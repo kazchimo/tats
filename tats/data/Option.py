@@ -95,6 +95,9 @@ class Option(SupportsKind1[URI, A]):
   def to_right(self, left: B) -> Either[A, B]:
     return Left(left) if self.is_empty() else Right(self.get)
 
+  def to_left(self, right: B) -> Either[B, A]:
+    return Right(right) if self.is_empty() else Left(self.get)
+
 
 @dataclass(frozen=True)
 class Some(Option[A]):
