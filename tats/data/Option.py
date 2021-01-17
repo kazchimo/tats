@@ -4,9 +4,8 @@ from typing import TypeVar, Literal, cast, Generic, Any, Type
 
 from returns.primitives.hkt import SupportsKind1, Kind1
 
-from tats.Applicative import ApplicativeSyntax, Applicative
 from tats.Eq import DeriveEq
-from tats.Monad import monad_syntax, Monad
+from tats.Monad import Monad, MonadSyntax
 from tats.Op import Func1
 from .Either import Either, Left, Right
 
@@ -34,7 +33,7 @@ class WithFilter(Generic[A]):
   def map(self, f: Func1[A, B]) -> Kind1[URI, B]:
     return self.o.filter(self.p).map(f)
 
-  def flat_map(self, f: Func1[A, "Option[B]"]) -> "Option[B]":
+  def flat_map(self, f: Func1[A, "Option[B]"]) -> Kind1[URI, B]:
     return self.o.filter(self.p).flat_map(f)
 
   def foreach(self, f: Func1[A, B]) -> None:
@@ -44,8 +43,7 @@ class WithFilter(Generic[A]):
     return WithFilter(self.o, lambda a: self.p(a) and p(a))
 
 
-@monad_syntax(OptionInstance)
-class Option(SupportsKind1[URI, A], DeriveEq, ApplicativeSyntax[URI, A]):
+class Option(SupportsKind1[URI, A], DeriveEq, MonadSyntax[URI, A]):
 
   @abstractmethod
   def is_empty(self) -> bool:
@@ -103,7 +101,7 @@ class Option(SupportsKind1[URI, A], DeriveEq, ApplicativeSyntax[URI, A]):
     return self
 
   @property
-  def _applicative_syntax(self) -> Type[Applicative[URI]]:
+  def _monad_instance(self) -> Type[Monad[URI]]:
     return OptionInstance
 
 

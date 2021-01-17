@@ -4,9 +4,8 @@ from typing import TypeVar, Literal, cast, Generic, Any, Type
 
 from returns.primitives.hkt import SupportsKind2, Kind1
 
-from tats.Applicative import ApplicativeSyntax, Applicative
 from tats.Eq import DeriveEq
-from tats.Monad import Monad, monad_syntax
+from tats.Monad import Monad, MonadSyntax
 from tats.Op import Func1
 
 L = TypeVar("L")
@@ -31,8 +30,7 @@ class EitherInstance(Monad[URI], Generic[L]):
     return Right(a)
 
 
-@monad_syntax(EitherInstance)
-class Either(SupportsKind2[URI, R, L], DeriveEq, ApplicativeSyntax[URI, R]):
+class Either(SupportsKind2[URI, R, L], DeriveEq, MonadSyntax[URI, R]):
 
   @abstractmethod
   def is_left(self) -> bool:
@@ -51,7 +49,7 @@ class Either(SupportsKind2[URI, R, L], DeriveEq, ApplicativeSyntax[URI, R]):
     return self
 
   @property
-  def _applicative_syntax(self) -> Type[Applicative[URI]]:
+  def _monad_instance(self) -> Type[Monad[URI]]:
     return EitherInstance
 
 

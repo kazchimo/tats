@@ -29,10 +29,6 @@ class TestEither:
     assert Right(1).product_l(Left(2)) == Left(2)
     assert Left(1).product_l(Left(2)) == Left(1)
 
-    assert Right(Right(1)).flatten() == Right(1)
-    assert Right(Left(1)).flatten() == Left(1)
-    assert Left(1).flatten() == Left(1)
-
     assert Right(1).flat_map(lambda x: Right(x + 1)) == Right(2)
     assert Left(1).flat_map(lambda x: Right(x + 1)) == Left(1)
     assert Right(1).flat_map(lambda x: Left("a")) == Left("a")

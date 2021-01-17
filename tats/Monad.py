@@ -1,10 +1,11 @@
+from abc import abstractmethod
 from typing import Generic, TypeVar, Type
 
 from returns.primitives.hkt import Kind1
 
 from .Op import Func1
-from .Applicative import Applicative
-from .FlatMap import FlatMap
+from .Applicative import Applicative, ApplicativeSyntax
+from .FlatMap import FlatMap, FlatMapSyntax
 
 URI = TypeVar("URI", bound=str)
 A = TypeVar("A")
@@ -18,19 +19,18 @@ class Monad(Generic[URI], FlatMap[URI], Applicative[URI]):
     return cls.flat_map(fa, lambda x: cls.pure(f(x)))
 
 
-def monad_syntax(instance: Type[Monad[URI]]):
+class MonadSyntax(\
+  Generic[URI, A], FlatMapSyntax[URI, A], ApplicativeSyntax[URI, A]):
 
-  def _add_syntax(c):
+  @property
+  @abstractmethod
+  def _monad_instance(self) -> Type[Monad[URI]]:
+    ...
 
-    def _flat_map(self, f):
-      return instance.flat_map(self, f)
+  @property
+  def _flat_map_instance(self) -> Type[FlatMap[URI]]:
+    return self._monad_instance
 
-    def _flatten(self):
-      return instance.flatten(self)
-
-    setattr(c, "flat_map", _flat_map)
-    setattr(c, "flatten", _flatten)
-
-    return c
-
-  return _add_syntax
+  @property
+  def _applicative_syntax(self) -> Type[Applicative[URI]]:
+    return self._monad_instance
