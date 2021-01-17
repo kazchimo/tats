@@ -51,6 +51,10 @@ class Option(SupportsKind1[URI, A], DeriveEq, MonadSyntax[URI, A]):
   def from_nullable(a: Optional[A]) -> "Option[A]":
     return Nothing() if a is None else Some(a)
 
+  @staticmethod
+  def when(cond: bool, a: A) -> "Option[A]":
+    return Some(a) if cond else Nothing()
+
   @abstractmethod
   def is_empty(self) -> bool:
     ...

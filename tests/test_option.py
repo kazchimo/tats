@@ -10,6 +10,10 @@ class TestOption:
     assert Option.from_nullable(1) == Some(1)
     assert Option.from_nullable(None) == Nothing()
 
+  def test_when(self):
+    assert Option.when(True, 1) == Some(1)
+    assert Option.when(False, 1) == Nothing()
+
   def test_is_empty(self):
     assert not Some("").is_empty()
     assert Nothing().is_empty()
