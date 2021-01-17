@@ -1,5 +1,6 @@
 from pytest import raises
 
+from tats.data.Option import Some, Nothing
 from tats.data.Either import Left, Right
 
 
@@ -49,6 +50,10 @@ class TestEither:
     assert Right(1).exists(lambda x: x == 1)
     assert not Right(1).exists(lambda x: x == 2)
     assert not Left(1).exists(lambda x: x == 1)
+
+  def test_to_option(self):
+    assert Right(1).to_option() == Some(1)
+    assert Left(1).to_option() == Nothing()
 
   def test_syntax(self):
     assert Left(1).map(lambda l: l * 2) == Left(1)

@@ -1,13 +1,15 @@
-from abc import abstractmethod, ABC
+from __future__ import annotations
+
+from abc import abstractmethod
 from dataclasses import dataclass
 from typing import TypeVar, Literal, cast, Generic, Any, Type, Optional
 
 from returns.primitives.hkt import SupportsKind1, Kind1
 
+from tats.data import Either
 from tats.Eq import DeriveEq
 from tats.Monad import Monad, MonadSyntax
 from tats.Op import Func1
-from .Either import Either, Left, Right
 
 A = TypeVar("A")
 B = TypeVar("B")
@@ -94,10 +96,12 @@ class Option(SupportsKind1[URI, A], DeriveEq, MonadSyntax[URI, A]):
   def forall(self, p: Func1[A, bool]) -> bool:
     return self.is_empty() or p(self.get)
 
-  def to_right(self, left: B) -> Either[A, B]:
+  def to_right(self, left: B) -> "Either.Either[A, B]":
+    from .Either import Left, Right
     return Left(left) if self.is_empty() else Right(self.get)
 
-  def to_left(self, right: B) -> Either[B, A]:
+  def to_left(self, right: B) -> "Either.Either[B, A]":
+    from .Either import Left, Right
     return Right(right) if self.is_empty() else Left(self.get)
 
   @property

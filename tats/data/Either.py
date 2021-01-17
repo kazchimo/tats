@@ -1,9 +1,11 @@
+from __future__ import annotations
 from abc import abstractmethod
 from dataclasses import dataclass
 from typing import TypeVar, Literal, cast, Generic, Any, Type
 
 from returns.primitives.hkt import SupportsKind2, Kind1
 
+from tats.data import Option
 from tats.Eq import DeriveEq
 from tats.Monad import Monad, MonadSyntax
 from tats.Op import Func1
@@ -64,6 +66,10 @@ class Either(SupportsKind2[URI, R, L], DeriveEq, MonadSyntax[URI, R]):
 
   def exists(self, p: Func1[R, bool]) -> bool:
     return self.fold(lambda _: False, p)
+
+  def to_option(self) -> "Option.Option[R]":
+    from tats.data.Option import Nothing, Some
+    return self.fold(lambda _: Nothing(), Some)
 
   @property
   def _self(self) -> "Either[R, L]":
