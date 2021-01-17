@@ -4,6 +4,8 @@ from typing import TypeVar, cast, Generic, Any, Type
 
 from returns.primitives.hkt import SupportsKind2, Kind1
 
+from tats.Semigroup import Semigroup, Kind1SemigroupSyntax
+from tats.Semigroup import Kind1Semigroup
 from tats.Eq import DeriveEq
 from tats.Monad import Monad, MonadSyntax
 from tats.data.Function import Func1, Func1F
@@ -30,7 +32,23 @@ class EitherInstance(Monad["Either"], Generic[L]):
     return Right(a)
 
 
-class Either(SupportsKind2["Either", R, L], DeriveEq, MonadSyntax["Either", R]):
+class Kind1EitherInstance(Generic[R], Kind1Semigroup["Either", R]):
+
+  @staticmethod
+  def _cmb(
+      tsemi: Semigroup[R], a: "Either[R, L]",
+      b: "Either[R, L]") -> "Either[R, L]":
+    if a.is_left():
+      return a
+    else:
+      if b.is_left():
+        return b
+      else:
+        return Right(tsemi.combine(a.get, b.get))
+
+
+class Either(SupportsKind2["Either", R, L], DeriveEq, MonadSyntax["Either", R],
+             Kind1SemigroupSyntax["Either[R,L]", R]):
 
   @staticmethod
   def cond(test: bool, right: R, left: L) -> "Either[R, L]":
@@ -85,6 +103,9 @@ class Either(SupportsKind2["Either", R, L], DeriveEq, MonadSyntax["Either", R]):
   @property
   def _monad_instance(self) -> Type[Monad["Either"]]:
     return EitherInstance
+
+  def _semigroup_instance(self) -> Kind1Semigroup["Either", R]:
+    return Kind1EitherInstance()
 
 
 @dataclass(frozen=True)
