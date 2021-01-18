@@ -58,6 +58,14 @@ class TList(UserList[A], SupportsKind1["TList", A], DeriveEq, MonadSyntax,
 
     return TList(l)
 
+  def drop_while(self, p: Func1[A, bool]) -> "TList[A]":
+    these = self
+
+    while these.non_empty and p(these.head):
+      these = these.tail
+
+    return these
+
   @staticmethod
   def var(*a: A) -> "TList[A]":
     return TList(list(a))

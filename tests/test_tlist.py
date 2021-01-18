@@ -39,10 +39,15 @@ class TestTList:
     assert TList([1, 2, 3]).split_at(-1) == (TList([]), TList([1, 2, 3]))
     assert TList([1, 2, 3]).split_at(0) == (TList([]), TList([1, 2, 3]))
 
-  def take_while(self):
+  def test_take_while(self):
     assert TList([1, 2, 3]).take_while(lambda x: x < 3) == TList([1, 2])
     assert TList([1, 2, 3]).take_while(lambda x: x < 0) == TList([])
     assert TList([1, 2, 3]).take_while(lambda x: x < 4) == TList([1, 2, 3])
+
+  def test_drop_while(self):
+    assert TList([1, 2, 3]).drop_while(lambda x: x < 3) == TList([3])
+    assert TList([1, 2, 3]).drop_while(lambda x: x < 0) == TList([1, 2, 3])
+    assert TList([1, 2, 3]).drop_while(lambda x: x < 4) == TList([])
 
   def test_var(self):
     assert TList.var(1, 2) == TList([1, 2])
