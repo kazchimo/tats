@@ -13,14 +13,16 @@ A = TypeVar("A")
 B = TypeVar("B")
 
 
-class FlatMapSyntax(Generic[F, A], ApplySyntax[F, A], ABC):
-  def flat_map(self, f: Func1[A, Kind1[F, B]]) -> Kind1[F, B]:
-    return self._flat_map_instance.flat_map(self._self, f)
-
+class HasFlatMapInstance(Generic[F]):
   @property
   @abstractmethod
   def _flat_map_instance(self) -> Type[FlatMap[F]]:
     ...
+
+
+class FlatMapSyntax(Generic[F, A], ApplySyntax[F, A], ABC, HasFlatMapInstance[F]):
+  def flat_map(self, f: Func1[A, Kind1[F, B]]) -> Kind1[F, B]:
+    return self._flat_map_instance.flat_map(self._self, f)
 
   @property
   def _apply_instance(self) -> Type[Apply[F]]:
