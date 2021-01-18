@@ -16,3 +16,5 @@ class TestTList:
         [1, 2, 2, 4])
     assert TList([1, 2]).combine(TList([3, 4])) == TList([1, 2, 3, 4])
     assert TList([1, 2]) + TList([3, 4]) == TList([1, 2, 3, 4])
+    assert TList([]).is_empty
+    assert not TList([1, 2]).is_empty

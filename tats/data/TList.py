@@ -5,10 +5,10 @@ from typing import TypeVar, List, Type
 from returns.primitives.hkt import SupportsKind1
 
 from tats.Monad import Monad
-from tats.Semigroup import Semigroup
+from tats.Monoid import Monoid
 from tats.syntax.eq import DeriveEq
 from tats.syntax.monad import MonadSyntax
-from tats.syntax.semigroup import SemigroupSyntax
+from tats.syntax.monoid import MonoidSyntax
 
 A = TypeVar("A")
 B = TypeVar("B")
@@ -16,7 +16,7 @@ B = TypeVar("B")
 
 @dataclass(frozen=True)
 class TList(UserList[A], SupportsKind1["TList", A], DeriveEq, MonadSyntax,
-            SemigroupSyntax["TList[A]"]):
+            MonoidSyntax["TList[A]"]):
   data: List[A]
 
   @staticmethod
@@ -33,6 +33,6 @@ class TList(UserList[A], SupportsKind1["TList", A], DeriveEq, MonadSyntax,
     return TListInstance
 
   @property
-  def _semigroup_instance(self) -> Semigroup["TList[A]"]:
+  def _monoid_instance(self) -> Monoid["TList[A]"]:
     from tats.instance.tlist import TListInstance1
     return TListInstance1()

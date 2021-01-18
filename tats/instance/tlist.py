@@ -2,9 +2,9 @@ from typing import TypeVar, Generic
 
 from returns.primitives.hkt import Kind1, dekind
 
-from tats.Semigroup import Semigroup
-from tats.data.Function import Func1
 from tats.Monad import Monad
+from tats.Monoid import Monoid
+from tats.data.Function import Func1
 from tats.data.TList import TList
 
 A = TypeVar("A")
@@ -23,8 +23,12 @@ class TListInstance(Monad["TList"]):
     return TList([a])
 
 
-class TListInstance1(Generic[A], Semigroup[TList[A]]):
+class TListInstance1(Generic[A], Monoid[TList[A]]):
 
   @staticmethod
   def _cmb(a: "TList[A]", b: "TList[A]") -> "TList[A]":
     return a + b
+
+  @property
+  def empty(self) -> "TList[A]":
+    return TList([])
