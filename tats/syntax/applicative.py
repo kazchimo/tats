@@ -22,4 +22,4 @@ class HasApplicativeInstance(Generic[F]):
 class ApplicativeSyntax(Generic[F, A], ApplySyntax[F, A], HasApplicativeInstance[F]):
   @property
   def _apply_instance(self) -> Type[Apply[F]]:
-    return self._applicative_syntax
+    return self._applicative_instance

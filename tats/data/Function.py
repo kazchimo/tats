@@ -9,10 +9,7 @@ T = TypeVar("T")
 A = TypeVar("A")
 B = TypeVar("B")
 
-
-class Func1(Protocol[Arg1, Res]):
-  def __call__(self, a: Arg1) -> Res:
-    ...
+Func1 = Callable[[Arg1], Res]
 
 
 class Func1F(Generic[Arg1, Res]):
@@ -25,7 +22,7 @@ class Func1F(Generic[Arg1, Res]):
     return lambda _: False
 
   @staticmethod
-  def id() -> Func1[Arg1, Res]:
+  def id() -> Func1[T, T]:
     return lambda x: x
 
   @staticmethod
