@@ -43,8 +43,9 @@ class TList(UserList[A], SupportsKind1["TList", A], DeriveEq, MonadSyntax,
     return TList(self.data[-n:]) if n > 0 else TList([])
 
   def split_at(self, n: int) -> Tuple["TList[A]", "TList[A]"]:
-    return (TList(self.data[:n]),
-            TList(self.data[n:])) if n > 0 else (TList([]), self)
+    return (TList(self.data[:n]), TList(self.data[n:])) \
+      if n > 0\
+      else (TList([]), self)
 
   @staticmethod
   def var(*a: A) -> "TList[A]":
