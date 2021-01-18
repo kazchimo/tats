@@ -33,6 +33,12 @@ class TestTList:
     assert TList([1, 2, 3]).take_right(-1) == TList([])
     assert TList([1, 2, 3]).take_right(0) == TList([])
 
+  def test_split_at(self):
+    assert TList([1, 2, 3]).split_at(2) == (TList([1, 2]), TList([3]))
+    assert TList([1, 2, 3]).split_at(10) == (TList([1, 2, 3]), TList([]))
+    assert TList([1, 2, 3]).split_at(-1) == (TList([]), TList([1, 2, 3]))
+    assert TList([1, 2, 3]).split_at(0) == (TList([]), TList([1, 2, 3]))
+
   def test_var(self):
     assert TList.var(1, 2) == TList([1, 2])
 

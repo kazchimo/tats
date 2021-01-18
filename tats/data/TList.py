@@ -1,6 +1,6 @@
 from collections import UserList
 from dataclasses import dataclass
-from typing import TypeVar, List, Type
+from typing import TypeVar, List, Type, Tuple
 
 from returns.primitives.hkt import SupportsKind1
 
@@ -41,6 +41,10 @@ class TList(UserList[A], SupportsKind1["TList", A], DeriveEq, MonadSyntax,
 
   def take_right(self, n: int) -> "TList[A]":
     return TList(self.data[-n:]) if n > 0 else TList([])
+
+  def split_at(self, n: int) -> Tuple["TList[A]", "TList[A]"]:
+    return (TList(self.data[:n]),
+            TList(self.data[n:])) if n > 0 else (TList([]), self)
 
   @staticmethod
   def var(*a: A) -> "TList[A]":
