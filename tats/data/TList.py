@@ -39,6 +39,9 @@ class TList(UserList[A], SupportsKind1["TList", A], DeriveEq, MonadSyntax,
   def drop(self, n: int) -> "TList[A]":
     return TList(self.data[n:]) if n > 0 else self
 
+  def take_right(self, n: int) -> "TList[A]":
+    return TList(self.data[-n:]) if n > 0 else TList([])
+
   @staticmethod
   def var(*a: A) -> "TList[A]":
     return TList(list(a))

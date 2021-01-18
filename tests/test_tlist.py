@@ -27,6 +27,12 @@ class TestTList:
     assert TList([1, 2, 3]).drop(-1) == TList([1, 2, 3])
     assert TList([1, 2, 3]).drop(0) == TList([1, 2, 3])
 
+  def test_take_right(self):
+    assert TList([1, 2, 3]).take_right(2) == TList([2, 3])
+    assert TList([1, 2, 3]).take_right(10) == TList([1, 2, 3])
+    assert TList([1, 2, 3]).take_right(-1) == TList([])
+    assert TList([1, 2, 3]).take_right(0) == TList([])
+
   def test_var(self):
     assert TList.var(1, 2) == TList([1, 2])
 
