@@ -23,7 +23,7 @@ class Semigroup(Generic[T]):
       def _cmb(_self, a: T, b: T) -> T:
         return self.combine(b, a)
 
-      def reverse(self) -> "Semigroup[T]":
+      def reverse(_self) -> "Semigroup[T]":
         return self
 
     return _Semigroup()

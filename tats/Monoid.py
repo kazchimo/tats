@@ -16,6 +16,22 @@ class Monoid(Semigroup[T], ABC):
   def empty(self) -> T:
     ...
 
+  def reverse(self) -> "Monoid[T]":
+
+    class _Monoid(Monoid[T]):
+
+      def _cmb(_self, a: T, b: T) -> T:
+        return self.combine(b, a)
+
+      @property
+      def empty(_self) -> T:
+        return self.empty
+
+      def reverse(_self) -> "Monoid[T]":
+        return self
+
+    return _Monoid()
+
 
 class Kind1Monoid(Kind1Semigroup[S, T]):
 
