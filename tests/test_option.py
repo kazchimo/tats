@@ -1,7 +1,7 @@
 from pytest import raises
 
 from tats.instance.option import OptionInstance
-from tats.instance.int_instances import IntInstance
+from tats.instance.int import IntInstance
 from tats.data.Either import Right, Left
 from tats.data.Option import Some, Nothing, Option
 

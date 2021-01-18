@@ -1,4 +1,4 @@
-from tats.instance.int_instances import IntInstance
+from tats.instance.int import IntInstance
 
 
 class TestIntInstance:
