@@ -3,7 +3,7 @@ from tats.Monoid import Monoid
 
 class IntInstance(Monoid[int]):
   @staticmethod
-  def _cmb(a: int, b: int) -> int:
+  def combine(a: int, b: int) -> int:
     return a + b
 
   @property

@@ -6,5 +6,5 @@ class StrInstance(Monoid[str]):
   def empty(self) -> str:
     return ""
 
-  def _cmb(self, a: str, b: str) -> str:
+  def combine(self, a: str, b: str) -> str:
     return a + b

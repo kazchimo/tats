@@ -24,7 +24,7 @@ class TListInstance(Monad["TList"]):
 
 class TListInstance1(Generic[A], Monoid[TList[A]]):
   @staticmethod
-  def _cmb(a: "TList[A]", b: "TList[A]") -> "TList[A]":
+  def combine(a: "TList[A]", b: "TList[A]") -> "TList[A]":
     return a + b
 
   @property

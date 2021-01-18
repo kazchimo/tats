@@ -9,15 +9,12 @@ S = TypeVar("S", bound=Kind1)
 
 class Semigroup(Generic[T]):
   @abstractmethod
-  def _cmb(self, a: T, b: T) -> T:
-    ...
-
   def combine(self, a: T, b: T) -> T:
-    return self._cmb(a, b)
+    ...
 
   def reverse(self) -> "Semigroup[T]":
     class _Semigroup(Semigroup[T]):
-      def _cmb(_self, a: T, b: T) -> T:
+      def combine(_self, a: T, b: T) -> T:
         return self.combine(b, a)
 
       def reverse(_self) -> "Semigroup[T]":
