@@ -25,5 +25,5 @@ class MonadSyntax(Generic[F, A], FlatMapSyntax[F, A], ApplicativeSyntax[F, A]):
     return self._monad_instance
 
   @property
-  def _applicative_syntax(self) -> Type[Applicative[F]]:
+  def _applicative_instance(self) -> Type[Applicative[F]]:
     return self._monad_instance

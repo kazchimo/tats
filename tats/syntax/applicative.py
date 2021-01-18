@@ -12,12 +12,14 @@ A = TypeVar("A")
 B = TypeVar("B")
 
 
-class ApplicativeSyntax(Generic[F, A], ApplySyntax[F, A]):
+class HasApplicativeInstance(Generic[F]):
   @property
   @abstractmethod
-  def _applicative_syntax(self) -> Type[Applicative[F]]:
+  def _applicative_instance(self) -> Type[Applicative[F]]:
     ...
 
+
+class ApplicativeSyntax(Generic[F, A], ApplySyntax[F, A], HasApplicativeInstance[F]):
   @property
   def _apply_instance(self) -> Type[Apply[F]]:
     return self._applicative_syntax
