@@ -20,5 +20,5 @@ class Monoid(Semigroup[T], ABC):
 class Kind1Monoid(Kind1Semigroup[S, T]):
 
   @abstractmethod
-  def empty(self, tmonoid: Monoid[T]) -> S:
+  def empty(self) -> S:
     ...

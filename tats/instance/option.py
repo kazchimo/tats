@@ -3,8 +3,9 @@ from typing import cast, Generic, TypeVar
 
 from returns.primitives.hkt import Kind1
 
-from tats.Semigroup import Kind1Semigroup, Semigroup
 from tats.Monad import Monad
+from tats.Monoid import Kind1Monoid
+from tats.Semigroup import Semigroup
 from tats.data.Function import Func1
 from tats.data.Option import Option, Some, Nothing
 
@@ -25,7 +26,7 @@ class OptionInstance(Monad["Option"]):
 
 
 @dataclass(frozen=True)
-class Kind1OptionInstance(Generic[A], Kind1Semigroup["Option", A]):
+class Kind1OptionInstance(Generic[A], Kind1Monoid["Option", A]):
 
   @staticmethod
   def _cmb(tsemi: Semigroup[A], a: "Option[A]", b: "Option[A]") -> "Option[A]":
@@ -33,3 +34,6 @@ class Kind1OptionInstance(Generic[A], Kind1Semigroup["Option", A]):
       return Some(tsemi.combine(a.get, b.get))
     else:
       return Nothing()
+
+  def empty(self) -> "Option[A]":
+    return Nothing()

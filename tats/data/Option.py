@@ -4,13 +4,13 @@ from typing import TypeVar, cast, Generic, Any, Type, Optional
 
 from returns.primitives.hkt import SupportsKind1, Kind1
 
-from tats.syntax.semigroup import Kind1SemigroupSyntax
 from tats.Eq import DeriveEq
 from tats.Monad import Monad
-from tats.syntax.monad import MonadSyntax
-from tats.Semigroup import Kind1Semigroup
+from tats.Monoid import Kind1Monoid
 from tats.data import Either
 from tats.data.Function import Func1
+from tats.syntax.monad import MonadSyntax
+from tats.syntax.monoid import Kind1MonoidSyntax
 
 A = TypeVar("A")
 B = TypeVar("B")
@@ -35,7 +35,7 @@ class WithFilter(Generic[A]):
 
 
 class Option(SupportsKind1["Option", A], DeriveEq, MonadSyntax["Option", A],
-             Kind1SemigroupSyntax["Option", A]):
+             Kind1MonoidSyntax["Option", A]):
 
   @staticmethod
   def from_nullable(a: Optional[A]) -> "Option[A]":
@@ -48,10 +48,6 @@ class Option(SupportsKind1["Option", A], DeriveEq, MonadSyntax["Option", A],
   @staticmethod
   def unless(cond: bool, a: A) -> "Option[A]":
     return Nothing() if cond else Some(a)
-
-  @abstractmethod
-  def is_empty(self) -> bool:
-    ...
 
   def non_empty(self) -> bool:
     return not self.is_empty()
@@ -111,7 +107,8 @@ class Option(SupportsKind1["Option", A], DeriveEq, MonadSyntax["Option", A],
     from tats.instance.option import OptionInstance
     return OptionInstance
 
-  def _semigroup_instance(self) -> Kind1Semigroup["Option", A]:
+  @property
+  def _monoid_instance(self) -> Kind1Monoid["Option", A]:
     from tats.instance.option import Kind1OptionInstance
     return Kind1OptionInstance()
 
@@ -120,12 +117,7 @@ class Option(SupportsKind1["Option", A], DeriveEq, MonadSyntax["Option", A],
 class Some(Option[A]):
   a: A
 
-  def is_empty(self) -> bool:
-    return False
-
 
 @dataclass()
 class Nothing(Option[Any]):
-
-  def is_empty(self) -> bool:
-    return True
+  ...

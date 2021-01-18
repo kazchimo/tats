@@ -30,7 +30,7 @@ class MonoidSyntax(SemigroupSyntax[T], SelfIs[T], HasEqInstance[T]):
     return self._eq_instance.eqv(self._self, self._monoid_instance.empty)
 
 
-class Kind1MonoidSyntax(Kind1SemigroupSyntax[S, T]):
+class Kind1MonoidSyntax(Kind1SemigroupSyntax[S, T], HasEqInstance[S]):
 
   def _semigroup_instance(self) -> Kind1Semigroup[S, T]:
     return self._monoid_instance
@@ -39,3 +39,6 @@ class Kind1MonoidSyntax(Kind1SemigroupSyntax[S, T]):
   @abstractmethod
   def _monoid_instance(self) -> Kind1Monoid[S, T]:
     ...
+
+  def is_empty(self) -> bool:
+    return self._eq_instance.eqv(self._self, self._monoid_instance.empty())
