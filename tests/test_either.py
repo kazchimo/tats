@@ -1,6 +1,6 @@
 from pytest import raises
 
-from tats.instance.int_instances import IntSemigroup
+from tats.instance.int_instances import IntInstance
 from tats.data.Option import Some, Nothing
 from tats.data.Either import Left, Right, Either
 
@@ -90,7 +90,7 @@ class TestEither:
     assert Right(1).neqv(Left(1))
     assert Left(1).eqv(Left(1))
 
-    assert Right(1).combine(IntSemigroup(), Right(2)) == Right(3)
-    assert Left(1).combine(IntSemigroup(), Right(2)) == Left(1)
-    assert Right(1).combine(IntSemigroup(), Left(2)) == Left(2)
-    assert Left(1).combine(IntSemigroup(), Left(2)) == Left(1)
+    assert Right(1).combine(IntInstance(), Right(2)) == Right(3)
+    assert Left(1).combine(IntInstance(), Right(2)) == Left(1)
+    assert Right(1).combine(IntInstance(), Left(2)) == Left(2)
+    assert Left(1).combine(IntInstance(), Left(2)) == Left(1)
