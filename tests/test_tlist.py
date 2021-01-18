@@ -49,6 +49,13 @@ class TestTList:
     assert TList([1, 2, 3]).drop_while(lambda x: x < 0) == TList([1, 2, 3])
     assert TList([1, 2, 3]).drop_while(lambda x: x < 4) == TList([])
 
+  def test_split(self):
+    assert TList([1, 2, 3]).span(lambda x: x < 3) == (TList([1, 2]), TList([3]))
+    assert TList([1, 2, 3])\
+             .span(lambda x: x < 0) == (TList([]), TList([1, 2, 3]))
+    assert TList([1, 2,
+                  3]).span(lambda x: x < 4) == (TList([1, 2, 3]), TList([]))
+
   def test_var(self):
     assert TList.var(1, 2) == TList([1, 2])
 

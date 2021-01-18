@@ -60,11 +60,20 @@ class TList(UserList[A], SupportsKind1["TList", A], DeriveEq, MonadSyntax,
 
   def drop_while(self, p: Func1[A, bool]) -> "TList[A]":
     these = self
-
     while these.non_empty and p(these.head):
       these = these.tail
 
     return these
+
+  def span(self, p: Func1[A, bool]) -> Tuple["TList[A]", "TList[A]"]:
+    l: List[A] = []
+    these = self
+
+    while these.non_empty and p(these.head):
+      l = l + [these.head]
+      these = these.tail
+
+    return TList(l), these
 
   @staticmethod
   def var(*a: A) -> "TList[A]":
