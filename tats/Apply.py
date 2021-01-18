@@ -12,7 +12,6 @@ B = TypeVar("B")
 
 
 class Apply(Generic[F], Functor[F]):
-
   @staticmethod
   @abstractmethod
   def ap(ff: Kind1[F, Func1[A, B]], fa: Kind1[F, A]) -> Kind1[F, B]:

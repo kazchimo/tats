@@ -13,7 +13,6 @@ B = TypeVar("B")
 
 
 class ApplicativeSyntax(Generic[F, A], ApplySyntax[F, A]):
-
   @property
   @abstractmethod
   def _applicative_syntax(self) -> Type[Applicative[F]]:

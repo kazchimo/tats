@@ -12,7 +12,6 @@ B = TypeVar("B")
 
 
 class FlatMap(Generic[F], Apply[F]):
-
   @staticmethod
   @abstractmethod
   def flat_map(fa: Kind1[F, A], f: Func1[A, Kind1[F, B]]) -> Kind1[F, B]:

@@ -4,7 +4,6 @@ from tats.data.TList import TList
 
 
 class TestTList:
-
   def test_head(self):
     assert TList([1, 2]).head == 1
     with raises(ValueError):
@@ -53,8 +52,8 @@ class TestTList:
     assert TList([1, 2, 3]).span(lambda x: x < 3) == (TList([1, 2]), TList([3]))
     assert TList([1, 2, 3])\
              .span(lambda x: x < 0) == (TList([]), TList([1, 2, 3]))
-    assert TList([1, 2,
-                  3]).span(lambda x: x < 4) == (TList([1, 2, 3]), TList([]))
+    assert TList([1, 2, 3]).span(lambda x: x < 4) == (TList([1, 2,
+                                                             3]), TList([]))
 
   def test_var(self):
     assert TList.var(1, 2) == TList([1, 2])
@@ -65,8 +64,8 @@ class TestTList:
     assert TList([1, 2]).map(lambda x: x * 2) == TList([2, 4])
     assert TList([1, 2]).product_r(TList([3, 4])) == TList([3, 4, 3, 4])
     assert TList([1, 2]).product_l(TList([3, 4])) == TList([1, 1, 2, 2])
-    assert TList([1, 2]).flat_map(lambda x: TList([x, x * 2])) == TList(
-        [1, 2, 2, 4])
+    assert TList([1, 2
+                 ]).flat_map(lambda x: TList([x, x * 2])) == TList([1, 2, 2, 4])
     assert TList([1, 2]).combine(TList([3, 4])) == TList([1, 2, 3, 4])
     assert TList([1, 2]) + TList([3, 4]) == TList([1, 2, 3, 4])
     assert TList([]).is_empty

@@ -2,7 +2,6 @@ from tats.Eq import Eq
 
 
 class TestEq:
-
   def test_init(self):
     StrEq: Eq[str] = Eq(lambda a, b: a == b)
     assert StrEq.eqv("a", "a")

@@ -8,7 +8,6 @@ S = TypeVar("S", bound=Kind1)
 
 
 class Semigroup(Generic[T]):
-
   @abstractmethod
   def _cmb(self, a: T, b: T) -> T:
     ...
@@ -17,9 +16,7 @@ class Semigroup(Generic[T]):
     return self._cmb(a, b)
 
   def reverse(self) -> "Semigroup[T]":
-
     class _Semigroup(Semigroup[T]):
-
       def _cmb(_self, a: T, b: T) -> T:
         return self.combine(b, a)
 
@@ -30,7 +27,6 @@ class Semigroup(Generic[T]):
 
 
 class Kind1Semigroup(Generic[S, T]):
-
   @abstractmethod
   def _cmb(self, tsemi: Semigroup[T], a: S, b: S) -> S:
     ...

@@ -12,7 +12,6 @@ B = TypeVar("B")
 
 
 class TListInstance(Monad["TList"]):
-
   @staticmethod
   def flat_map(fa: Kind1["TList", A],
                f: Func1[A, Kind1["TList", B]]) -> Kind1["TList", B]:
@@ -24,7 +23,6 @@ class TListInstance(Monad["TList"]):
 
 
 class TListInstance1(Generic[A], Monoid[TList[A]]):
-
   @staticmethod
   def _cmb(a: "TList[A]", b: "TList[A]") -> "TList[A]":
     return a + b

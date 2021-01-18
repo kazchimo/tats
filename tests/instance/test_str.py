@@ -2,7 +2,6 @@ from tats.instance.str import StrInstance
 
 
 class TestStrInstance:
-
   def test_combine(self):
     assert StrInstance().combine("a", "b") == "ab"
 

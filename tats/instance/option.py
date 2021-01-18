@@ -14,7 +14,6 @@ B = TypeVar("B")
 
 
 class OptionInstance(Monad["Option"]):
-
   @staticmethod
   def flat_map(fa: Kind1["Option", A],
                f: Func1[A, Kind1["Option", B]]) -> Kind1["Option", B]:
@@ -27,7 +26,6 @@ class OptionInstance(Monad["Option"]):
 
 @dataclass(frozen=True)
 class Kind1OptionInstance(Generic[A], Kind1Monoid["Option", A]):
-
   @staticmethod
   def _cmb(tsemi: Semigroup[A], a: "Option[A]", b: "Option[A]") -> "Option[A]":
     if a.non_empty() and b.non_empty():

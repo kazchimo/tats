@@ -14,7 +14,6 @@ S = TypeVar("S", bound=Kind1)
 
 
 class MonoidSyntax(SemigroupSyntax[T], SelfIs[T], HasEqInstance[T]):
-
   @property
   @abstractmethod
   def _monoid_instance(self) -> Monoid[T]:
@@ -34,7 +33,6 @@ class MonoidSyntax(SemigroupSyntax[T], SelfIs[T], HasEqInstance[T]):
 
 
 class Kind1MonoidSyntax(Kind1SemigroupSyntax[S, T], HasEqInstance[S]):
-
   def _semigroup_instance(self) -> Kind1Semigroup[S, T]:
     return self._monoid_instance
 

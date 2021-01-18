@@ -8,7 +8,6 @@ T = TypeVar("T")
 
 
 class HasEqInstance(Generic[T], ABC):
-
   @property
   @abstractmethod
   def _eq_instance(self) -> Eq[T]:
@@ -16,7 +15,6 @@ class HasEqInstance(Generic[T], ABC):
 
 
 class EqSyntax(Generic[T], SelfIs[T], HasEqInstance[T]):
-
   def eqv(self, r: T) -> bool:
     return self._eq_instance.eqv(self._self, r)
 
@@ -25,7 +23,6 @@ class EqSyntax(Generic[T], SelfIs[T], HasEqInstance[T]):
 
 
 class DeriveEq(EqSyntax[T], ABC):
-
   @property
   def _eq_instance(self) -> Eq[T]:
     return Eq(lambda a, b: a == b)

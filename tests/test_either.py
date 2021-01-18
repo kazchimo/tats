@@ -6,7 +6,6 @@ from tats.data.Either import Left, Right, Either
 
 
 class TestEither:
-
   def test_cond(self):
     assert Either.cond(True, 1, 2) == Right(1)
     assert Either.cond(False, 1, 2) == Left(2)
@@ -28,7 +27,6 @@ class TestEither:
     assert Left(1).swap == Right(1)
 
   def test_foreach(self):
-
     def _raise(_):
       raise Exception
 

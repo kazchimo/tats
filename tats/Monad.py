@@ -12,7 +12,6 @@ B = TypeVar("B")
 
 
 class Monad(Generic[F], FlatMap[F], Applicative[F]):
-
   @classmethod
   def map(cls, fa: Kind1[F, A], f: Func1[A, B]) -> Kind1[F, B]:
     return cls.flat_map(fa, lambda x: cls.pure(f(x)))

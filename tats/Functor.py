@@ -11,7 +11,6 @@ B = TypeVar("B")
 
 
 class Functor(Generic[F]):
-
   @staticmethod
   @abstractmethod
   def map(fa: Kind1[F, A], f: Func1[A, B]) -> Kind1[F, B]:

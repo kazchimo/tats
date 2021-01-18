@@ -11,13 +11,11 @@ B = TypeVar("B")
 
 
 class Func1(Protocol[Arg1, Res]):
-
   def __call__(self, a: Arg1) -> Res:
     ...
 
 
 class Func1F(Generic[Arg1, Res]):
-
   @staticmethod
   def true() -> Func1[Arg1, bool]:
     return lambda _: True
@@ -40,18 +38,15 @@ class Func1F(Generic[Arg1, Res]):
 
 
 class Func3(Protocol[Arg1, Arg2, Arg3, Res]):
-
   def __call__(self, a: Arg1, b: Arg2, c: Arg3) -> Res:
     ...
 
 
 class BiOp(Protocol[Arg1, Res]):
-
   def __call__(self, a: Arg1, b: Arg1) -> Res:
     ...
 
 
 class EndoBiOp(Protocol[T]):
-
   def __call__(self, a: T, b: T) -> T:
     ...

@@ -7,7 +7,6 @@ from tats.data.Option import Some, Nothing, Option
 
 
 class TestOption:
-
   def test_from_nullable(self):
     assert Option.from_nullable(1) == Some(1)
     assert Option.from_nullable(None) == Nothing()
@@ -58,7 +57,6 @@ class TestOption:
     assert Nothing().filter_not(lambda x: x == 2) == Nothing()
 
   def test_foreach(self):
-
     def _raise(_):
       raise Exception
 

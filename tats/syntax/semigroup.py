@@ -11,7 +11,6 @@ S = TypeVar("S", bound=Kind1)
 
 
 class SemigroupSyntax(Generic[T], SelfIs[T]):
-
   def __add__(self, other: T):
     return self.combine(other)
 
@@ -25,7 +24,6 @@ class SemigroupSyntax(Generic[T], SelfIs[T]):
 
 
 class Kind1SemigroupSyntax(Generic[S, T], SelfIs[S]):
-
   def combine(self, tsemi: Semigroup[T], other: S) -> S:
     return self._semigroup_instance().combine(tsemi, self._self, other)
 

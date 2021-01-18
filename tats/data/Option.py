@@ -36,7 +36,6 @@ class WithFilter(Generic[A]):
 
 class Option(SupportsKind1["Option", A], DeriveEq, MonadSyntax["Option", A],
              Kind1MonoidSyntax["Option", A]):
-
   @staticmethod
   def from_nullable(a: Optional[A]) -> "Option[A]":
     return Nothing() if a is None else Some(a)

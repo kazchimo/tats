@@ -13,7 +13,6 @@ B = TypeVar("B")
 
 
 class FunctorSyntax(Generic[F, A], SelfIs[F], ABC):
-
   @property
   @abstractmethod
   def _functor_instance(self) -> Type[Functor[F]]:

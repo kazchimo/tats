@@ -2,7 +2,6 @@ from tats.Monoid import Monoid
 
 
 class StrInstance(Monoid[str]):
-
   @property
   def empty(self) -> str:
     return ""

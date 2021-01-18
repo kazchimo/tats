@@ -15,7 +15,6 @@ B = TypeVar("B")
 
 
 class MonadSyntax(Generic[F, A], FlatMapSyntax[F, A], ApplicativeSyntax[F, A]):
-
   @property
   @abstractmethod
   def _monad_instance(self) -> Type[Monad[F]]:

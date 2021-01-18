@@ -14,7 +14,6 @@ B = TypeVar("B")
 
 
 class EitherInstance(Monad["Either"], Generic[L]):
-
   @staticmethod
   def flat_map(fa: Kind1["Either", A],
                f: Func1[A, Kind1["Either", B]]) -> Kind1["Either", B]:
@@ -29,11 +28,9 @@ class EitherInstance(Monad["Either"], Generic[L]):
 
 
 class Kind1EitherInstance(Generic[R], Kind1Semigroup["Either", R]):
-
   @staticmethod
-  def _cmb(
-      tsemi: Semigroup[R], a: "Either[R, L]",
-      b: "Either[R, L]") -> "Either[R, L]":
+  def _cmb(tsemi: Semigroup[R], a: "Either[R, L]",
+           b: "Either[R, L]") -> "Either[R, L]":
     if a.is_left():
       return a
     else:

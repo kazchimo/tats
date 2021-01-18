@@ -10,16 +10,13 @@ S = TypeVar("S", bound=Kind1)
 
 
 class Monoid(Semigroup[T], ABC):
-
   @property
   @abstractmethod
   def empty(self) -> T:
     ...
 
   def reverse(self) -> "Monoid[T]":
-
     class _Monoid(Monoid[T]):
-
       def _cmb(_self, a: T, b: T) -> T:
         return self.combine(b, a)
 
@@ -34,7 +31,6 @@ class Monoid(Semigroup[T], ABC):
 
 
 class Kind1Monoid(Kind1Semigroup[S, T]):
-
   @abstractmethod
   def empty(self) -> S:
     ...
