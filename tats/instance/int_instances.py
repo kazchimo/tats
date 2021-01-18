@@ -1,8 +1,14 @@
-from tats.Semigroup import Semigroup
+from tats.Monoid import Monoid
 
 
-class IntInstance(Semigroup[int]):
+class IntInstance(Monoid[int]):
 
   @staticmethod
   def _cmb(a: int, b: int) -> int:
     return a + b
+
+  @property
+  def empty(self) -> int:
+    return 0
+
+
