@@ -4,10 +4,12 @@ from typing import TypeVar, List, Type, Tuple
 
 from returns.primitives.hkt import SupportsKind1
 
+from tats import Foldable
 from tats.Monad import Monad
 from tats.Monoid import Monoid
 from tats.data.Function import Func1
 from tats.syntax.eq import DeriveEq
+from tats.syntax import foldable
 from tats.syntax.monad import MonadSyntax
 from tats.syntax.monoid import MonoidSyntax
 
@@ -16,8 +18,8 @@ B = TypeVar("B")
 
 
 @dataclass(frozen=True)
-class TList(UserList[A], SupportsKind1["TList", A], DeriveEq, MonadSyntax,
-            MonoidSyntax["TList[A]"]):
+class TList(UserList[A], SupportsKind1["TList", A], DeriveEq, MonadSyntax, MonoidSyntax["TList[A]"],
+            foldable.FoldableSyntax["TList", A]):
   data: List[A]
 
   @property
@@ -88,3 +90,8 @@ class TList(UserList[A], SupportsKind1["TList", A], DeriveEq, MonadSyntax,
   def _monoid_instance(self) -> Monoid["TList[A]"]:
     from tats.instance.tlist import TListInstance1
     return TListInstance1()
+
+  @property
+  def _foldable_instance(self) -> Foldable.Foldable["TList[A]"]:
+    from tats.instance.tlist import TListInstance
+    return TListInstance()

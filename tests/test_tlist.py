@@ -1,5 +1,6 @@
 from pytest import raises
 
+from tats.data.Option import Some, Nothing
 from tats.data.TList import TList
 
 
@@ -52,8 +53,7 @@ class TestTList:
     assert TList([1, 2, 3]).span(lambda x: x < 3) == (TList([1, 2]), TList([3]))
     assert TList([1, 2, 3])\
              .span(lambda x: x < 0) == (TList([]), TList([1, 2, 3]))
-    assert TList([1, 2, 3]).span(lambda x: x < 4) == (TList([1, 2,
-                                                             3]), TList([]))
+    assert TList([1, 2, 3]).span(lambda x: x < 4) == (TList([1, 2, 3]), TList([]))
 
   def test_var(self):
     assert TList.var(1, 2) == TList([1, 2])
@@ -64,9 +64,14 @@ class TestTList:
     assert TList([1, 2]).map(lambda x: x * 2) == TList([2, 4])
     assert TList([1, 2]).product_r(TList([3, 4])) == TList([3, 4, 3, 4])
     assert TList([1, 2]).product_l(TList([3, 4])) == TList([1, 1, 2, 2])
-    assert TList([1, 2
-                 ]).flat_map(lambda x: TList([x, x * 2])) == TList([1, 2, 2, 4])
+    assert TList([1, 2]).flat_map(lambda x: TList([x, x * 2])) == TList([1, 2, 2, 4])
     assert TList([1, 2]).combine(TList([3, 4])) == TList([1, 2, 3, 4])
     assert TList([1, 2]) + TList([3, 4]) == TList([1, 2, 3, 4])
     assert TList([]).is_empty
     assert not TList([1, 2]).is_empty
+    assert TList([1, 2, 3]).fold_left(0, lambda a, b: a + b) == 6
+    assert TList([1, 2, 3]).reduce_left_to_option(str, lambda a, b: a + str(b)) == Some("123")
+    assert TList([]).reduce_left_to_option(str, lambda a, b: a + str(b)) == Nothing()
+    assert TList([1, 2, 3]).reduce_left_option(lambda a, b: a + b) == Some(6)
+    assert TList([]).reduce_left_option(lambda a, b: a + b) == Nothing()
+    assert TList([1, 2, 3]).to_tlist() == TList([1, 2, 3])
