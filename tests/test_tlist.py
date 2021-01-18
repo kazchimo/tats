@@ -15,6 +15,12 @@ class TestTList:
     with raises(ValueError):
       TList([]).tail
 
+  def test_take(self):
+    assert TList([1, 2, 3]).take(2) == TList([1, 2])
+    assert TList([1, 2, 3]).take(10) == TList([1, 2, 3])
+    assert TList([1, 2, 3]).take(-1) == TList([])
+    assert TList([1, 2, 3]).take(0) == TList([])
+
   def test_var(self):
     assert TList.var(1, 2) == TList([1, 2])
 
