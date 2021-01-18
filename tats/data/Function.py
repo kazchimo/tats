@@ -1,4 +1,4 @@
-from typing import TypeVar, Protocol, Generic
+from typing import TypeVar, Protocol, Generic, Callable
 
 Arg1 = TypeVar("Arg1", contravariant=True)
 Arg2 = TypeVar("Arg2", contravariant=True)
@@ -37,9 +37,8 @@ class Func1F(Generic[Arg1, Res]):
     return lambda _: a
 
 
-class Func2(Protocol[Arg1, Arg2, Res]):
-  def __call__(self, a: Arg1, b: Arg2) -> Res:
-    ...
+Func2 = Callable[[Arg1, Arg2], Res]
+EndoFunc2 = Func2[T, T, T]
 
 
 class Func3(Protocol[Arg1, Arg2, Arg3, Res]):
