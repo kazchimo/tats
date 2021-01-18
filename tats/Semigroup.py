@@ -9,9 +9,8 @@ S = TypeVar("S", bound=Kind1)
 
 class Semigroup(Generic[T]):
 
-  @staticmethod
   @abstractmethod
-  def _cmb(a: T, b: T) -> T:
+  def _cmb(self, a: T, b: T) -> T:
     ...
 
   def combine(self, a: T, b: T) -> T:
@@ -20,9 +19,8 @@ class Semigroup(Generic[T]):
 
 class Kind1Semigroup(Generic[S, T]):
 
-  @staticmethod
   @abstractmethod
-  def _cmb(tsemi: Semigroup[T], a: S, b: S) -> S:
+  def _cmb(self, tsemi: Semigroup[T], a: S, b: S) -> S:
     ...
 
   def combine(self, tsemi: Semigroup[T], a: S, b: S) -> S:
