@@ -28,6 +28,10 @@ class MonoidSyntax(SemigroupSyntax[T], SelfIs[T], HasEqInstance[T]):
   def is_empty(self) -> bool:
     return self._eq_instance.eqv(self._self, self._monoid_instance.empty)
 
+  @property
+  def non_empty(self) -> bool:
+    return not self.is_empty
+
 
 class Kind1MonoidSyntax(Kind1SemigroupSyntax[S, T], HasEqInstance[S]):
 
