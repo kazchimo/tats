@@ -63,10 +63,6 @@ class TList(UserList[A], SupportsKind1["TList", A], DeriveEq, MonadSyntax,
     return TList(list(a))
 
   @property
-  def _self(self) -> "TList[A]":
-    return self
-
-  @property
   def _monad_instance(self) -> Type[Monad["TList"]]:
     from tats.instance.tlist import TListInstance
     return TListInstance
