@@ -1,7 +1,19 @@
+from pytest import raises
+
 from tats.data.TList import TList
 
 
 class TestTList:
+
+  def test_head(self):
+    assert TList([1, 2]).head == 1
+    with raises(ValueError):
+      TList([]).head
+
+  def test_tail(self):
+    assert TList([1, 2, 3]).tail == TList([2, 3])
+    with raises(ValueError):
+      TList([]).tail
 
   def test_var(self):
     assert TList.var(1, 2) == TList([1, 2])

@@ -19,6 +19,20 @@ class TList(UserList[A], SupportsKind1["TList", A], DeriveEq, MonadSyntax,
             MonoidSyntax["TList[A]"]):
   data: List[A]
 
+  @property
+  def head(self) -> A:
+    if len(self.data) == 0:
+      raise ValueError("head of empty TList")
+    else:
+      return self.data[0]
+
+  @property
+  def tail(self) -> "TList[A]":
+    if len(self.data) == 0:
+      raise ValueError("head of empty TList")
+    else:
+      return TList(self.data[1:])
+
   @staticmethod
   def var(*a: A) -> "TList[A]":
     return TList(list(a))
