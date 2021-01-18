@@ -16,6 +16,18 @@ class Semigroup(Generic[T]):
   def combine(self, a: T, b: T) -> T:
     return self._cmb(a, b)
 
+  def reverse(self) -> "Semigroup[T]":
+
+    class _Semigroup(Semigroup[T]):
+
+      def _cmb(_self, a: T, b: T) -> T:
+        return self.combine(b, a)
+
+      def reverse(self) -> "Semigroup[T]":
+        return self
+
+    return _Semigroup()
+
 
 class Kind1Semigroup(Generic[S, T]):
 
