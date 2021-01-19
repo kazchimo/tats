@@ -54,5 +54,6 @@ class Kind1OptionInstance(Generic[A], Kind1Monoid["Option", A]):
     else:
       return Nothing()
 
-  def empty(self) -> "Option[A]":
+  @staticmethod
+  def empty() -> "Option[A]":
     return Nothing()
