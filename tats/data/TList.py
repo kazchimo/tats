@@ -1,3 +1,4 @@
+from abc import ABC
 from dataclasses import dataclass
 from dataclasses import dataclass
 from typing import TypeVar, List, Tuple, Iterator, Sequence, overload
@@ -17,9 +18,15 @@ A = TypeVar("A")
 B = TypeVar("B")
 
 
+class TListStatic:
+  @staticmethod
+  def var(*a: A) -> "TList[A]":
+    return TList(list(a))
+
+
 @dataclass(frozen=True)
 class TList(Sequence[A], SupportsKind1["TList", A], DeriveEq, MonadSyntax, MonoidSyntax["TList"],
-            TraverseSyntax["TList"]):
+            TraverseSyntax["TList"], TListStatic):
   data: List[A]
 
   @property
@@ -84,10 +91,6 @@ class TList(Sequence[A], SupportsKind1["TList", A], DeriveEq, MonadSyntax, Monoi
       these = these.tail
 
     return TList(l), these
-
-  @staticmethod
-  def var(*a: A) -> "TList[A]":
-    return TList(list(a))
 
   def __iter__(self) -> Iterator[A]:
     i = 0
