@@ -103,8 +103,8 @@ class Option(SupportsKind1["Option", A], DeriveEq, MonadSyntax["Option", A],
   def _self(self) -> "Option[A]":
     return self
 
-  @property
-  def _monad_instance(self) -> Monad["Option"]:
+  @staticmethod
+  def _monad_instance() -> Monad["Option"]:
     from tats.instance.option import OptionInstance
     return OptionInstance()
 
@@ -113,8 +113,8 @@ class Option(SupportsKind1["Option", A], DeriveEq, MonadSyntax["Option", A],
     from tats.instance.option import Kind1OptionInstance
     return Kind1OptionInstance()
 
-  @property
-  def _traverse_instance(self) -> Traverse["Option"]:
+  @staticmethod
+  def _traverse_instance() -> Traverse["Option"]:
     from tats.instance.option import OptionInstance
     return OptionInstance()
 

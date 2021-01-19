@@ -32,9 +32,9 @@ class OptionInstance(Monad["Option"], Traverse["Option"]):
     ff: Func1[A, B] = lambda a: f(b, a)
     return dekind(fa).fold(b, ff)
 
-  @property
-  def _flat_map_instance(self) -> FlatMap[Option]:
-    return self
+  @classmethod
+  def _flat_map_instance(cls) -> FlatMap[Option]:
+    return cls()
 
   @staticmethod
   def traverse(gap: Applicative[G], fa: Kind1[Option, A],\

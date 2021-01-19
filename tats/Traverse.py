@@ -28,7 +28,7 @@ class Traverse(Generic[F], Foldable[F], Functor[F], HasFlatMapInstance[F]):
     _map = cast(
       Func2[Kind3[G, F, F, B], Func1[Kind2[F, F, B], Kind1[F, B]], Kind2[G, F, B]], gap.map)
 
-    _flatten: Func1[Kind2[F, F, B], Kind1[F, B]] = lambda ffa: cls()._flat_map_instance.flatten(ffa)
+    _flatten: Func1[Kind2[F, F, B], Kind1[F, B]] = lambda ffa: cls._flat_map_instance().flatten(ffa)
 
     return _map(cls.traverse(gap, fa, f), _flatten)
 

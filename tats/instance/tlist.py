@@ -37,9 +37,9 @@ class TListInstance(Monad["TList"], Traverse["TList"]):
     return cls.fold_left(
       fa, empty, lambda ac, el: gap.map2(ac, f(el), lambda a, b: a.combine(TList([b]))))
 
-  @property
-  def _flat_map_instance(self) -> FlatMap["TList"]:
-    return self
+  @classmethod
+  def _flat_map_instance(cls) -> FlatMap["TList"]:
+    return cls()
 
 
 class TListInstance1(Generic[A], Monoid[TList[A]]):

@@ -18,27 +18,27 @@ B = TypeVar("B")
 
 
 class HasTraverseInstance(Generic[F], HasFoldableInstance[F], HasFunctorInstance[F]):
-  @property
+  @staticmethod
   @abstractmethod
-  def _traverse_instance(self) -> "Traverse.Traverse[F]":
+  def _traverse_instance() -> "Traverse.Traverse[F]":
     ...
 
-  @property
-  def _foldable_instance(self) -> "Foldable.Foldable[F]":
-    return self._traverse_instance
+  @classmethod
+  def _foldable_instance(cls) -> "Foldable.Foldable[F]":
+    return cls._traverse_instance()
 
-  @property
-  def _functor_instance(self) -> Functor[F]:
-    return self._traverse_instance
+  @classmethod
+  def _functor_instance(cls) -> Functor[F]:
+    return cls._traverse_instance()
 
 
 class TraverseSyntax(Generic[F], FoldableSyntax[F], FunctorSyntax[F], HasTraverseInstance[F],
                      SelfIs[F]):
   def traverse(self, gap: Applicative[G], f: Func1[A, Kind1[G, B]]) -> Kind2[G, F, B]:
-    return self._traverse_instance.traverse(gap, self._self, f)
+    return self._traverse_instance().traverse(gap, self._self, f)
 
   def flat_traverse(self, gap: Applicative[G], f: Func1[A, Kind2[G, F, B]]) -> Kind2[G, F, B]:
-    return self._traverse_instance.flat_traverse(gap, self._self, f)
+    return self._traverse_instance().flat_traverse(gap, self._self, f)
 
   def sequence(self, gap: Applicative[G]) -> Kind2[G, F, A]:
-    return self._traverse_instance.sequence(gap, self._self)
+    return self._traverse_instance().sequence(gap, self._self)

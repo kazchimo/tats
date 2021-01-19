@@ -70,8 +70,8 @@ class Either(SupportsKind2["Either", R, L], DeriveEq, MonadSyntax["Either", R],
   def _self(self) -> "Either[R, L]":
     return self
 
-  @property
-  def _monad_instance(self) -> Monad["Either"]:
+  @staticmethod
+  def _monad_instance() -> Monad["Either"]:
     from tats.instance.either import EitherInstance
     return EitherInstance()
 

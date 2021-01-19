@@ -118,8 +118,8 @@ class TList(Sequence[A], SupportsKind1["TList", A], DeriveEq, MonadSyntax, Monoi
   def __len__(self) -> int:
     return len(self.data)
 
-  @property
-  def _monad_instance(self) -> Monad["TList"]:
+  @staticmethod
+  def _monad_instance() -> Monad["TList"]:
     from tats.instance.tlist import TListInstance
     return TListInstance()
 
@@ -128,7 +128,7 @@ class TList(Sequence[A], SupportsKind1["TList", A], DeriveEq, MonadSyntax, Monoi
     from tats.instance.tlist import TListInstance1
     return TListInstance1()
 
-  @property
-  def _traverse_instance(self) -> "Traverse.Traverse[TList[A]]":
+  @staticmethod
+  def _traverse_instance() -> "Traverse.Traverse[TList[A]]":
     from tats.instance.tlist import TListInstance
     return TListInstance()

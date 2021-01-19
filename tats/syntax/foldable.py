@@ -14,23 +14,23 @@ B = TypeVar("B")
 
 
 class HasFoldableInstance(Generic[F]):
-  @property
+  @staticmethod
   @abstractmethod
-  def _foldable_instance(self) -> "Foldable.Foldable[F]":
+  def _foldable_instance() -> "Foldable.Foldable[F]":
     ...
 
 
 class FoldableSyntax(Generic[F], HasFoldableInstance[F], SelfIs[F]):
   def fold_left(self, b: B, f: Func2[B, A, B]) -> B:
-    return self._foldable_instance.fold_left(self._self, b, f)
+    return self._foldable_instance().fold_left(self._self, b, f)
 
   def reduce_left_to_option(self, f: Func1[A, B], g: Func2[B, A, B]) -> "Option.Option[B]":
-    return self._foldable_instance.reduce_left_to_option(self._self, f, g)
+    return self._foldable_instance().reduce_left_to_option(self._self, f, g)
 
   def reduce_left_option(self, f: EndoFunc2[A]) -> "Option.Option[A]":
-    return self._foldable_instance.reduce_left_option(self._self, f)
+    return self._foldable_instance().reduce_left_option(self._self, f)
 
   from tats.data import TList
 
   def to_tlist(self) -> "TList.TList[A]":
-    return self._foldable_instance.to_tlist(self._self)
+    return self._foldable_instance().to_tlist(self._self)
