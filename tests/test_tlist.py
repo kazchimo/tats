@@ -85,6 +85,7 @@ class TestTList:
     assert TList([1, 2]).flat_map(lambda x: TList([x, x * 2])) == TList([1, 2, 2, 4])
     assert TList([1, 2]).combine(TList([3, 4])) == TList([1, 2, 3, 4])
     assert TList([1, 2]) + TList([3, 4]) == TList([1, 2, 3, 4])
+    assert TList([1, 2]) + TList([3, 4]) == TList([1, 2, 3, 4])
     assert TList([]).is_empty
     assert not TList([1, 2]).is_empty
     assert TList([1, 2, 3]).fold_left(0, lambda a, b: a + b) == 6
