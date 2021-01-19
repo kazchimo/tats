@@ -3,6 +3,9 @@ from typing import TypeVar, cast, Generic, Any, Type, Optional
 
 from returns.primitives.hkt import SupportsKind1, Kind1
 
+from tats.Traverse import Traverse
+
+from tats.syntax.traverse import TraverseSyntax
 from tats.Monad import Monad
 from tats.Monoid import Kind1Monoid
 from tats.data import Either
@@ -34,7 +37,7 @@ class WithFilter(Generic[A]):
 
 
 class Option(SupportsKind1["Option", A], DeriveEq, MonadSyntax["Option", A],
-             Kind1MonoidSyntax["Option", A]):
+             Kind1MonoidSyntax["Option", A], TraverseSyntax["Option"]):
   @staticmethod
   def from_nullable(a: Optional[A]) -> "Option[A]":
     return Nothing() if a is None else Some(a)
@@ -109,6 +112,11 @@ class Option(SupportsKind1["Option", A], DeriveEq, MonadSyntax["Option", A],
   def _monoid_instance(self) -> Kind1Monoid["Option", A]:
     from tats.instance.option import Kind1OptionInstance
     return Kind1OptionInstance()
+
+  @property
+  def _traverse_instance(self) -> Traverse["Option"]:
+    from tats.instance.option import OptionInstance
+    return OptionInstance()
 
 
 @dataclass(frozen=True)

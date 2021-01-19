@@ -1,5 +1,7 @@
 from pytest import raises
 
+from tats.data.TList import TList
+from tats.instance.tlist import TListInstance
 from tats.instance.option import OptionInstance
 from tats.instance.int import IntInstance
 from tats.data.Either import Right, Left
@@ -173,3 +175,10 @@ class TestOption:
     assert Nothing().combine(IntInstance(), Some(1)) == Nothing()
     assert Some(1).combine(IntInstance(), Nothing()) == Nothing()
     assert Nothing().combine(IntInstance(), Nothing()) == Nothing()
+
+    assert Some(1).traverse(TListInstance(), lambda a: TList([a, a * 2])) == \
+           TList([Some(1), Some(2)])
+    assert Nothing().traverse(TListInstance(), lambda a: TList([a, a * 2])) == TList([Nothing()])
+    assert Some(1).flat_traverse(TListInstance(), lambda a: TList([Some(a), Some(a * 2)])) == \
+           TList([Some(1), Some(2)])
+    assert Some(TList([1, 2])).sequence(TListInstance()) == TList([Some(1), Some(2)])

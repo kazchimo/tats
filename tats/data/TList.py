@@ -1,18 +1,17 @@
 from collections import UserList
 from dataclasses import dataclass
-from typing import TypeVar, List, Type, Tuple
+from typing import TypeVar, List, Tuple
 
 from returns.primitives.hkt import SupportsKind1
 
-from tats import Foldable
 from tats.Monad import Monad
 from tats.Monoid import Monoid
-from tats.Traverse import Traverse
+from tats import Traverse
 from tats.data.Function import Func1
 from tats.syntax.eq import DeriveEq
 from tats.syntax.monad import MonadSyntax
 from tats.syntax.monoid import MonoidSyntax
-from tats.syntax.traverse import TraverseSyntax, F
+from tats.syntax.traverse import TraverseSyntax
 
 A = TypeVar("A")
 B = TypeVar("B")
@@ -93,6 +92,6 @@ class TList(UserList[A], SupportsKind1["TList", A], DeriveEq, MonadSyntax, Monoi
     return TListInstance1()
 
   @property
-  def _traverse_instance(self) -> Traverse["TList[A]"]:
+  def _traverse_instance(self) -> "Traverse.Traverse[TList[A]]":
     from tats.instance.tlist import TListInstance
     return TListInstance()
