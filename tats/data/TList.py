@@ -1,12 +1,12 @@
-from collections import UserList
 from dataclasses import dataclass
-from typing import TypeVar, List, Tuple
+from dataclasses import dataclass
+from typing import TypeVar, List, Tuple, Iterator, Sequence, overload
 
 from returns.primitives.hkt import SupportsKind1
 
+from tats import Traverse
 from tats.Monad import Monad
 from tats.Monoid import Monoid
-from tats import Traverse
 from tats.data.Function import Func1
 from tats.syntax.eq import DeriveEq
 from tats.syntax.monad import MonadSyntax
@@ -18,9 +18,17 @@ B = TypeVar("B")
 
 
 @dataclass(frozen=True)
-class TList(UserList[A], SupportsKind1["TList", A], DeriveEq, MonadSyntax, MonoidSyntax["TList[A]"],
+class TList(Sequence[A], SupportsKind1["TList", A], DeriveEq, MonadSyntax, MonoidSyntax["TList"],
             TraverseSyntax["TList"]):
   data: List[A]
+
+  @property
+  def size(self) -> int:
+    return len(self.data)
+
+  @property
+  def reverse(self) -> "TList[A]":
+    return TList(self.data[::-1])
 
   @property
   def head(self) -> A:
@@ -80,6 +88,32 @@ class TList(UserList[A], SupportsKind1["TList", A], DeriveEq, MonadSyntax, Monoi
   @staticmethod
   def var(*a: A) -> "TList[A]":
     return TList(list(a))
+
+  def __iter__(self) -> Iterator[A]:
+    i = 0
+    while i <= self.size - 1:
+      v = self.data[i]
+      yield v
+      i = i + 1
+
+    return
+
+  @overload
+  def __getitem__(self, i: int) -> A:
+    ...
+
+  @overload
+  def __getitem__(self, s: slice) -> "TList[A]":
+    ...
+
+  def __getitem__(self, a):
+    if isinstance(a, int):
+      return self.data[a]
+    else:
+      return TList(self.data[a])
+
+  def __len__(self) -> int:
+    return len(self.data)
 
   @property
   def _monad_instance(self) -> Monad["TList"]:

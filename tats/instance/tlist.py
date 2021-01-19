@@ -32,7 +32,8 @@ class TListInstance(Monad["TList"], Traverse["TList"]):
                f: Func1[A, Kind1[G, B]]) -> Kind2[G, "TList", B]:
     l: List[B] = []
     empty = cast(Kind2[G, "TList", B], gap.pure(TList(l)))
-    return self.fold_left(fa, empty, lambda ac, el: gap.map2(ac, f(el), lambda a, b: a + [b]))
+    return self.fold_left(
+      fa, empty, lambda ac, el: gap.map2(ac, f(el), lambda a, b: a.combine(TList([b]))))
 
   @property
   def _flat_map_instance(self) -> FlatMap["TList"]:
@@ -42,7 +43,7 @@ class TListInstance(Monad["TList"], Traverse["TList"]):
 class TListInstance1(Generic[A], Monoid[TList[A]]):
   @staticmethod
   def combine(a: "TList[A]", b: "TList[A]") -> "TList[A]":
-    return a + b
+    return TList(a.data + b.data)
 
   @property
   def empty(self) -> "TList[A]":

@@ -59,6 +59,20 @@ class TestTList:
   def test_var(self):
     assert TList.var(1, 2) == TList([1, 2])
 
+  def test_get_item(self):
+    assert TList.var(1, 2)[0] == 1
+    assert TList.var(1, 2, 3, 4)[2:3] == TList.var(3)
+    assert TList.var(1, 2, 3, 4)[2:] == TList.var(3, 4)
+    assert TList.var(1, 2, 3, 4)[:3] == TList.var(1, 2, 3)
+    assert TList.var(1, 2, 3, 4)[:-1] == TList.var(1, 2, 3)
+    assert TList.var(1, 2, 3, 4)[::-1] == TList.var(1, 2, 3, 4).reverse
+
+  def test_iter(self):
+    assert [i for i in TList.var(1, 2, 3)] == [1, 2, 3]
+
+  def test_size(self):
+    assert TList.var(1, 2, 3).size == 3
+
   def test_syntax(self):
     assert TList([1, 2, 3]).eqv(TList([1, 2, 3]))
     assert TList([1, 2, 3]).neqv(TList([1, 2]))

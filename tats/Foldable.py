@@ -33,4 +33,4 @@ class Foldable(Generic[F]):
 
   def to_tlist(self, fa: Kind1[F, A]) -> "TList.TList[A]":
     from tats.data import TList
-    return self.fold_left(fa, TList.TList([]), lambda a, b: a + [b])
+    return self.fold_left(fa, TList.TList([]), lambda a, b: a.combine(TList.TList([b])))
