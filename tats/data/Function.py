@@ -44,17 +44,11 @@ class Func2(Protocol[Arg1, Arg2, Res]):
 
 EndoFunc2 = Func2[T, T, T]
 
+BiOp = Func2[A, A, B]
+
+EndoBiOp = Func2[A, A, A]
+
 
 class Func3(Protocol[Arg1, Arg2, Arg3, Res]):
   def __call__(self, a: Arg1, b: Arg2, c: Arg3) -> Res:
-    ...
-
-
-class BiOp(Protocol[Arg1, Res]):
-  def __call__(self, a: Arg1, b: Arg1) -> Res:
-    ...
-
-
-class EndoBiOp(Protocol[T]):
-  def __call__(self, a: T, b: T) -> T:
     ...
