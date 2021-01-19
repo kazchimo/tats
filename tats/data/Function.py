@@ -17,6 +17,10 @@ class Func1(Protocol[Arg1, Res]):
 
 class Func1F(Generic[Arg1, Res]):
   @staticmethod
+  def lam(f: Func1[Arg1, Res]) -> Func1[Arg1, Res]:
+    return f
+
+  @staticmethod
   def true() -> Func1[Arg1, bool]:
     return lambda _: True
 
