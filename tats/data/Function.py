@@ -9,7 +9,10 @@ T = TypeVar("T")
 A = TypeVar("A")
 B = TypeVar("B")
 
-Func1 = Callable[[Arg1], Res]
+
+class Func1(Protocol[Arg1, Res]):
+  def __call__(self, a: Arg1) -> Res:
+    ...
 
 
 class Func1F(Generic[Arg1, Res]):
@@ -34,7 +37,11 @@ class Func1F(Generic[Arg1, Res]):
     return lambda _: a
 
 
-Func2 = Callable[[Arg1, Arg2], Res]
+class Func2(Protocol[Arg1, Arg2, Res]):
+  def __call__(self, a: Arg1, b: Arg2) -> Res:
+    ...
+
+
 EndoFunc2 = Func2[T, T, T]
 
 

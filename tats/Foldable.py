@@ -17,8 +17,9 @@ class Foldable(Generic[F]):
     ...
 
   def reduce_left_to_option(self, fa: Kind1[F, A], f: Func1[A, B], g: Func2[B, A, B]) -> Option[B]:
-    def conv(acc: Option[B], el: A) -> Option[B]:
-      return Some(f(el)) if acc.is_empty() else Some(g(acc.get, el))
+    conv: Func2[
+      Option[B], A,
+      Option[B]] = lambda acc, el: Some(f(el)) if acc.is_empty() else Some(g(acc.get, el))
 
     return self.fold_left(fa, Nothing(), conv)
 

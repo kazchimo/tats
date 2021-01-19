@@ -20,7 +20,7 @@ class HasFlatMapInstance(Generic[F]):
     ...
 
 
-class FlatMapSyntax(Generic[F, A], ApplySyntax[F, A], ABC, HasFlatMapInstance[F]):
+class FlatMapSyntax(Generic[F, A], ApplySyntax[F, A], HasFlatMapInstance[F]):
   def flat_map(self, f: Func1[A, Kind1[F, B]]) -> Kind1[F, B]:
     return self._flat_map_instance.flat_map(self._self, f)
 
