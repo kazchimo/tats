@@ -12,25 +12,29 @@ B = TypeVar("B")
 
 
 class Foldable(Generic[F]):
+  @staticmethod
   @abstractmethod
-  def fold_left(self, fa: Kind1[F, A], b: B, f: Func2[B, A, B]) -> B:
+  def fold_left(fa: Kind1[F, A], b: B, f: Func2[B, A, B]) -> B:
     ...
 
+  @classmethod
   def reduce_left_to_option(
-      self, fa: Kind1[F, A], f: Func1[A, B], g: Func2[B, A, B]) -> "Option.Option[B]":
+      cls, fa: Kind1[F, A], f: Func1[A, B], g: Func2[B, A, B]) -> "Option.Option[B]":
     from tats.data.Option import Option, Nothing, Some
     conv: Func2[
       Option[B], A,
       Option[B]] = lambda acc, el: Some(f(el)) if acc.is_empty() else Some(g(acc.get, el))
 
-    return self.fold_left(fa, Nothing(), conv)
+    return cls.fold_left(fa, Nothing(), conv)
 
-  def reduce_left_option(self, fa: Kind1[F, A], f: EndoFunc2[A]) -> "Option.Option[A]":
+  @classmethod
+  def reduce_left_option(cls, fa: Kind1[F, A], f: EndoFunc2[A]) -> "Option.Option[A]":
     ff: Func1[A, A] = Func1F.id()
-    return self.reduce_left_to_option(fa, ff, f)
+    return cls.reduce_left_to_option(fa, ff, f)
 
   from tats.data import TList
 
-  def to_tlist(self, fa: Kind1[F, A]) -> "TList.TList[A]":
+  @classmethod
+  def to_tlist(cls, fa: Kind1[F, A]) -> "TList.TList[A]":
     from tats.data import TList
-    return self.fold_left(fa, TList.TList([]), lambda a, b: a.combine(TList.TList([b])))
+    return cls.fold_left(fa, TList.TList([]), lambda a, b: a.combine(TList.TList([b])))

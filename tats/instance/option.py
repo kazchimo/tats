@@ -27,7 +27,8 @@ class OptionInstance(Monad["Option"], Traverse["Option"]):
   def pure(a: A) -> "Option[A]":
     return Some(a)
 
-  def fold_left(self, fa: Kind1[Option, A], b: B, f: Func2[B, A, B]) -> B:
+  @staticmethod
+  def fold_left(fa: Kind1[Option, A], b: B, f: Func2[B, A, B]) -> B:
     ff: Func1[A, B] = lambda a: f(b, a)
     return dekind(fa).fold(b, ff)
 

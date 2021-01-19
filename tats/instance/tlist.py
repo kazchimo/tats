@@ -25,7 +25,8 @@ class TListInstance(Monad["TList"], Traverse["TList"]):
   def pure(a: A) -> Kind1["TList", A]:
     return TList([a])
 
-  def fold_left(self, fa: Kind1["TList", A], b: B, f: Func2[B, A, B]) -> B:
+  @staticmethod
+  def fold_left(fa: Kind1["TList", A], b: B, f: Func2[B, A, B]) -> B:
     return reduce(f, fa, b)
 
   def traverse(self, gap: Applicative[G], fa: Kind1["TList", A],
