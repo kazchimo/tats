@@ -28,9 +28,6 @@ class Semigroup(Generic[T]):
 
 
 class Kind1Semigroup(Generic[S, T]):
-  @abstractmethod
-  def _cmb(self, tsemi: Semigroup[T], a: S, b: S) -> S:
+  @staticmethod
+  def combine(tsemi: Semigroup[T], a: S, b: S) -> S:
     ...
-
-  def combine(self, tsemi: Semigroup[T], a: S, b: S) -> S:
-    return self._cmb(tsemi, a, b)

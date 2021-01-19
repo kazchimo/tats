@@ -28,7 +28,7 @@ class EitherInstance(Monad["Either"], Generic[L]):
 
 class Kind1EitherInstance(Generic[R], Kind1Semigroup["Either", R]):
   @staticmethod
-  def _cmb(tsemi: Semigroup[R], a: "Either[R, L]", b: "Either[R, L]") -> "Either[R, L]":
+  def combine(tsemi: Semigroup[R], a: "Either[R, L]", b: "Either[R, L]") -> "Either[R, L]":
     if a.is_left():
       return a
     else:
