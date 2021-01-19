@@ -17,8 +17,8 @@ B = TypeVar("B")
 
 class Traverse(Generic[F], Foldable[F], Functor[F], HasFlatMapInstance[F]):
   @abstractmethod
-  def traverse(self, gap: Applicative[G], fa: Kind1[F, A], f: Func1[A, Kind1[G,
-                                                                             B]]) -> Kind2[G, F, B]:
+  def traverse(self, gap: Applicative[G], fa: Kind1[F, A], \
+               f: Func1[A, Kind1[G, B]]) -> Kind2[G, F, B]:
     ...
 
   def flat_traverse(self, gap: Applicative[G], fa: Kind1[F, A],

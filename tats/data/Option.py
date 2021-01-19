@@ -101,9 +101,9 @@ class Option(SupportsKind1["Option", A], DeriveEq, MonadSyntax["Option", A],
     return self
 
   @property
-  def _monad_instance(self) -> Type[Monad["Option"]]:
+  def _monad_instance(self) -> Monad["Option"]:
     from tats.instance.option import OptionInstance
-    return OptionInstance
+    return OptionInstance()
 
   @property
   def _monoid_instance(self) -> Kind1Monoid["Option", A]:

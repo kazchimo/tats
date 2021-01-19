@@ -82,9 +82,9 @@ class TList(UserList[A], SupportsKind1["TList", A], DeriveEq, MonadSyntax, Monoi
     return TList(list(a))
 
   @property
-  def _monad_instance(self) -> Type[Monad["TList"]]:
+  def _monad_instance(self) -> Monad["TList"]:
     from tats.instance.tlist import TListInstance
-    return TListInstance
+    return TListInstance()
 
   @property
   def _monoid_instance(self) -> Monoid["TList[A]"]:

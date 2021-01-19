@@ -1,5 +1,5 @@
 from abc import abstractmethod
-from typing import Generic, Type, TypeVar
+from typing import Generic, TypeVar
 
 from returns.primitives.hkt import Kind1
 
@@ -15,11 +15,11 @@ B = TypeVar("B")
 class HasApplicativeInstance(Generic[F]):
   @property
   @abstractmethod
-  def _applicative_instance(self) -> Type[Applicative[F]]:
+  def _applicative_instance(self) -> Applicative[F]:
     ...
 
 
 class ApplicativeSyntax(Generic[F, A], ApplySyntax[F, A], HasApplicativeInstance[F]):
   @property
-  def _apply_instance(self) -> Type[Apply[F]]:
+  def _apply_instance(self) -> Apply[F]:
     return self._applicative_instance

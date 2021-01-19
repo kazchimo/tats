@@ -71,9 +71,9 @@ class Either(SupportsKind2["Either", R, L], DeriveEq, MonadSyntax["Either", R],
     return self
 
   @property
-  def _monad_instance(self) -> Type[Monad["Either"]]:
+  def _monad_instance(self) -> Monad["Either"]:
     from tats.instance.either import EitherInstance
-    return EitherInstance
+    return EitherInstance()
 
   def _semigroup_instance(self) -> Kind1Semigroup["Either", R]:
     from tats.instance.either import Kind1EitherInstance

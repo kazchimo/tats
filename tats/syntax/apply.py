@@ -1,5 +1,5 @@
 from abc import abstractmethod
-from typing import Generic, Type, TypeVar
+from typing import Generic, TypeVar
 
 from returns.primitives.hkt import Kind1
 
@@ -21,9 +21,9 @@ class ApplySyntax(Generic[F, A], FunctorSyntax[F, A]):
 
   @property
   @abstractmethod
-  def _apply_instance(self) -> Type[Apply[F]]:
+  def _apply_instance(self) -> Apply[F]:
     ...
 
   @property
-  def _functor_instance(self) -> Type[Functor[F]]:
+  def _functor_instance(self) -> Functor[F]:
     return self._apply_instance

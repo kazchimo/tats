@@ -16,7 +16,7 @@ B = TypeVar("B")
 class HasFlatMapInstance(Generic[F]):
   @property
   @abstractmethod
-  def _flat_map_instance(self) -> Type[FlatMap[F]]:
+  def _flat_map_instance(self) -> FlatMap[F]:
     ...
 
 
@@ -25,5 +25,5 @@ class FlatMapSyntax(Generic[F, A], ApplySyntax[F, A], HasFlatMapInstance[F]):
     return self._flat_map_instance.flat_map(self._self, f)
 
   @property
-  def _apply_instance(self) -> Type[Apply[F]]:
+  def _apply_instance(self) -> Apply[F]:
     return self._flat_map_instance

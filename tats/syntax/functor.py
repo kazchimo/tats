@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import Generic, Type, TypeVar
+from typing import Generic, TypeVar
 
 from returns.primitives.hkt import Kind1
 
@@ -15,7 +15,7 @@ B = TypeVar("B")
 class FunctorSyntax(Generic[F, A], SelfIs[F], ABC):
   @property
   @abstractmethod
-  def _functor_instance(self) -> Type[Functor[F]]:
+  def _functor_instance(self) -> Functor[F]:
     ...
 
   def map(self, f: Func1[A, B]) -> Kind1[F, B]:
