@@ -20,7 +20,7 @@ class HasFoldableInstance(Generic[F]):
     ...
 
 
-class FoldableSyntax(Generic[F, A], HasFoldableInstance[F], SelfIs[F]):
+class FoldableSyntax(Generic[F], HasFoldableInstance[F], SelfIs[F]):
   def fold_left(self, b: B, f: Func2[B, A, B]) -> B:
     return self._foldable_instance.fold_left(self._self, b, f)
 

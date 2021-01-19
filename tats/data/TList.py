@@ -7,11 +7,12 @@ from returns.primitives.hkt import SupportsKind1
 from tats import Foldable
 from tats.Monad import Monad
 from tats.Monoid import Monoid
+from tats.Traverse import Traverse
 from tats.data.Function import Func1
 from tats.syntax.eq import DeriveEq
-from tats.syntax import foldable
 from tats.syntax.monad import MonadSyntax
 from tats.syntax.monoid import MonoidSyntax
+from tats.syntax.traverse import TraverseSyntax, F
 
 A = TypeVar("A")
 B = TypeVar("B")
@@ -19,7 +20,7 @@ B = TypeVar("B")
 
 @dataclass(frozen=True)
 class TList(UserList[A], SupportsKind1["TList", A], DeriveEq, MonadSyntax, MonoidSyntax["TList[A]"],
-            foldable.FoldableSyntax["TList", A]):
+            TraverseSyntax["TList"]):
   data: List[A]
 
   @property
@@ -92,6 +93,6 @@ class TList(UserList[A], SupportsKind1["TList", A], DeriveEq, MonadSyntax, Monoi
     return TListInstance1()
 
   @property
-  def _foldable_instance(self) -> Foldable.Foldable["TList[A]"]:
+  def _traverse_instance(self) -> Traverse["TList[A]"]:
     from tats.instance.tlist import TListInstance
     return TListInstance()

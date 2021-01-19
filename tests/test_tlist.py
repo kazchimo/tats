@@ -2,6 +2,7 @@ from pytest import raises
 
 from tats.data.Option import Some, Nothing
 from tats.data.TList import TList
+from tats.instance.option import OptionInstance
 
 
 class TestTList:
@@ -78,3 +79,4 @@ class TestTList:
     assert TList([1, 2, 3]).map2(TList([4, 5]), lambda a, b: a * b) == TList([4, 5, 8, 10, 12, 15])
     assert TList([1, 2, 3]).product(TList([4, 5 ])) ==\
            TList([(1, 4), (1, 5), (2, 4), (2, 5), (3, 4), (3, 5)])
+    assert TList([1, 2, 3]).traverse(OptionInstance(), Some) == Some(TList([1, 2, 3]))

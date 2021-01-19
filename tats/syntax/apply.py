@@ -14,7 +14,7 @@ B = TypeVar("B")
 C = TypeVar("C")
 
 
-class ApplySyntax(Generic[F, A], FunctorSyntax[F, A]):
+class ApplySyntax(Generic[F, A], FunctorSyntax[F]):
   def product_r(self, fb: Kind1[F, B]) -> Kind1[F, B]:
     return self._apply_instance.product_r(self._self, fb)
 

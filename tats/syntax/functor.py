@@ -12,11 +12,13 @@ A = TypeVar("A")
 B = TypeVar("B")
 
 
-class FunctorSyntax(Generic[F, A], SelfIs[F], ABC):
+class HasFunctorInstance(Generic[F]):
   @property
   @abstractmethod
   def _functor_instance(self) -> Functor[F]:
     ...
 
+
+class FunctorSyntax(Generic[F], SelfIs[F], HasFunctorInstance[F], ABC):
   def map(self, f: Func1[A, B]) -> Kind1[F, B]:
     return self._functor_instance.map(self._self, f)
