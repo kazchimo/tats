@@ -16,6 +16,9 @@ class Func1(Protocol[Arg1, Res]):
 
 
 class Func1F(Generic[Arg1, Res]):
+  """
+  Factory of Func1
+  """
   @staticmethod
   def lam(f: Func1[Arg1, Res]) -> Func1[Arg1, Res]:
     return f
