@@ -73,6 +73,9 @@ class TestTList:
   def test_size(self):
     assert TList.var(1, 2, 3).size == 3
 
+  def test_len(self):
+    assert len(TList.var(1, 2, 3)) == 3
+
   def test_syntax(self):
     assert TList([1, 2, 3]).eqv(TList([1, 2, 3]))
     assert TList([1, 2, 3]).neqv(TList([1, 2]))
