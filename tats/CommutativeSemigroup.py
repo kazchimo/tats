@@ -7,5 +7,6 @@ T = TypeVar("T")
 
 
 class CommutativeSemigroup(Semigroup[T], ABC):
-  def reverse(self) -> "Semigroup[T]":
-    return self
+  @classmethod
+  def reverse(cls) -> "Semigroup[T]":
+    return cls()

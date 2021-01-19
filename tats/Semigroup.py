@@ -8,17 +8,21 @@ S = TypeVar("S", bound=Kind1)
 
 
 class Semigroup(Generic[T]):
+  @staticmethod
   @abstractmethod
-  def combine(self, a: T, b: T) -> T:
+  def combine(a: T, b: T) -> T:
     ...
 
-  def reverse(self) -> "Semigroup[T]":
+  @classmethod
+  def reverse(cls) -> "Semigroup[T]":
     class _Semigroup(Semigroup[T]):
-      def combine(_self, a: T, b: T) -> T:
-        return self.combine(b, a)
+      @staticmethod
+      def combine(a: T, b: T) -> T:
+        return cls.combine(b, a)
 
-      def reverse(_self) -> "Semigroup[T]":
-        return self
+      @classmethod
+      def reverse(_cls) -> "Semigroup[T]":
+        return cls()
 
     return _Semigroup()
 

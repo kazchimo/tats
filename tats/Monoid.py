@@ -10,22 +10,25 @@ S = TypeVar("S", bound=Kind1)
 
 
 class Monoid(Semigroup[T], ABC):
-  @property
+  @staticmethod
   @abstractmethod
-  def empty(self) -> T:
+  def empty() -> T:
     ...
 
-  def reverse(self) -> "Monoid[T]":
+  @classmethod
+  def reverse(cls) -> "Monoid[T]":
     class _Monoid(Monoid[T]):
-      def combine(_self, a: T, b: T) -> T:
-        return self.combine(b, a)
+      @staticmethod
+      def combine(a: T, b: T) -> T:
+        return cls.combine(b, a)
 
-      @property
-      def empty(_self) -> T:
-        return self.empty
+      @staticmethod
+      def empty() -> T:
+        return cls.empty()
 
+      @classmethod
       def reverse(_self) -> "Monoid[T]":
-        return self
+        return cls()
 
     return _Monoid()
 

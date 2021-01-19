@@ -6,4 +6,4 @@ class TestIntInstance:
     assert IntInstance().combine(1, 2) == 3
 
   def test_empty(self):
-    assert IntInstance().empty == 0
+    assert IntInstance().empty() == 0

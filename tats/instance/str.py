@@ -2,9 +2,10 @@ from tats.Monoid import Monoid
 
 
 class StrInstance(Monoid[str]):
-  @property
-  def empty(self) -> str:
+  @staticmethod
+  def empty() -> str:
     return ""
 
-  def combine(self, a: str, b: str) -> str:
+  @staticmethod
+  def combine(a: str, b: str) -> str:
     return a + b

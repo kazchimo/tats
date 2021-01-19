@@ -6,6 +6,6 @@ class IntInstance(Monoid[int]):
   def combine(a: int, b: int) -> int:
     return a + b
 
-  @property
-  def empty(self) -> int:
+  @staticmethod
+  def empty() -> int:
     return 0

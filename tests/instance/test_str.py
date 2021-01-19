@@ -6,7 +6,7 @@ class TestStrInstance:
     assert StrInstance().combine("a", "b") == "ab"
 
   def test_empty(self):
-    assert StrInstance().empty == ""
+    assert StrInstance().empty() == ""
 
   def test_reverse(self):
     assert StrInstance().reverse().combine("a", "b") == "ba"

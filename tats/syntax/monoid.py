@@ -25,7 +25,7 @@ class MonoidSyntax(SemigroupSyntax[T], SelfIs[T], HasEqInstance[T]):
 
   @property
   def is_empty(self) -> bool:
-    return self._eq_instance.eqv(self._self, self._monoid_instance.empty)
+    return self._eq_instance.eqv(self._self, self._monoid_instance.empty())
 
   @property
   def non_empty(self) -> bool:

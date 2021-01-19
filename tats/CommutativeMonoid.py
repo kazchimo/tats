@@ -8,5 +8,6 @@ T = TypeVar("T")
 
 
 class CommutativeMonoid(Monoid[T], CommutativeSemigroup[T], ABC):
-  def reverse(self) -> "Monoid[T]":
-    return self
+  @classmethod
+  def reverse(cls) -> "Monoid[T]":
+    return cls()

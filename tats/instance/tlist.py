@@ -46,6 +46,6 @@ class TListInstance1(Generic[A], Monoid[TList[A]]):
   def combine(a: "TList[A]", b: "TList[A]") -> "TList[A]":
     return TList(a.data + b.data)
 
-  @property
-  def empty(self) -> "TList[A]":
+  @staticmethod
+  def empty() -> "TList[A]":
     return TList([])
