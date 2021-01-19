@@ -80,3 +80,11 @@ class TestTList:
     assert TList([1, 2, 3]).product(TList([4, 5 ])) ==\
            TList([(1, 4), (1, 5), (2, 4), (2, 5), (3, 4), (3, 5)])
     assert TList([1, 2, 3]).traverse(OptionInstance(), Some) == Some(TList([1, 2, 3]))
+    assert TList([1, 2, 3])\
+             .traverse(OptionInstance(), lambda x: Nothing() if x > 2 else Some(x)) == Nothing()
+    assert TList([Some(1), Some(2), Some(3)]).sequence(OptionInstance()) == Some(TList([1, 2, 3]))
+    assert TList([Some(1), Nothing(), Some(3)]).sequence(OptionInstance()) == Nothing()
+    assert TList([1, 2, 3]).flat_traverse(OptionInstance(), lambda x: Some(TList([x, x + 1]))) == \
+           Some(TList([1, 2, 2, 3, 3, 4]))
+    assert TList([1, 2, 3]).flat_traverse(
+      OptionInstance(), lambda x: Some(TList([x, x + 1])) if x < 2 else Nothing()) == Nothing()

@@ -15,8 +15,7 @@ B = TypeVar("B")
 
 class OptionInstance(Monad["Option"]):
   @staticmethod
-  def flat_map(fa: Kind1["Option", A],
-               f: Func1[A, Kind1["Option", B]]) -> Kind1["Option", B]:
+  def flat_map(fa: Kind1["Option", A], f: Func1[A, Kind1["Option", B]]) -> Kind1["Option", B]:
     return Nothing() if fa.is_empty() else f(cast(Some[A], fa).a)
 
   @staticmethod
