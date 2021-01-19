@@ -25,4 +25,4 @@ class EqSyntax(Generic[T], SelfIs[T], HasEqInstance[T]):
 class DeriveEq(EqSyntax[T], ABC):
   @property
   def _eq_instance(self) -> Eq[T]:
-    return Eq(lambda a, b: a == b)
+    return Eq.instance(lambda a, b: a == b)

@@ -1,24 +1,33 @@
-from dataclasses import dataclass
+from abc import abstractmethod
 from typing import Generic, TypeVar
 
-from .data.Function import BiOp, Func1
+from .data.Function import Func1, BiOp
 
 T = TypeVar("T")
 S = TypeVar("S")
 
 
-@dataclass(frozen=True)
 class Eq(Generic[T]):
-  _eqv: BiOp[T, bool]
+  @staticmethod
+  @abstractmethod
+  def eqv(l: T, r: T) -> bool:
+    ...
 
-  def eqv(self, l: T, r: T) -> bool:
-    return self._eqv(l, r)
-
-  def neqv(self, l: T, r: T) -> bool:
-    return not self.eqv(l, r)
+  @classmethod
+  def neqv(cls, l: T, r: T) -> bool:
+    return not cls.eqv(l, r)
 
   def contramap(self, f: Func1[S, T]) -> "Eq[S]":
-    return Eq(lambda a, b: self.eqv(f(a), f(b)))
+    return Eq.instance(lambda l, r: self.eqv(f(l), f(r)))
 
   def and_(self, other: "Eq[T]") -> "Eq[T]":
-    return Eq(lambda a, b: self.eqv(a, b) and other.eqv(a, b))
+    return Eq.instance(lambda l, r: self.eqv(l, r) and other.eqv(l, r))
+
+  @staticmethod
+  def instance(f: BiOp[T, bool]) -> "Eq[T]":
+    class _Eq(Eq[S]):
+      @staticmethod
+      def eqv(l: S, r: S) -> bool:
+        return f(l, r)
+
+    return _Eq()
