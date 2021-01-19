@@ -75,3 +75,6 @@ class TestTList:
     assert TList([1, 2, 3]).reduce_left_option(lambda a, b: a + b) == Some(6)
     assert TList([]).reduce_left_option(lambda a, b: a + b) == Nothing()
     assert TList([1, 2, 3]).to_tlist() == TList([1, 2, 3])
+    assert TList([1, 2, 3]).map2(TList([4, 5]), lambda a, b: a * b) == TList([4, 5, 8, 10, 12, 15])
+    assert TList([1, 2, 3]).product(TList([4, 5 ])) ==\
+           TList([(1, 4), (1, 5), (2, 4), (2, 5), (3, 4), (3, 5)])
