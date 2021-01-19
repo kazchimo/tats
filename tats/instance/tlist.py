@@ -29,11 +29,12 @@ class TListInstance(Monad["TList"], Traverse["TList"]):
   def fold_left(fa: Kind1["TList", A], b: B, f: Func2[B, A, B]) -> B:
     return reduce(f, fa, b)
 
-  def traverse(self, gap: Applicative[G], fa: Kind1["TList", A],
+  @classmethod
+  def traverse(cls, gap: Applicative[G], fa: Kind1["TList", A],
                f: Func1[A, Kind1[G, B]]) -> Kind2[G, "TList", B]:
     l: List[B] = []
     empty = cast(Kind2[G, "TList", B], gap.pure(TList(l)))
-    return self.fold_left(
+    return cls.fold_left(
       fa, empty, lambda ac, el: gap.map2(ac, f(el), lambda a, b: a.combine(TList([b]))))
 
   @property

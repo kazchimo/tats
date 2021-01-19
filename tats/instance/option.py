@@ -36,7 +36,8 @@ class OptionInstance(Monad["Option"], Traverse["Option"]):
   def _flat_map_instance(self) -> FlatMap[Option]:
     return self
 
-  def traverse(self, gap: Applicative[G], fa: Kind1[Option, A],\
+  @staticmethod
+  def traverse(gap: Applicative[G], fa: Kind1[Option, A],\
                f: Func1[A, Kind1[G, B]]) -> Kind2[G, Option, B]:
     if dekind(fa).is_empty():
       return cast(Kind2[G, Option, B], gap.pure(Nothing()))

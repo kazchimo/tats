@@ -16,20 +16,23 @@ B = TypeVar("B")
 
 
 class Traverse(Generic[F], Foldable[F], Functor[F], HasFlatMapInstance[F]):
+  @staticmethod
   @abstractmethod
-  def traverse(self, gap: Applicative[G], fa: Kind1[F, A], \
+  def traverse(gap: Applicative[G], fa: Kind1[F, A], \
                f: Func1[A, Kind1[G, B]]) -> Kind2[G, F, B]:
     ...
 
-  def flat_traverse(self, gap: Applicative[G], fa: Kind1[F, A],
+  @classmethod
+  def flat_traverse(cls, gap: Applicative[G], fa: Kind1[F, A],
                     f: Func1[A, Kind2[G, F, B]]) -> Kind2[G, F, B]:
     _map = cast(
       Func2[Kind3[G, F, F, B], Func1[Kind2[F, F, B], Kind1[F, B]], Kind2[G, F, B]], gap.map)
 
-    _flatten: Func1[Kind2[F, F, B], Kind1[F, B]] = lambda ffa: self._flat_map_instance.flatten(ffa)
+    _flatten: Func1[Kind2[F, F, B], Kind1[F, B]] = lambda ffa: cls()._flat_map_instance.flatten(ffa)
 
-    return _map(self.traverse(gap, fa, f), _flatten)
+    return _map(cls.traverse(gap, fa, f), _flatten)
 
-  def sequence(self, gap: Applicative[G], fga: Kind2[F, G, A]) -> Kind2[G, F, A]:
+  @classmethod
+  def sequence(cls, gap: Applicative[G], fga: Kind2[F, G, A]) -> Kind2[G, F, A]:
     f: Func1[Kind1[G, A], Kind1[G, A]] = Func1F.id()
-    return self.traverse(gap, fga, f)
+    return cls.traverse(gap, fga, f)
