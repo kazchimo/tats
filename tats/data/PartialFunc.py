@@ -32,6 +32,20 @@ class Case(Generic[T, S]):
 class PartialFunc(Func1[T, S]):
   """
   Partial function wrapping pampy
+
+  Examples:
+    An example corresponding to pampy's one
+
+    >>> from pampy import _
+    >>> PartialFunc.cs(
+    ...   Case(3, "this matches the number 3"),
+    ...   Case(int, "matches any integer"),
+    ...   Case((str, int), lambda a, b: "a tuple (a, b) you can use in a function"),
+    ...   Case([1, 2, _], "any list of 3 elements that begins with [1, 2]"),
+    ...   Case({"x": _}, "any dict with a key 'x' and any value associated"),
+    ...   Case(_, "anything else")
+    ... ).run(4)
+    "matches any integer"
   """
   cases: List[Case[T, S]]
 
@@ -40,6 +54,7 @@ class PartialFunc(Func1[T, S]):
     return PartialFunc(list(cases))
 
   def run(self, a: T) -> S:
+    """apply this function to `a`"""
     return cast(S, match(a, *self.__cases()))
 
   def or_else(self, p: "PartialFunc[T, S]") -> "PartialFunc[T, S]":
