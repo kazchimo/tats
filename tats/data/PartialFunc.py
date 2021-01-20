@@ -51,6 +51,7 @@ class PartialFunc(Func1[T, S]):
 
   @staticmethod
   def cs(*cases: Case[T, S]) -> "PartialFunc[T, S]":
+    """Constructs PartialFunc from Case varargs"""
     return PartialFunc(list(cases))
 
   def run(self, a: T) -> S:
