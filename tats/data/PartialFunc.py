@@ -13,7 +13,7 @@ U = TypeVar("U")
 
 @dataclass(frozen=True)
 class Case(Generic[T, S]):
-  when: T
+  when: Any
   then: Union[Func1[T, S], S]
 
   @property
@@ -26,6 +26,9 @@ class Case(Generic[T, S]):
       return Case(self.when, lambda a: f(self.then(a)))
     else:
       return Case(self.when, f(self.then))
+
+
+EndoCaseT = Case[T, T]
 
 
 @dataclass(frozen=True)
