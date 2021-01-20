@@ -67,6 +67,9 @@ class Either(SupportsKind2["Either", R, L], DeriveEq, Kind1SemigroupSyntax["Eith
   def get_or_else(self, _or: R) -> R:
     return self.fold(Func1F.const(_or), Func1F.id())
 
+  def or_else(self, fallback: "Either[R, A]") -> "Either[R, A]":
+    return self.fold(Func1F.const(fallback), lambda a: Right(a))
+
   def contains(self, e: R) -> bool:
     return self.fold(Func1F.false(), Func1F.eq(e))
 
