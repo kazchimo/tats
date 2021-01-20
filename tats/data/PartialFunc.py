@@ -30,6 +30,9 @@ class PartialFunc(Func1[T, S]):
   def run(self, a: T) -> S:
     return cast(S, match(a, *self.__cases()))
 
+  def or_else(self, p: "PartialFunc[T, S]") -> "PartialFunc[T, S]":
+    return PartialFunc(self.cases + p.cases)
+
   def is_defined_at(self, a: T) -> bool:
     return any([match_value(p, a)[0] for p in self.__whens()])
 

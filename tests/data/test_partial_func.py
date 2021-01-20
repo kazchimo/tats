@@ -25,3 +25,10 @@ class TestPartialFunc:
     assert p.is_defined_at(1)
     assert p.is_defined_at("a")
     assert not p.is_defined_at(None)
+
+  def test_or_else(self):
+    p1 = PartialFunc.cs(Case(str, lambda s: s + "b"))
+    p2 = PartialFunc.cs(Case(int, lambda i: i + 1))
+    p3 = p1.or_else(p2)
+    assert p3.run("a") == "ab"
+    assert p3.run(1) == 2
