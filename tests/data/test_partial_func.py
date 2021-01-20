@@ -46,3 +46,8 @@ class TestPartialFunc:
     f = PartialFunc.cs(Case(str, lambda s: s + "b")).lift
     assert f("a") == Some("ab")
     assert f(0) == Nothing()
+
+  def test_run_or_else(self):
+    f = PartialFunc.cs(Case("a", lambda s: s + "b"))
+    assert f.run_or_else("a", lambda s: s + "c") == "ab"
+    assert f.run_or_else("a", lambda s: s + "c") == "ab"

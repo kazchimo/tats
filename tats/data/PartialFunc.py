@@ -54,6 +54,10 @@ class PartialFunc(Func1[T, S]):
     from tats.data.Option import Nothing, Some
     return lambda a: Some(self.run(a)) if self.is_defined_at(a) else Nothing()
 
+  def run_or_else(self, a: T, default: Func1[T, S]) -> S:
+    """run this PartialFunc with `default` fallback function"""
+    return self.run(a) if self.is_defined_at(a) else default(a)
+
   def is_defined_at(self, a: T) -> bool:
     return any([match_value(p, a)[0] for p in self.__whens()])
 
