@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from typing import TypeVar, Generic, List, Union, Tuple, cast, Type, Any
 
-from pampy import match
+from pampy import match, match_value
 
 from tats.data.Function import Func1
 
@@ -30,5 +30,11 @@ class PartialFunc(Func1[T, S]):
   def run(self, a: T) -> S:
     return cast(S, match(a, *self.__cases()))
 
+  def is_defined_at(self, a: T) -> bool:
+    return any([match_value(p, a)[0] for p in self.__whens()])
+
   def __cases(self) -> List[Union[Func1[T, S], S, T]]:
     return [e for c in self.cases for e in c.to_tuple]
+
+  def __whens(self) -> List[T]:
+    return [c.when for c in self.cases]

@@ -19,3 +19,9 @@ class TestPartialFunc:
     assert p.run(1) == 2
     with raises(MatchError):
       p.run(None)
+
+  def test_is_defined_at(self):
+    p = PartialFunc.cs(Case[Any, Any](str, lambda s: s + "b"), Case[Any, Any](int, lambda i: i + 1))
+    assert p.is_defined_at(1)
+    assert p.is_defined_at("a")
+    assert not p.is_defined_at(None)
