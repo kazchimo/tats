@@ -20,10 +20,6 @@ class Func1F(Generic[Arg1, Res]):
   Factory of Func1
   """
   @staticmethod
-  def lam(f: Func1[Arg1, Res]) -> Func1[Arg1, Res]:
-    return f
-
-  @staticmethod
   def true() -> Func1[Arg1, bool]:
     return lambda _: True
 
