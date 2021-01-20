@@ -1,8 +1,10 @@
 from functools import reduce
-from typing import TypeVar, Generic, Type, List, cast
+from typing import TypeVar, Generic, List, cast
 
 from returns.primitives.hkt import Kind1, dekind, Kind2
 
+from tats.data import Option
+from tats.FunctorFilter import FunctorFilter
 from tats.Applicative import Applicative
 from tats.FlatMap import FlatMap
 from tats.Monad import Monad
@@ -16,7 +18,7 @@ A = TypeVar("A")
 B = TypeVar("B")
 
 
-class TListInstance(Monad["TList"], Traverse["TList"]):
+class TListInstance(Monad["TList"], Traverse["TList"], FunctorFilter["TList"]):
   @staticmethod
   def flat_map(fa: Kind1["TList", A], f: Func1[A, Kind1["TList", B]]) -> Kind1["TList", B]:
     return TList([b for a in dekind(fa) for b in dekind(f(a))])
@@ -36,6 +38,10 @@ class TListInstance(Monad["TList"], Traverse["TList"]):
     empty = cast(Kind2[G, "TList", B], gap.pure(TList(l)))
     return cls.fold_left(
       fa, empty, lambda ac, el: gap.map2(ac, f(el), lambda a, b: a.combine(TList([b]))))
+
+  @staticmethod
+  def map_filter(fa: Kind1["TList", A], f: Func1[A, "Option.Option[B]"]) -> Kind1["TList", B]:
+    return TList([f(a).get for a in dekind(fa) if f(a).non_empty()])
 
   @classmethod
   def _flat_map_instance(cls) -> FlatMap["TList"]:

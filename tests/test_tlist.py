@@ -1,5 +1,6 @@
 from pytest import raises
 
+from tats.data.PartialFunc import PartialFunc, Case
 from tats.data.Option import Some, Nothing
 from tats.data.TList import TList
 from tats.instance.option import OptionInstance
@@ -106,3 +107,10 @@ class TestTList:
            Some(TList([1, 2, 2, 3, 3, 4]))
     assert TList([1, 2, 3]).flat_traverse(
       OptionInstance(), lambda x: Some(TList([x, x + 1])) if x < 2 else Nothing()) == Nothing()
+
+    assert TList.var(1, 2, 3).map_filter(lambda a: Some(a) if a < 3 else Nothing()) == \
+           TList.var(1, 2)
+    assert TList.var(1, 2, 3).collect(PartialFunc.cs(Case(1, "a"), Case(2, "b"))) == \
+           TList.var("a", "b")
+    assert TList.var(1, 2, 3).filter(lambda a: a < 3) == TList.var(1, 2)
+    assert TList.var(1, 2, 3).filter_not(lambda a: a < 3) == TList.var(3)

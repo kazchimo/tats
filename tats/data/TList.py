@@ -3,7 +3,8 @@ from typing import TypeVar, List, Tuple, Iterator, Sequence, overload
 
 from returns.primitives.hkt import SupportsKind1
 
-from tats import Traverse
+from tats.syntax.functor_filter import FunctorFilterSyntax
+from tats import Traverse, FunctorFilter
 from tats.Monad import Monad
 from tats.Monoid import Monoid
 from tats.data.Function import Func1
@@ -25,7 +26,7 @@ class TListStatic:
 
 @dataclass(frozen=True)
 class TList(Sequence[A], SupportsKind1["TList", A], DeriveEq, MonadSyntax, MonoidSyntax["TList"],
-            TraverseSyntax["TList"], TListStatic, DeriveShow):
+            TraverseSyntax["TList"], TListStatic, DeriveShow, FunctorFilterSyntax["TList"]):
   data: List[A]
 
   @property
@@ -129,5 +130,10 @@ class TList(Sequence[A], SupportsKind1["TList", A], DeriveEq, MonadSyntax, Monoi
 
   @staticmethod
   def _traverse_instance() -> "Traverse.Traverse[TList[A]]":
+    from tats.instance.tlist import TListInstance
+    return TListInstance()
+
+  @staticmethod
+  def _functor_filter_instance() -> "FunctorFilter.FunctorFilter[TList[A]]":
     from tats.instance.tlist import TListInstance
     return TListInstance()
