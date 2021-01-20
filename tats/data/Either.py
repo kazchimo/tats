@@ -104,6 +104,9 @@ class Either(SupportsKind2["Either", R, L], DeriveEq, Kind1SemigroupSyntax["Eith
     """map the left side with `f`"""
     return self.fold(lambda a: Either[R, A].left(f(a)), lambda a: Right(a))
 
+  def left_flat_map(self, f: Func1[L, "Either[A, L]"]) -> "Either[A, L]":
+    return self.fold(f, lambda a: Right(a))
+
   def to_option(self) -> "Option.Option[R]":
     from tats.data.Option import Nothing, Some
     return self.fold(Func1F.const(Nothing()), Some)

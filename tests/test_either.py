@@ -84,6 +84,10 @@ class TestEither:
     assert Right(1).left_map(lambda a: a * 2) == Right(1)
     assert Left(1).left_map(lambda a: a * 2) == Left(2)
 
+  def test_left_flat_map(self):
+    assert Right(1).left_flat_map(lambda a: Right(a * 2)) == Right(1)
+    assert Left(1).left_flat_map(lambda a: Right(a * 2)) == Right(2)
+
   def test_to_option(self):
     assert Right(1).to_option() == Some(1)
     assert Left(1).to_option() == Nothing()
