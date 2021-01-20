@@ -3,6 +3,7 @@ from typing import TypeVar, Generic, List, Union, Tuple, cast, Type, Any
 
 from pampy import match, match_value
 
+from tats.data import Option
 from tats.data.Function import Func1
 
 T = TypeVar("T")
@@ -46,6 +47,12 @@ class PartialFunc(Func1[T, S]):
 
   def and_then(self, f: Func1[S, U]) -> "PartialFunc[T, U]":
     return PartialFunc([c.map(f) for c in self.cases])
+
+  @property
+  def lift(self) -> "Func1[T, Option.Option[S]]":
+    """lift this PartialFunc to a plain function returning an Option result"""
+    from tats.data.Option import Nothing, Some
+    return lambda a: Some(self.run(a)) if self.is_defined_at(a) else Nothing()
 
   def is_defined_at(self, a: T) -> bool:
     return any([match_value(p, a)[0] for p in self.__whens()])

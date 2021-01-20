@@ -3,6 +3,7 @@ from typing import Any
 from pampy import MatchError
 from pytest import raises
 
+from tats.data.Option import Some, Nothing
 from tats.data.PartialFunc import Case, PartialFunc
 
 
@@ -40,3 +41,8 @@ class TestPartialFunc:
   def test_and_then(self):
     assert PartialFunc.cs(Case(str, lambda s: s + "b"))\
              .and_then(lambda s: s + "c").run("a") == "abc"
+
+  def test_lift(self):
+    f = PartialFunc.cs(Case(str, lambda s: s + "b")).lift
+    assert f("a") == Some("ab")
+    assert f(0) == Nothing()
