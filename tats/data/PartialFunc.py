@@ -7,6 +7,7 @@ from tats.data.Function import Func1
 
 T = TypeVar("T")
 S = TypeVar("S")
+U = TypeVar("U")
 
 
 @dataclass(frozen=True)
@@ -18,9 +19,19 @@ class Case(Generic[T, S]):
   def to_tuple(self) -> Tuple[T, Union[Func1[T, S], S]]:
     return self.when, self.then
 
+  def map(self, f: Func1[S, U]) -> "Case[T, U]":
+    """map the Case's `then` result with f"""
+    if isinstance(self.then, Func1):
+      return Case(self.when, lambda a: f(self.then(a)))
+    else:
+      return Case(self.when, f(self.then))
+
 
 @dataclass(frozen=True)
 class PartialFunc(Func1[T, S]):
+  """
+  Partial function wrapping pampy
+  """
   cases: List[Case[T, S]]
 
   @staticmethod
@@ -32,6 +43,9 @@ class PartialFunc(Func1[T, S]):
 
   def or_else(self, p: "PartialFunc[T, S]") -> "PartialFunc[T, S]":
     return PartialFunc(self.cases + p.cases)
+
+  def and_then(self, f: Func1[S, U]) -> "PartialFunc[T, U]":
+    return PartialFunc([c.map(f) for c in self.cases])
 
   def is_defined_at(self, a: T) -> bool:
     return any([match_value(p, a)[0] for p in self.__whens()])

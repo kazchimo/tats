@@ -1,4 +1,4 @@
-from typing import TypeVar, Protocol, Generic, Callable
+from typing import TypeVar, Protocol, Generic, Callable, runtime_checkable
 
 Arg1 = TypeVar("Arg1", contravariant=True)
 Arg2 = TypeVar("Arg2", contravariant=True)
@@ -10,6 +10,7 @@ A = TypeVar("A")
 B = TypeVar("B")
 
 
+@runtime_checkable
 class Func1(Protocol[Arg1, Res]):
   def __call__(self, a: Arg1) -> Res:
     ...
