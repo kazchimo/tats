@@ -89,6 +89,13 @@ class Either(SupportsKind2["Either", R, L], DeriveEq, Kind1SemigroupSyntax["Eith
     else:
       return self if f(self.get) else Left(on_failure)
 
+  def ensure_or(self, on_failure: Func1[R, L], f: Func1[R, bool]):
+    """ensuring the right side is satisfying `f` or return Left converting with `on_failure` """
+    if self.is_left():
+      return self
+    else:
+      return self if f(self.get) else Left(on_failure(self.get))
+
   def to_option(self) -> "Option.Option[R]":
     from tats.data.Option import Nothing, Some
     return self.fold(Func1F.const(Nothing()), Some)

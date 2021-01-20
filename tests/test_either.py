@@ -60,6 +60,11 @@ class TestEither:
     assert Right(1).ensure(2, lambda r: r == 3) == Left(2)
     assert Left(1).ensure(2, lambda r: r == 1) == Left(1)
 
+  def test_ensure_or(self):
+    assert Right(1).ensure_or(lambda r: r * 2, lambda r: r == 1) == Right(1)
+    assert Right(1).ensure_or(lambda r: r * 2, lambda r: r == 2) == Left(2)
+    assert Left(1).ensure_or(lambda r: r * 2, lambda r: r == 2) == Left(1)
+
   def test_contains(self):
     assert Right(1).contains(1)
     assert not Right(1).contains(2)
