@@ -20,12 +20,24 @@ A = TypeVar("A")
 B = TypeVar("B")
 
 
-class Either(SupportsKind2["Either", R, L], DeriveEq, MonadSyntax["Either", R],
-             Kind1SemigroupSyntax["Either", R], TraverseSyntax["Either"]):
+class EitherStatic(TraverseSyntax["Either"], MonadSyntax["Either", R]):
+  @staticmethod
+  def _traverse_instance() -> "Traverse.Traverse[Either]":
+    from tats.instance.either import EitherInstance
+    return EitherInstance()
+
+  @staticmethod
+  def _monad_instance() -> Monad["Either"]:
+    from tats.instance.either import EitherInstance
+    return EitherInstance()
+
   @staticmethod
   def cond(test: bool, right: R, left: L) -> "Either[R, L]":
     return Right(right) if test else Left(left)
 
+
+class Either(SupportsKind2["Either", R, L], DeriveEq, Kind1SemigroupSyntax["Either", R],
+             EitherStatic):
   @abstractmethod
   def is_left(self) -> bool:
     ...
@@ -68,19 +80,9 @@ class Either(SupportsKind2["Either", R, L], DeriveEq, MonadSyntax["Either", R],
     from tats.data.Option import Nothing, Some
     return self.fold(Func1F.const(Nothing()), Some)
 
-  @staticmethod
-  def _monad_instance() -> Monad["Either"]:
-    from tats.instance.either import EitherInstance
-    return EitherInstance()
-
   def _semigroup_instance(self) -> Kind1Semigroup["Either", R]:
     from tats.instance.either import Kind1EitherInstance
     return Kind1EitherInstance()
-
-  @staticmethod
-  def _traverse_instance() -> "Traverse.Traverse[Either]":
-    from tats.instance.either import EitherInstance
-    return EitherInstance()
 
 
 @dataclass(frozen=True)
