@@ -4,6 +4,7 @@ from typing import TypeVar, cast, Any
 
 from returns.primitives.hkt import SupportsKind2
 
+from tats.syntax.show import DeriveShow
 from tats import Traverse
 from tats.Monad import Monad
 from tats.Semigroup import Kind1Semigroup
@@ -45,7 +46,7 @@ class EitherStatic(TraverseSyntax["Either"], MonadSyntax["Either", R]):
 
 
 class Either(SupportsKind2["Either", R, L], DeriveEq, Kind1SemigroupSyntax["Either", R],
-             EitherStatic):
+             EitherStatic, DeriveShow):
   @abstractmethod
   def is_left(self) -> bool:
     ...

@@ -182,3 +182,6 @@ class TestOption:
     assert Some(1).flat_traverse(TListInstance(), lambda a: TList([Some(a), Some(a * 2)])) == \
            TList([Some(1), Some(2)])
     assert Some(TList([1, 2])).sequence(TListInstance()) == TList([Some(1), Some(2)])
+
+    assert Some(1).show() == "Some(a=1)"
+    assert Nothing().show() == "Nothing()"

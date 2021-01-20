@@ -3,6 +3,7 @@ from typing import TypeVar, cast, Generic, Any, Type, Optional
 
 from returns.primitives.hkt import SupportsKind1, Kind1
 
+from tats.syntax.show import DeriveShow
 from tats import Traverse
 
 from tats.syntax.traverse import TraverseSyntax
@@ -37,7 +38,7 @@ class WithFilter(Generic[A]):
 
 
 class Option(SupportsKind1["Option", A], DeriveEq, MonadSyntax["Option", A],
-             Kind1MonoidSyntax["Option", A], TraverseSyntax["Option"]):
+             Kind1MonoidSyntax["Option", A], TraverseSyntax["Option"], DeriveShow):
   @staticmethod
   def from_nullable(a: Optional[A]) -> "Option[A]":
     return Nothing() if a is None else Some(a)

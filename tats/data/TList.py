@@ -1,5 +1,3 @@
-from abc import ABC
-from dataclasses import dataclass
 from dataclasses import dataclass
 from typing import TypeVar, List, Tuple, Iterator, Sequence, overload
 
@@ -12,6 +10,7 @@ from tats.data.Function import Func1
 from tats.syntax.eq import DeriveEq
 from tats.syntax.monad import MonadSyntax
 from tats.syntax.monoid import MonoidSyntax
+from tats.syntax.show import DeriveShow
 from tats.syntax.traverse import TraverseSyntax
 
 A = TypeVar("A")
@@ -26,7 +25,7 @@ class TListStatic:
 
 @dataclass(frozen=True)
 class TList(Sequence[A], SupportsKind1["TList", A], DeriveEq, MonadSyntax, MonoidSyntax["TList"],
-            TraverseSyntax["TList"], TListStatic):
+            TraverseSyntax["TList"], TListStatic, DeriveShow):
   data: List[A]
 
   @property
