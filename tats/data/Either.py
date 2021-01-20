@@ -1,16 +1,18 @@
 from abc import abstractmethod
 from dataclasses import dataclass
-from typing import TypeVar, cast, Any, Type
+from typing import TypeVar, cast, Any
 
 from returns.primitives.hkt import SupportsKind2
 
-from tats.syntax.eq import DeriveEq
-from tats.syntax.semigroup import Kind1SemigroupSyntax
+from tats import Traverse
 from tats.Monad import Monad
 from tats.Semigroup import Kind1Semigroup
 from tats.data import Option
 from tats.data.Function import Func1, Func1F
+from tats.syntax.eq import DeriveEq
 from tats.syntax.monad import MonadSyntax
+from tats.syntax.semigroup import Kind1SemigroupSyntax
+from tats.syntax.traverse import TraverseSyntax
 
 L = TypeVar("L")
 R = TypeVar("R")
@@ -19,7 +21,7 @@ B = TypeVar("B")
 
 
 class Either(SupportsKind2["Either", R, L], DeriveEq, MonadSyntax["Either", R],
-             Kind1SemigroupSyntax["Either", R]):
+             Kind1SemigroupSyntax["Either", R], TraverseSyntax["Either"]):
   @staticmethod
   def cond(test: bool, right: R, left: L) -> "Either[R, L]":
     return Right(right) if test else Left(left)
@@ -66,10 +68,6 @@ class Either(SupportsKind2["Either", R, L], DeriveEq, MonadSyntax["Either", R],
     from tats.data.Option import Nothing, Some
     return self.fold(Func1F.const(Nothing()), Some)
 
-  @property
-  def _self(self) -> "Either[R, L]":
-    return self
-
   @staticmethod
   def _monad_instance() -> Monad["Either"]:
     from tats.instance.either import EitherInstance
@@ -78,6 +76,11 @@ class Either(SupportsKind2["Either", R, L], DeriveEq, MonadSyntax["Either", R],
   def _semigroup_instance(self) -> Kind1Semigroup["Either", R]:
     from tats.instance.either import Kind1EitherInstance
     return Kind1EitherInstance()
+
+  @staticmethod
+  def _traverse_instance() -> "Traverse.Traverse[Either]":
+    from tats.instance.either import EitherInstance
+    return EitherInstance()
 
 
 @dataclass(frozen=True)

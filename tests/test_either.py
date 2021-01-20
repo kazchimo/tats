@@ -1,5 +1,7 @@
 from pytest import raises
 
+from tats.data.TList import TList
+from tats.instance.tlist import TListInstance
 from tats.instance.int import IntInstance
 from tats.data.Option import Some, Nothing
 from tats.data.Either import Left, Right, Either
@@ -92,3 +94,17 @@ class TestEither:
     assert Left(1).combine(IntInstance(), Right(2)) == Left(1)
     assert Right(1).combine(IntInstance(), Left(2)) == Left(2)
     assert Left(1).combine(IntInstance(), Left(2)) == Left(1)
+
+    assert Right(1).traverse(TListInstance(), lambda a: TList([a, a * 2])) == \
+           TList([Right(1), Right(2)])
+    assert Left(1).traverse(TListInstance(), lambda a: TList([a, a * 2])) == \
+      TList([Left(1)])
+    assert Right(1).flat_traverse(TListInstance(), lambda a: TList([Right(a), Right(a * 2)])) == \
+           TList([Right(1), Right(2)])
+    assert Left(1).flat_traverse(TListInstance(), lambda a: TList([Right(a), Right(a * 2)])) == \
+           TList([Left(1)])
+    assert Right(1).flat_traverse(TListInstance(), lambda a: TList([Left(a), Right(a * 2)])) == \
+           TList([Left(1), Right(2)])
+    assert Right(TList.var(1, 2)).sequence(TListInstance()) == TList.var(Right(1), Right(2))
+    assert Left(TList.var(1, 2)).sequence(TListInstance()) == \
+           Left(TList.var(1, 2)).sequence(TListInstance())

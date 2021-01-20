@@ -3,7 +3,7 @@ from typing import TypeVar, cast, Generic, Any, Type, Optional
 
 from returns.primitives.hkt import SupportsKind1, Kind1
 
-from tats.Traverse import Traverse
+from tats import Traverse
 
 from tats.syntax.traverse import TraverseSyntax
 from tats.Monad import Monad
@@ -114,7 +114,7 @@ class Option(SupportsKind1["Option", A], DeriveEq, MonadSyntax["Option", A],
     return Kind1OptionInstance()
 
   @staticmethod
-  def _traverse_instance() -> Traverse["Option"]:
+  def _traverse_instance() -> "Traverse.Traverse[Option]":
     from tats.instance.option import OptionInstance
     return OptionInstance()
 
