@@ -20,24 +20,24 @@ class TestCase:
 
 class TestPartialFunc:
   def test_run(self):
-    p = PartialFunc.cs(Case[Any, Any](str, lambda s: s + "b"), Case[Any, Any](int, lambda i: i + 1))
+    p = PartialFunc.cs(EndoCaseT(str, lambda s: s + "b"), EndoCaseT(int, lambda i: i + 1))
     assert p.run("a") == "ab"
     assert p.run(1) == 2
     with raises(MatchError):
       p.run(None)
 
   def test_is_defined_at(self):
-    p = PartialFunc.cs(Case[Any, Any](str, lambda s: s + "b"), Case[Any, Any](int, lambda i: i + 1))
+    p = PartialFunc.cs(EndoCaseT(str, lambda s: s + "b"), EndoCaseT(int, lambda i: i + 1))
     assert p.is_defined_at(1)
     assert p.is_defined_at("a")
     assert not p.is_defined_at(None)
 
   def test_or_else(self):
     p1 = PartialFunc.cs(EndoCaseT(str, lambda s: s + "b"))
-    p2 = PartialFunc.cs(EndoCaseT(int, lambda i: i + 1))
+    p2 = PartialFunc.cs(Case[int, str](int, lambda i: str(i)))
     p3 = p1.or_else(p2)
     assert p3.run("a") == "ab"
-    assert p3.run(1) == 2
+    assert p3.run(1) == "1"
 
   def test_and_then(self):
     assert PartialFunc.cs(EndoCaseT(str, lambda s: s + "b"))\
