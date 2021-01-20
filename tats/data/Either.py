@@ -39,6 +39,10 @@ class EitherStatic(TraverseSyntax["Either"], MonadSyntax["Either", R]):
   def left(a: L) -> "Either[R, L]":
     return Left(a)
 
+  @staticmethod
+  def right(a: R) -> "Either[R, L]":
+    return Right(a)
+
 
 class Either(SupportsKind2["Either", R, L], DeriveEq, Kind1SemigroupSyntax["Either", R],
              EitherStatic):
