@@ -55,6 +55,11 @@ class TestEither:
     assert Right(1).value_or(lambda a: a * 2) == 1
     assert Left(1).value_or(lambda a: a * 2) == 2
 
+  def test_ensure(self):
+    assert Right(1).ensure(2, lambda r: r == 1) == Right(1)
+    assert Right(1).ensure(2, lambda r: r == 3) == Left(2)
+    assert Left(1).ensure(2, lambda r: r == 1) == Left(1)
+
   def test_contains(self):
     assert Right(1).contains(1)
     assert not Right(1).contains(2)
