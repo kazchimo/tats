@@ -83,6 +83,7 @@ class Either(SupportsKind2["Either", R, L], DeriveEq, Kind1SemigroupSyntax["Eith
     return self.fold(f, Func1F.id())
 
   def ensure(self, on_failure: L, f: Func1[R, bool]) -> "Either[R, L]":
+    """ensuring the right side is satisfying `f` or return `Left(on_failure)`"""
     if self.is_left():
       return self
     else:
