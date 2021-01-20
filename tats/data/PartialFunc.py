@@ -28,7 +28,7 @@ class Case(Generic[T, S]):
       return Case(self.when, f(self.then))
 
 
-EndoCaseT = Case[T, T]
+EndoCase = Case[T, T]
 
 
 @dataclass(frozen=True)
