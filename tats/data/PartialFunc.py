@@ -14,18 +14,15 @@ U = TypeVar("U")
 @dataclass(frozen=True)
 class Case(Generic[T, S]):
   when: Any
-  then: Union[Func1[T, S], S]
+  then: Func1[T, S]
 
   @property
-  def to_tuple(self) -> Tuple[T, Union[Func1[T, S], S]]:
+  def to_tuple(self) -> Tuple[Any, Func1[T, S]]:
     return self.when, self.then
 
   def map(self, f: Func1[S, U]) -> "Case[T, U]":
     """map the Case's `then` result with f"""
-    if isinstance(self.then, Func1):
-      return Case(self.when, lambda a: f(self.then(a)))
-    else:
-      return Case(self.when, f(self.then))
+    return Case(self.when, lambda a: f(self.then(a)))
 
 
 EndoCase = Case[T, T]
@@ -80,7 +77,7 @@ class PartialFunc(Func1[T, S]):
   def is_defined_at(self, a: T) -> bool:
     return any([match_value(p, a)[0] for p in self.__whens()])
 
-  def __cases(self) -> List[Union[Func1[T, S], S, T]]:
+  def __cases(self) -> List[Union[Func1[T, S], T]]:
     return [e for c in self.cases for e in c.to_tuple]
 
   def __whens(self) -> List[T]:
