@@ -79,6 +79,9 @@ class Either(SupportsKind2["Either", R, L], DeriveEq, Kind1SemigroupSyntax["Eith
   def exists(self, p: Func1[R, bool]) -> bool:
     return self.fold(Func1F.false(), p)
 
+  def value_or(self, f: Func1[L, R]) -> R:
+    return self.fold(f, Func1F.id())
+
   def to_option(self) -> "Option.Option[R]":
     from tats.data.Option import Nothing, Some
     return self.fold(Func1F.const(Nothing()), Some)
