@@ -35,6 +35,10 @@ class EitherStatic(TraverseSyntax["Either"], MonadSyntax["Either", R]):
   def cond(test: bool, right: R, left: L) -> "Either[R, L]":
     return Right(right) if test else Left(left)
 
+  @staticmethod
+  def left(a: L) -> "Either[R, L]":
+    return Left(a)
+
 
 class Either(SupportsKind2["Either", R, L], DeriveEq, Kind1SemigroupSyntax["Either", R],
              EitherStatic):
@@ -95,6 +99,10 @@ class Either(SupportsKind2["Either", R, L], DeriveEq, Kind1SemigroupSyntax["Eith
       return self
     else:
       return self if f(self.get) else Left(on_failure(self.get))
+
+  def left_map(self, f: Func1[L, A]) -> "Either[R, A]":
+    """map the left side with `f`"""
+    return self.fold(lambda a: Either[R, A].left(f(a)), lambda a: Right(a))
 
   def to_option(self) -> "Option.Option[R]":
     from tats.data.Option import Nothing, Some
