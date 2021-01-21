@@ -11,7 +11,7 @@ S = TypeVar("S")
 U = TypeVar("U")
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, eq=False)
 class Case(Generic[T, S]):
   when: Any
   then: Func1[T, S]
@@ -20,9 +20,13 @@ class Case(Generic[T, S]):
   def to_tuple(self) -> Tuple[Any, Func1[T, S]]:
     return self.when, self.then
 
-  def map(self, f: Func1[S, U]) -> "Case[T, U]":
+  def and_then(self, f: Func1[S, U]) -> "Case[T, U]":
     """map the Case's `then` result with f"""
     return Case(self.when, lambda a: f(self.then(a)))
+
+  @staticmethod
+  def v(when: Any, then: S) -> "Case[Any, S]":
+    return Case(when, lambda _: then)
 
 
 EndoCase = Case[T, T]
@@ -62,7 +66,7 @@ class PartialFunc(Func1[T, S]):
     return PartialFunc(self.cases + p.cases)
 
   def and_then(self, f: Func1[S, U]) -> "PartialFunc[T, U]":
-    return PartialFunc([c.map(f) for c in self.cases])
+    return PartialFunc([c.and_then(f) for c in self.cases])
 
   @property
   def lift(self) -> "Func1[T, Option.Option[S]]":

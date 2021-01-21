@@ -1,9 +1,6 @@
-from typing import Any
-
 from pampy import MatchError
 from pytest import raises
 
-from tats.data.Function import Func1F
 from tats.data.Option import Some, Nothing
 from tats.data.PartialFunc import Case, PartialFunc, EndoCase
 
@@ -13,9 +10,12 @@ class TestCase:
     f = lambda a: a
     assert EndoCase(int, f).to_tuple == (int, f)
 
-  def test_map(self):
-    assert EndoCase(str, "a").map(lambda s: s + "b") == EndoCase(str, "ab")
-    assert EndoCase(str, lambda _: "a").map(lambda s: s + "b").then("") == "ab"
+  def test_and_then(self):
+    assert Case.v(str, "a").and_then(lambda s: s + "b").then("asdf") == "ab"
+    assert EndoCase(str, lambda _: "a").and_then(lambda s: s + "b").then("") == "ab"
+
+  def test_v(self):
+    assert Case.v(str, "a").then("a") == Case(str, lambda _: "a").then("b")
 
 
 class TestPartialFunc:

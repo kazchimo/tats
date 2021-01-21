@@ -110,7 +110,7 @@ class TestTList:
 
     assert TList.var(1, 2, 3).map_filter(lambda a: Some(a) if a < 3 else Nothing()) == \
            TList.var(1, 2)
-    assert TList.var(1, 2, 3).collect(PartialFunc.cs(Case(1, "a"), Case(2, "b"))) == \
+    assert TList.var(1, 2, 3).collect(PartialFunc.cs(Case.v(1, "a"), Case.v(2, "b"))) == \
            TList.var("a", "b")
     assert TList.var(1, 2, 3).filter(lambda a: a < 3) == TList.var(1, 2)
     assert TList.var(1, 2, 3).filter_not(lambda a: a < 3) == TList.var(3)
