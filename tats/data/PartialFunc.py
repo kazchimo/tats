@@ -19,7 +19,7 @@ C = TypeVar("C")
 class Case(Generic[T, S]):
   """
   Represents case section in a partial function.
-  If `when` is tuple Tuple1 ~ Tuple3 is supported.
+  If `when` is tuple only Tuple1 ~ Tuple3 is supported.
   """
   when: Any
   then: Func1[T, S]
