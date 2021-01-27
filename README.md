@@ -5,7 +5,7 @@ Type classes, Functional Data Types experimental implementations for Python insp
 - Functional Data Types like Option, Either
 - Type Classes and syntax derivation
 
-## Examples
+## Data Types
 ### Option
 ```python
 from tats.data.Option import *
@@ -56,4 +56,30 @@ p = PartialFunc.cs(
 
 p.run(Some(3)) # => "some"
 p.run(Nothing()) # => "none"
+```
+
+## Type Classes
+tats provides some type classses and convenient syntax mixins.
+Type class instances should be passed explicitly if needed because Python has no builtin syntax to provide instances corresponding to Scala or Haskell's one.
+
+```python
+from tats.data.TList import *
+from tats.data.Option import *
+from tats.instance.option import *
+
+# Semigroup syntax
+TList.var(1, 2, 3).combine(TList.var(4, 5)) # => TList([1, 2, 3, 4, 5])
+
+# Functor syntax
+TList.var(1, 2).map(lambda a: a * 2) # => TList([2, 4])
+
+# Monad syntax
+TList.var(1, 2).flat_map(lambda a: TList.var(a, a + 1)) # => TList([1, 2, 2, 3])
+
+# Applicative Syntax
+Some(1).product_r(Some(2)) # => Some(2)
+
+# year and you always need Traverse
+TList.var(1, 2, 3).traverse(OptionInstance(), Some) # => Some(TList([1, 2, 3]))
+TList.var(Some(1), Some(2), Some(3)).sequence(OptionInstance()) # => Some(TList([1, 2, 3]))
 ```

@@ -13,6 +13,8 @@ from tats.Semigroup import Semigroup
 from tats.data.Function import Func1
 from tats.data.Option import Option, Some, Nothing
 
+__all__ = ["OptionInstance", "Kind1OptionInstance"]
+
 G = TypeVar("G", bound=Kind1)
 A = TypeVar("A")
 B = TypeVar("B")
