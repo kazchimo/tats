@@ -46,6 +46,7 @@ class Case(Generic[T, S]):
 
   @staticmethod
   def v(when: Any, then: S) -> "Case[Any, S]":
+    """Constructs a Case which returns just a value not executing function"""
     return Case(when, lambda _: then)
 
 
