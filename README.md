@@ -6,8 +6,33 @@ Type classes, Functional Data Types experimental implementations for Python insp
 - Type Classes and syntax derivation
 
 ## Examples
-### PartialFunction
+### Option
+```python
+from tats.data.Option import *
 
+Option.from_nullable(None)
+# => Nothing() 
+
+Option.from_nullable(1)
+# => Some(1)
+
+## map the value
+Some(1).map(lambda a: a * 2)
+# => Some(2)
+
+Nothing().map(lambda a: a * 2)
+# => Nothing()
+
+## flat_map
+Some(1).flat_map(
+  lambda a: Some(a * 2)
+).flat_map(
+  lambda a: Some(a * 2)
+)
+# => Some(4)
+```
+
+### PartialFunction
 ```python
 from pampy import _
 from tats.data.PartialFunc import *
