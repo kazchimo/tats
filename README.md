@@ -46,4 +46,14 @@ PartialFunc.cs(
    Case.v(_, "anything else")
 ).run(4)
 # => "matches any integer"
+
+from tats.data.Option import Nothing, Some
+
+p = PartialFunc.cs(
+  Case.v(Some(_), "some"),
+  Case.v(Nothing(), "none")
+)
+
+p.run(Some(3)) # => "some"
+p.run(Nothing()) # => "none"
 ```

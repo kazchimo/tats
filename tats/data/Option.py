@@ -1,12 +1,9 @@
 from dataclasses import dataclass
-from typing import TypeVar, cast, Generic, Any, Type, Optional
+from typing import TypeVar, cast, Generic, Any, Optional
 
 from returns.primitives.hkt import SupportsKind1, Kind1
 
-from tats.syntax.show import DeriveShow
 from tats import Traverse
-
-from tats.syntax.traverse import TraverseSyntax
 from tats.Monad import Monad
 from tats.Monoid import Kind1Monoid
 from tats.data import Either
@@ -14,9 +11,13 @@ from tats.data.Function import Func1
 from tats.syntax.eq import DeriveEq
 from tats.syntax.monad import MonadSyntax
 from tats.syntax.monoid import Kind1MonoidSyntax
+from tats.syntax.show import DeriveShow
+from tats.syntax.traverse import TraverseSyntax
 
 A = TypeVar("A")
 B = TypeVar("B")
+
+__all__ = ["Option", "Some", "Nothing"]
 
 
 @dataclass(frozen=True)
