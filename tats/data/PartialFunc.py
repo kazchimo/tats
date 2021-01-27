@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import TypeVar, Generic, List, Union, Tuple, cast, Type, Any
+from typing import TypeVar, Generic, List, Union, Tuple, cast, Any
 
 from pampy import match, match_value
 
@@ -10,15 +10,35 @@ T = TypeVar("T")
 S = TypeVar("S")
 U = TypeVar("U")
 
+A = TypeVar("A")
+B = TypeVar("B")
+C = TypeVar("C")
+
 
 @dataclass(frozen=True, eq=False)
 class Case(Generic[T, S]):
+  """
+  Represents case section in a partial function.
+  If `when` is tuple Tuple1 ~ Tuple3 is supported.
+  """
   when: Any
   then: Func1[T, S]
 
   @property
-  def to_tuple(self) -> Tuple[Any, Func1[T, S]]:
-    return self.when, self.then
+  def to_runnable(self) -> Tuple[Any, Any]:
+    """Converts `Case` to a runnable form for pampy"""
+    if isinstance(self.when, tuple):
+      if len(self.when) == 0 or len(self.when) == 1:
+        return self.when, self.then
+      elif len(self.when) == 2:
+        return self.when, lambda a, b: cast(Func1[Tuple[Any, Any], Any], self.then)((a, b))
+      elif len(self.when) == 3:
+        return self.when, lambda a, b, c: cast(Func1[Tuple[Any, Any, Any], Any], self.then)(
+          (a, b, c))
+      else:
+        raise ValueError(f"Unacceptable Tuple length {len(self.when)}")
+    else:
+      return self.when, self.then
 
   def and_then(self, f: Func1[S, U]) -> "Case[T, U]":
     """map the Case's `then` result with f"""
@@ -42,13 +62,12 @@ class PartialFunc(Func1[T, S]):
 
     >>> from pampy import _
     >>> PartialFunc.cs(
-    ...   Case(3, "this matches the number 3"),
-    ...   Case(int, "matches any integer"),
-    ...   Case((str, int), lambda a, b: "a tuple (a, b) you can use in a function"),
-    ...   Case([1, 2, _], "any list of 3 elements that begins with [1, 2]"),
-    ...   Case({"x": _}, "any dict with a key 'x' and any value associated"),
-    ...   Case(_, "anything else")
-    ... ).run(4)
+    ...    Case.v(3, "this matches the number 3"),
+    ...    Case.v(int, "matches any integer"),
+    ...    Case((str, int), lambda t: f"a tuple ({t[0]}, {t[1]}) you can use in a function"),
+    ...    Case.v([1, 2, _], "any list of 3 elements that begins with [1, 2]"),
+    ...    Case.v({"x": _}, "any dict with a key 'x' and any value associated"),
+    ...    Case.v(_, "anything else")).run(4)
     "matches any integer"
   """
   cases: List[Case[T, S]]
@@ -82,7 +101,7 @@ class PartialFunc(Func1[T, S]):
     return any([match_value(p, a)[0] for p in self.__whens()])
 
   def __cases(self) -> List[Union[Func1[T, S], T]]:
-    return [e for c in self.cases for e in c.to_tuple]
+    return [e for c in self.cases for e in c.to_runnable]
 
   def __whens(self) -> List[T]:
     return [c.when for c in self.cases]

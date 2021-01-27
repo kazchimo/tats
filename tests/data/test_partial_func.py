@@ -8,7 +8,7 @@ from tats.data.PartialFunc import Case, PartialFunc, EndoCase
 class TestCase:
   def test_to_tuple(self):
     f = lambda a: a
-    assert EndoCase(int, f).to_tuple == (int, f)
+    assert EndoCase(int, f).to_runnable == (int, f)
 
   def test_and_then(self):
     assert Case.v(str, "a").and_then(lambda s: s + "b").then("asdf") == "ab"

@@ -41,6 +41,7 @@ class Func1F(Generic[Arg1, Res]):
     return lambda _: a
 
 
+@runtime_checkable
 class Func2(Protocol[Arg1, Arg2, Res]):
   def __call__(self, a: Arg1, b: Arg2) -> Res:
     ...
@@ -53,6 +54,7 @@ BiOp = Func2[A, A, B]
 EndoBiOp = Func2[A, A, A]
 
 
+@runtime_checkable
 class Func3(Protocol[Arg1, Arg2, Arg3, Res]):
   def __call__(self, a: Arg1, b: Arg2, c: Arg3) -> Res:
     ...
