@@ -37,8 +37,7 @@ class WithFilter(Generic[A]):
     return WithFilter(self.o, lambda a: self.p(a) and p(a))
 
 
-class Option(SupportsKind1["Option", A], DeriveEq, MonadSyntax["Option", A],
-             Kind1MonoidSyntax["Option", A], TraverseSyntax["Option"], DeriveShow):
+class OptionStatic(MonadSyntax["Option", A], TraverseSyntax["Option"]):
   @staticmethod
   def from_nullable(a: Optional[A]) -> "Option[A]":
     return Nothing() if a is None else Some(a)
@@ -51,6 +50,19 @@ class Option(SupportsKind1["Option", A], DeriveEq, MonadSyntax["Option", A],
   def unless(cond: bool, a: A) -> "Option[A]":
     return Nothing() if cond else Some(a)
 
+  @staticmethod
+  def _monad_instance() -> Monad["Option"]:
+    from tats.instance.option import OptionInstance
+    return OptionInstance()
+
+  @staticmethod
+  def _traverse_instance() -> "Traverse.Traverse[Option]":
+    from tats.instance.option import OptionInstance
+    return OptionInstance()
+
+
+class Option(SupportsKind1["Option", A], DeriveEq, Kind1MonoidSyntax["Option", A], DeriveShow,
+             OptionStatic):
   def non_empty(self) -> bool:
     return not self.is_empty()
 
@@ -101,23 +113,9 @@ class Option(SupportsKind1["Option", A], DeriveEq, MonadSyntax["Option", A],
     return Right(right) if self.is_empty() else Left(self.get)
 
   @property
-  def _self(self) -> "Option[A]":
-    return self
-
-  @staticmethod
-  def _monad_instance() -> Monad["Option"]:
-    from tats.instance.option import OptionInstance
-    return OptionInstance()
-
-  @property
   def _monoid_instance(self) -> Kind1Monoid["Option", A]:
     from tats.instance.option import Kind1OptionInstance
     return Kind1OptionInstance()
-
-  @staticmethod
-  def _traverse_instance() -> "Traverse.Traverse[Option]":
-    from tats.instance.option import OptionInstance
-    return OptionInstance()
 
 
 @dataclass(frozen=True)
